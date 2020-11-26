@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_title_az"
+            android:checked="true"
+            android:title="@string/title_a_z" />
+        <item
+            android:id="@+id/action_title_za"
+            android:checked="false"
+            android:title="@string/title_z_a" />
+        <item
+            android:id="@+id/action_rating_50"
+            android:checked="false"
+            android:title="@string/rating_5_0" />
+        <item
+            android:id="@+id/action_rating_05"
+            android:checked="false"
+            android:title="@string/rating_0_5" />
+        <item
+            android:id="@+id/action_random"
+            android:checked="false"
+            android:title="@string/random" />
+    </group>
+</menu>

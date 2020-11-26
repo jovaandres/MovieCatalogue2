@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ismaeldivita.chipnavigation.ChipNavigationBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bottom_menu"
+    app:cnb_addBottomInset="false"
+    app:cnb_addLeftInset="false"
+    app:cnb_addRightInset="false"
+    app:cnb_addTopInset="false"
+    android:padding="2dp"
+    app:cnb_textAppearance="@style/TextAppearance.AppCompat.Medium"
+    app:cnb_badgeColor="#0F5C9F"
+    app:cnb_iconSize="26dp"
+    app:cnb_menuResource="@menu/bottom_menu"
+    app:cnb_orientationMode="horizontal"
+    app:cnb_radius="8dp" />
