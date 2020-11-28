@@ -1,0 +1,285 @@
+Index: app/src/main/java/com/example/moviecatalogue/popular/PopularMoviesFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.moviecatalogue.popular\r\n\r\nimport android.os.Bundle\r\nimport android.view.*\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.fragment.app.viewModels\r\nimport androidx.lifecycle.Observer\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport com.example.moviecatalogue.R\r\nimport com.example.moviecatalogue.core.data.Resource\r\nimport com.example.moviecatalogue.core.domain.model.Movie\r\nimport com.example.moviecatalogue.core.utils.SortPreferences\r\nimport com.example.moviecatalogue.core.utils.SortUtils\r\nimport dagger.hilt.android.AndroidEntryPoint\r\nimport kotlinx.android.synthetic.main.popular_movies_fragment.*\r\nimport javax.inject.Inject\r\n\r\n@AndroidEntryPoint\r\nclass PopularMoviesFragment : Fragment() {\r\n\r\n    private val viewModel: PopularMoviesViewModel by viewModels()\r\n    private val popularMoviesAdapter = PopularMoviesAdapter()\r\n\r\n    @Inject\r\n    lateinit var sortPreferences: SortPreferences\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.popular_movies_fragment, container, false)\r\n    }\r\n\r\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\r\n        super.onActivityCreated(savedInstanceState)\r\n        showPopularMovie()\r\n    }\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setHasOptionsMenu(true)\r\n    }\r\n\r\n    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {\r\n        inflater.inflate(R.menu.sort_menu, menu)\r\n        val activeMenuId = menu.getItem(sortPreferences.getMenuPopularMovie())\r\n        activeMenuId.isChecked = true\r\n        super.onCreateOptionsMenu(menu, inflater)\r\n    }\r\n\r\n    override fun onOptionsItemSelected(item: MenuItem): Boolean {\r\n        var sort = \"\"\r\n        var index = 0\r\n        val simpleQuery = \"SELECT * FROM movie_result WHERE isPopular = 1 \"\r\n        when (item.itemId) {\r\n            R.id.action_title_az -> {\r\n                sort = SortUtils.ALPHABET_ASC\r\n                index = 0\r\n            }\r\n            R.id.action_title_za -> {\r\n                sort = SortUtils.ALPHABET_DESC\r\n                index = 1\r\n            }\r\n            R.id.action_rating_50 -> {\r\n                sort = SortUtils.RATING_DESC\r\n                index = 2\r\n            }\r\n            R.id.action_rating_05 -> {\r\n                sort = SortUtils.RATING_ASC\r\n                index = 3\r\n            }\r\n            R.id.action_random -> {\r\n                sort = SortUtils.RANDOM\r\n                index = 4\r\n            }\r\n        }\r\n        viewModel.getPopularMovies(simpleQuery, sort).observe(this, movieObserver)\r\n        item.isChecked = true\r\n        sortPreferences.setPrefPopularMovie(index, sort)\r\n        return super.onOptionsItemSelected(item)\r\n    }\r\n\r\n    private fun showPopularMovie() {\r\n        val simpleQuery = \"SELECT * FROM movie_result WHERE isPopular = 1 \"\r\n        sortPreferences.getSortPopularMovie()?.let {\r\n            viewModel.getPopularMovies(simpleQuery, it)\r\n                .observe(viewLifecycleOwner, movieObserver)\r\n        }\r\n    }\r\n\r\n    private val movieObserver = Observer<Resource<List<Movie>>> { data ->\r\n        if (data != null) {\r\n            when (data) {\r\n                is Resource.Loading -> {\r\n                    pop_movie_progress.visibility = View.VISIBLE\r\n                }\r\n                is Resource.Success -> {\r\n                    pop_movie_progress.visibility = View.GONE\r\n                    popularMoviesAdapter.setPopularMovieList(data.data)\r\n                    popularMoviesAdapter.notifyDataSetChanged()\r\n                    rv_pop_movies.apply {\r\n                        setHasFixedSize(true)\r\n                        layoutManager = LinearLayoutManager(context)\r\n                        adapter = popularMoviesAdapter\r\n                    }\r\n                }\r\n                is Resource.Error -> {\r\n                    pop_movie_progress.visibility = View.GONE\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/moviecatalogue/popular/PopularMoviesFragment.kt	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/java/com/example/moviecatalogue/popular/PopularMoviesFragment.kt	(date 1606582131659)
+@@ -11,12 +11,13 @@
+ import com.example.moviecatalogue.core.domain.model.Movie
+ import com.example.moviecatalogue.core.utils.SortPreferences
+ import com.example.moviecatalogue.core.utils.SortUtils
++import com.ismaeldivita.chipnavigation.ChipNavigationBar
+ import dagger.hilt.android.AndroidEntryPoint
+ import kotlinx.android.synthetic.main.popular_movies_fragment.*
+ import javax.inject.Inject
+ 
+ @AndroidEntryPoint
+-class PopularMoviesFragment : Fragment() {
++class PopularMoviesFragment : Fragment(R.layout.popular_movies_fragment) {
+ 
+     private val viewModel: PopularMoviesViewModel by viewModels()
+     private val popularMoviesAdapter = PopularMoviesAdapter()
+@@ -41,6 +42,12 @@
+         setHasOptionsMenu(true)
+     }
+ 
++    override fun onResume() {
++        super.onResume()
++        val bottomMenu = activity?.findViewById<ChipNavigationBar>(R.id.bottom_menu)
++        bottomMenu?.setItemSelected(R.id.popular)
++    }
++
+     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+         inflater.inflate(R.menu.sort_menu, menu)
+         val activeMenuId = menu.getItem(sortPreferences.getMenuPopularMovie())
+Index: app/src/main/java/com/example/moviecatalogue/MovieActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.moviecatalogue\r\n\r\nimport android.graphics.drawable.ColorDrawable\r\nimport android.os.Bundle\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.fragment.app.commit\r\nimport com.example.moviecatalogue.favorite.FavoriteMovieFragment\r\nimport com.example.moviecatalogue.popular.PopularMoviesFragment\r\nimport com.example.moviecatalogue.search.MoviesFragment\r\nimport com.ismaeldivita.chipnavigation.ChipNavigationBar\r\nimport dagger.hilt.android.AndroidEntryPoint\r\nimport kotlinx.android.synthetic.main.item_bottom_navigation.*\r\n\r\n@AndroidEntryPoint\r\nclass MovieActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelectedListener {\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_movie)\r\n\r\n        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.action_bar_color)))\r\n        supportActionBar?.elevation = 0f\r\n        bottom_menu.setOnItemSelectedListener(this)\r\n\r\n        if (savedInstanceState == null) {\r\n            supportFragmentManager.commit {\r\n                add(R.id.frame_container, MoviesFragment())\r\n            }\r\n        }\r\n    }\r\n\r\n    override fun onItemSelected(id: Int) {\r\n        val fragment = supportFragmentManager.findFragmentById(R.id.frame_container)\r\n        when (id) {\r\n            R.id.popular -> {\r\n                if (fragment != PopularMoviesFragment::class.java) {\r\n                    supportFragmentManager.commit {\r\n                        replace(R.id.frame_container, PopularMoviesFragment())\r\n                        addToBackStack(null)\r\n                    }\r\n                }\r\n            }\r\n            R.id.search -> {\r\n                if (fragment != MoviesFragment::class.java) {\r\n                    supportFragmentManager.commit {\r\n                        replace(R.id.frame_container, MoviesFragment())\r\n                        addToBackStack(null)\r\n                    }\r\n                }\r\n            }\r\n            R.id.favorite -> {\r\n                if (fragment != FavoriteMovieFragment::class.java) {\r\n                    supportFragmentManager.commit {\r\n                        replace(R.id.frame_container, FavoriteMovieFragment())\r\n                        addToBackStack(null)\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    override fun onPause() {\r\n        super.onPause()\r\n        overridePendingTransition(0, 0)\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/moviecatalogue/MovieActivity.kt	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/java/com/example/moviecatalogue/MovieActivity.kt	(date 1606582131414)
+@@ -3,7 +3,10 @@
+ import android.graphics.drawable.ColorDrawable
+ import android.os.Bundle
+ import androidx.appcompat.app.AppCompatActivity
++import androidx.fragment.app.Fragment
+ import androidx.fragment.app.commit
++import androidx.navigation.findNavController
++import androidx.navigation.fragment.NavHostFragment
+ import com.example.moviecatalogue.favorite.FavoriteMovieFragment
+ import com.example.moviecatalogue.popular.PopularMoviesFragment
+ import com.example.moviecatalogue.search.MoviesFragment
+@@ -21,7 +24,6 @@
+         supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.action_bar_color)))
+         supportActionBar?.elevation = 0f
+         bottom_menu.setOnItemSelectedListener(this)
+-
+         if (savedInstanceState == null) {
+             supportFragmentManager.commit {
+                 add(R.id.frame_container, MoviesFragment())
+@@ -30,37 +32,35 @@
+     }
+ 
+     override fun onItemSelected(id: Int) {
++        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
++        val navController = navHostFragment.navController
+         val fragment = supportFragmentManager.findFragmentById(R.id.frame_container)
+         when (id) {
+             R.id.popular -> {
+                 if (fragment != PopularMoviesFragment::class.java) {
+-                    supportFragmentManager.commit {
+-                        replace(R.id.frame_container, PopularMoviesFragment())
+-                        addToBackStack(null)
+-                    }
++//                    getFragment(PopularMoviesFragment())
++                    navController.navigate(R.id.action_moviesFragment_to_popularMoviesFragment)
+                 }
+             }
+             R.id.search -> {
+                 if (fragment != MoviesFragment::class.java) {
+-                    supportFragmentManager.commit {
+-                        replace(R.id.frame_container, MoviesFragment())
+-                        addToBackStack(null)
+-                    }
++//                    getFragment(MoviesFragment())
++                    navController.navigate(R.id.action_moviesFragment_to_popularMoviesFragment)
+                 }
+             }
+             R.id.favorite -> {
+                 if (fragment != FavoriteMovieFragment::class.java) {
+-                    supportFragmentManager.commit {
+-                        replace(R.id.frame_container, FavoriteMovieFragment())
+-                        addToBackStack(null)
+-                    }
+-                }
+-            }
++//                    getFragment(FavoriteMovieFragment())
++                    navController.navigate(R.id.action_moviesFragment_to_favoriteMovieFragment)
++                }
++            }
++        }
++    }
++
++    private fun getFragment(fragment: Fragment) {
++        supportFragmentManager.commit {
++            replace(R.id.frame_container, fragment)
++            addToBackStack(null)
+         }
+     }
+-
+-    override fun onPause() {
+-        super.onPause()
+-        overridePendingTransition(0, 0)
+-    }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_movie.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".MovieActivity\">\r\n\r\n    <FrameLayout\r\n        android:id=\"@+id/frame_container\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"/>\r\n\r\n    <include\r\n        layout=\"@layout/item_bottom_navigation\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"50dp\"\r\n        app:layout_behavior=\"com.google.android.material.behavior.HideBottomViewOnScrollBehavior\"\r\n        android:layout_gravity=\"bottom\"/>\r\n\r\n</androidx.coordinatorlayout.widget.CoordinatorLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_movie.xml	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/res/layout/activity_movie.xml	(date 1606582131187)
+@@ -6,10 +6,18 @@
+     android:layout_height="match_parent"
+     tools:context=".MovieActivity">
+ 
+-    <FrameLayout
+-        android:id="@+id/frame_container"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"/>
++<!--    <FrameLayout-->
++<!--        android:id="@+id/frame_container"-->
++<!--        android:layout_width="match_parent"-->
++<!--        android:layout_height="match_parent"/>-->
++
++    <androidx.fragment.app.FragmentContainerView
++        android:id="@+id/nav_host_fragment"
++        android:name="androidx.navigation.fragment.NavHostFragment"
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        app:defaultNavHost="true"
++        app:navGraph="@navigation/nav_graph"/>
+ 
+     <include
+         layout="@layout/item_bottom_navigation"
+Index: app/src/main/res/navigation/nav_graph.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/navigation/nav_graph.xml	(date 1606582131744)
++++ app/src/main/res/navigation/nav_graph.xml	(date 1606582131744)
+@@ -0,0 +1,41 @@
++<?xml version="1.0" encoding="utf-8"?>
++<navigation xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/nav_graph"
++    app:startDestination="@id/moviesFragment">
++
++    <fragment
++        android:id="@+id/moviesFragment"
++        android:name="com.example.moviecatalogue.search.MoviesFragment"
++        android:label="movies_fragment"
++        tools:layout="@layout/movies_fragment" >
++        <action
++            android:id="@+id/action_moviesFragment_to_favoriteMovieFragment"
++            app:destination="@id/favoriteMovieFragment" />
++        <action
++            android:id="@+id/action_moviesFragment_to_popularMoviesFragment"
++            app:destination="@id/popularMoviesFragment" />
++    </fragment>
++    <fragment
++        android:id="@+id/favoriteMovieFragment"
++        android:name="com.example.moviecatalogue.favorite.FavoriteMovieFragment"
++        android:label="favorite_movie_fragment"
++        tools:layout="@layout/favorite_movie_fragment" >
++        <action
++            android:id="@+id/action_favoriteMovieFragment_to_moviesFragment"
++            app:destination="@id/moviesFragment" />
++    </fragment>
++    <fragment
++        android:id="@+id/popularMoviesFragment"
++        android:name="com.example.moviecatalogue.popular.PopularMoviesFragment"
++        android:label="popular_movies_fragment"
++        tools:layout="@layout/popular_movies_fragment" >
++        <action
++            android:id="@+id/action_popularMoviesFragment_to_moviesFragment"
++            app:destination="@id/moviesFragment" />
++        <action
++            android:id="@+id/action_popularMoviesFragment_to_favoriteMovieFragment"
++            app:destination="@id/favoriteMovieFragment" />
++    </fragment>
++</navigation>
+\ No newline at end of file
+Index: app/src/main/java/com/example/moviecatalogue/favorite/FavoriteMovieFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.moviecatalogue.favorite\r\n\r\nimport android.os.Bundle\r\nimport android.view.*\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.fragment.app.viewModels\r\nimport androidx.lifecycle.Observer\r\nimport androidx.recyclerview.widget.ItemTouchHelper\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.example.moviecatalogue.R\r\nimport com.example.moviecatalogue.core.domain.model.DetailMovie\r\nimport com.example.moviecatalogue.core.utils.SortPreferences\r\nimport com.example.moviecatalogue.core.utils.SortUtils\r\nimport com.google.android.material.snackbar.Snackbar\r\nimport dagger.hilt.android.AndroidEntryPoint\r\nimport kotlinx.android.synthetic.main.favorite_movie_fragment.*\r\nimport javax.inject.Inject\r\n\r\n@AndroidEntryPoint\r\nclass FavoriteMovieFragment : Fragment() {\r\n\r\n    private val viewModel: FavoriteMovieViewModel by viewModels()\r\n    private val favoriteMovieAdapter = FavoriteMovieAdapter()\r\n\r\n    @Inject\r\n    lateinit var sortPreferences: SortPreferences\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.favorite_movie_fragment, container, false)\r\n    }\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setHasOptionsMenu(true)\r\n    }\r\n\r\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\r\n        super.onActivityCreated(savedInstanceState)\r\n        itemTouchHelper.attachToRecyclerView(rv_fav_movies)\r\n        showFavoriteMovie()\r\n    }\r\n\r\n    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {\r\n        inflater.inflate(R.menu.sort_menu, menu)\r\n        val activeMenuId = menu.getItem(sortPreferences.getMenuFavoriteMovie())\r\n        activeMenuId.isChecked = true\r\n        super.onCreateOptionsMenu(menu, inflater)\r\n    }\r\n\r\n    override fun onOptionsItemSelected(item: MenuItem): Boolean {\r\n        var sort = \"\"\r\n        var index = 0\r\n        val simpleQuery = \"SELECT * FROM movie_detail WHERE isFavorite = 1 \"\r\n        when (item.itemId) {\r\n            R.id.action_title_az -> {\r\n                sort = SortUtils.ALPHABET_ASC\r\n                index = 0\r\n            }\r\n            R.id.action_title_za -> {\r\n                sort = SortUtils.ALPHABET_DESC\r\n                index = 1\r\n            }\r\n            R.id.action_rating_50 -> {\r\n                sort = SortUtils.RATING_DESC\r\n                index = 2\r\n            }\r\n            R.id.action_rating_05 -> {\r\n                sort = SortUtils.RATING_ASC\r\n                index = 3\r\n            }\r\n            R.id.action_random -> {\r\n                sort = SortUtils.RANDOM\r\n                index = 4\r\n            }\r\n        }\r\n        viewModel.showFavoriteMovie(simpleQuery, sort).observe(this, movieObserver)\r\n        item.isChecked = true\r\n        sortPreferences.setPrefFavoriteMovie(index, sort)\r\n        return super.onOptionsItemSelected(item)\r\n    }\r\n\r\n    private fun showFavoriteMovie() {\r\n        fav_movie_progress.visibility = View.VISIBLE\r\n        val simpleQuery = \"SELECT * FROM movie_detail WHERE isFavorite = 1 \"\r\n        sortPreferences.getSortFavoriteMovie()?.let {\r\n            viewModel.showFavoriteMovie(simpleQuery, it)\r\n                .observe(viewLifecycleOwner, movieObserver)\r\n        }\r\n        fav_movie_progress.visibility = View.GONE\r\n    }\r\n\r\n    private val movieObserver = Observer<List<DetailMovie>> { data ->\r\n        if (data != null) {\r\n            favoriteMovieAdapter.setMovieFavoriteList(data)\r\n            favoriteMovieAdapter.notifyDataSetChanged()\r\n            rv_fav_movies.apply {\r\n                setHasFixedSize(true)\r\n                layoutManager = LinearLayoutManager(context)\r\n                adapter = favoriteMovieAdapter\r\n            }\r\n        }\r\n    }\r\n\r\n    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {\r\n        override fun getMovementFlags(\r\n            recyclerView: RecyclerView,\r\n            viewHolder: RecyclerView.ViewHolder\r\n        ): Int {\r\n            return makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)\r\n        }\r\n\r\n        override fun onMove(\r\n            recyclerView: RecyclerView,\r\n            viewHolder: RecyclerView.ViewHolder,\r\n            target: RecyclerView.ViewHolder\r\n        ): Boolean {\r\n            return true\r\n        }\r\n\r\n        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {\r\n            if (view != null) {\r\n                val swipedPosition = viewHolder.adapterPosition\r\n                val favoriteMovieEntity = favoriteMovieAdapter.getSwipedData(swipedPosition)\r\n                favoriteMovieEntity.let { viewModel.addToFavoriteMovie(it) }\r\n\r\n                val snackbar =\r\n                    Snackbar.make(view as View, getString(R.string.delete_success), Snackbar.LENGTH_SHORT)\r\n                snackbar.setAction(\"Undo\") {\r\n                    favoriteMovieEntity.let { viewModel.addToFavoriteMovie(it) }\r\n                }\r\n                snackbar.show()\r\n            }\r\n        }\r\n\r\n    })\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/moviecatalogue/favorite/FavoriteMovieFragment.kt	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/java/com/example/moviecatalogue/favorite/FavoriteMovieFragment.kt	(date 1606578936224)
+@@ -13,6 +13,7 @@
+ import com.example.moviecatalogue.core.utils.SortPreferences
+ import com.example.moviecatalogue.core.utils.SortUtils
+ import com.google.android.material.snackbar.Snackbar
++import com.ismaeldivita.chipnavigation.ChipNavigationBar
+ import dagger.hilt.android.AndroidEntryPoint
+ import kotlinx.android.synthetic.main.favorite_movie_fragment.*
+ import javax.inject.Inject
+@@ -38,6 +39,12 @@
+         setHasOptionsMenu(true)
+     }
+ 
++    override fun onResume() {
++        super.onResume()
++        val bottomMenu = activity?.findViewById<ChipNavigationBar>(R.id.bottom_menu)
++        bottomMenu?.setItemSelected(R.id.favorite)
++    }
++
+     override fun onActivityCreated(savedInstanceState: Bundle?) {
+         super.onActivityCreated(savedInstanceState)
+         itemTouchHelper.attachToRecyclerView(rv_fav_movies)
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    package=\"com.example.moviecatalogue\">\r\n\r\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n\r\n    <application\r\n        android:name=\".BaseApplication\"\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\"\r\n        android:usesCleartextTraffic=\"true\"\r\n        tools:targetApi=\"m\">\r\n        <activity android:name=\".ui.search.SearchActivity\" />\r\n        <activity android:name=\".ui.favorite.FavoriteActivity\" />\r\n        <activity android:name=\".ui.detail.DetailTvActivity\" />\r\n        <activity android:name=\".detail.DetailMovieActivity\" />\r\n        <activity android:name=\".ui.popular.PopularActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/AndroidManifest.xml	(date 1606574286270)
+@@ -16,11 +16,8 @@
+         android:theme="@style/AppTheme"
+         android:usesCleartextTraffic="true"
+         tools:targetApi="m">
+-        <activity android:name=".ui.search.SearchActivity" />
+-        <activity android:name=".ui.favorite.FavoriteActivity" />
+-        <activity android:name=".ui.detail.DetailTvActivity" />
+         <activity android:name=".detail.DetailMovieActivity" />
+-        <activity android:name=".ui.popular.PopularActivity">
++        <activity android:name=".MovieActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+Index: app/src/main/java/com/example/moviecatalogue/search/MoviesFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.moviecatalogue.search\r\n\r\nimport android.content.Context\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.view.inputmethod.InputMethodManager\r\nimport androidx.appcompat.widget.SearchView\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.fragment.app.viewModels\r\nimport androidx.lifecycle.Observer\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport com.example.moviecatalogue.R\r\nimport com.example.moviecatalogue.core.data.Resource\r\nimport com.example.moviecatalogue.core.domain.model.Movie\r\nimport com.shashank.sony.fancytoastlib.FancyToast\r\nimport dagger.hilt.android.AndroidEntryPoint\r\nimport kotlinx.android.synthetic.main.movies_fragment.*\r\nimport javax.inject.Inject\r\n\r\n@AndroidEntryPoint\r\nclass MoviesFragment : Fragment() {\r\n\r\n    private val viewModel: MoviesViewModel by viewModels()\r\n    private val moviesAdapter = MoviesAdapter()\r\n\r\n    @Inject\r\n    lateinit var bundle: Bundle\r\n    private lateinit var searchView: SearchView\r\n\r\n    companion object {\r\n        private const val RECENT_QUERY = \"recent_query\"\r\n    }\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.movies_fragment, container, false)\r\n    }\r\n\r\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\r\n        super.onActivityCreated(savedInstanceState)\r\n\r\n        searchView = search_movie as SearchView\r\n\r\n        searchMovieByTitle()\r\n\r\n        val title = arguments?.getString(RECENT_QUERY)\r\n        if (title != null) {\r\n            getMovieFromViewModel(title)\r\n        }\r\n    }\r\n\r\n    private fun searchMovieByTitle() {\r\n        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {\r\n\r\n            override fun onQueryTextSubmit(query: String?): Boolean {\r\n                getMovieFromViewModel(query.toString())\r\n                arguments = bundle.apply {\r\n                    putString(RECENT_QUERY, query.toString())\r\n                }\r\n                val input =\r\n                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager\r\n                input.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)\r\n                return true\r\n            }\r\n\r\n            override fun onQueryTextChange(newText: String?): Boolean {\r\n                return false\r\n            }\r\n        })\r\n    }\r\n\r\n    private fun getMovieFromViewModel(title: String) {\r\n        viewModel.getMovies(title).observe(viewLifecycleOwner, movieObserver)\r\n    }\r\n\r\n    private val movieObserver = Observer<Resource<List<Movie>>> { data ->\r\n        if (data != null) {\r\n            when (data) {\r\n                is Resource.Loading -> {\r\n                    movie_progress.visibility = View.VISIBLE\r\n                }\r\n                is Resource.Success -> {\r\n                    movie_progress.visibility = View.GONE\r\n                    moviesAdapter.setListMovie(data.data)\r\n                    moviesAdapter.notifyDataSetChanged()\r\n                    rv_movies.apply {\r\n                        setHasFixedSize(true)\r\n                        layoutManager = LinearLayoutManager(context)\r\n                        adapter = moviesAdapter\r\n                    }\r\n                    if (data.data?.isEmpty()!!) {\r\n                        FancyToast.makeText(\r\n                            requireContext(),\r\n                            getString(R.string.movie_not_found),\r\n                            FancyToast.LENGTH_SHORT,\r\n                            FancyToast.ERROR,\r\n                            false\r\n                        ).show()\r\n                    }\r\n                }\r\n                is Resource.Error -> {\r\n                    movie_progress.visibility = View.GONE\r\n                }\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/moviecatalogue/search/MoviesFragment.kt	(revision 549190723618c19104679907a75836796905610d)
++++ app/src/main/java/com/example/moviecatalogue/search/MoviesFragment.kt	(date 1606578936343)
+@@ -14,6 +14,7 @@
+ import com.example.moviecatalogue.R
+ import com.example.moviecatalogue.core.data.Resource
+ import com.example.moviecatalogue.core.domain.model.Movie
++import com.ismaeldivita.chipnavigation.ChipNavigationBar
+ import com.shashank.sony.fancytoastlib.FancyToast
+ import dagger.hilt.android.AndroidEntryPoint
+ import kotlinx.android.synthetic.main.movies_fragment.*
+@@ -40,6 +41,12 @@
+         return inflater.inflate(R.layout.movies_fragment, container, false)
+     }
+ 
++    override fun onResume() {
++        super.onResume()
++        val bottomMenu = activity?.findViewById<ChipNavigationBar>(R.id.bottom_menu)
++        bottomMenu?.setItemSelected(R.id.search)
++    }
++
+     override fun onActivityCreated(savedInstanceState: Bundle?) {
+         super.onActivityCreated(savedInstanceState)
+ 
