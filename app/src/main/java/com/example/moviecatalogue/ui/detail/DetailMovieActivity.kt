@@ -12,7 +12,6 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
-import com.example.moviecatalogue.core.utils.EspressoIdlingResource
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +50,6 @@ class DetailMovieActivity : AppCompatActivity() {
             }
         }
 
-        if (EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.increment()
         viewModel.getDetailMovie(id).observe(this, { data ->
             run {
                 if (data != null) {
@@ -101,7 +99,6 @@ class DetailMovieActivity : AppCompatActivity() {
             Log.d("Detail Exception","${e.message}")
         }
 
-        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.decrement()
     }
 
     override fun onSupportNavigateUp(): Boolean {

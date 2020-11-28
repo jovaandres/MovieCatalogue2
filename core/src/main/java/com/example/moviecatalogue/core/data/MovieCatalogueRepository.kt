@@ -3,7 +3,7 @@ package com.example.moviecatalogue.core.data
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
-import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.R
 import com.example.moviecatalogue.core.data.source.local.LocalDataSource
 import com.example.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.example.moviecatalogue.core.data.source.remote.api.ApiResponse

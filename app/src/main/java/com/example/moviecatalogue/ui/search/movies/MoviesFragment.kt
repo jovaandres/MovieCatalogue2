@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
-import com.example.moviecatalogue.core.utils.EspressoIdlingResource
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.movies_fragment.*
@@ -79,7 +78,6 @@ class MoviesFragment : Fragment() {
     }
 
     private val movieObserver = Observer<Resource<List<Movie>>> { data ->
-        if (EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.increment()
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {
@@ -109,6 +107,5 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
-        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.decrement()
     }
 }

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
-import com.example.moviecatalogue.core.utils.EspressoIdlingResource
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,7 +89,6 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private val movieObserver = Observer<Resource<List<Movie>>> { data ->
-        if (EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.increment()
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {
@@ -111,6 +109,5 @@ class PopularMoviesFragment : Fragment() {
                 }
             }
         }
-        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.decrement()
     }
 }

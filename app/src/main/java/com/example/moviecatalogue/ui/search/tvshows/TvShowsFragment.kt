@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
-import com.example.moviecatalogue.core.utils.EspressoIdlingResource
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.tv_shows_fragment.*
@@ -79,7 +78,6 @@ class TvShowsFragment : Fragment() {
     }
 
     private val tvShowObserver = Observer<Resource<List<TvShow>>> { data ->
-        if (EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.increment()
         if (data != null) {
             when (data) {
                 is Resource.Loading -> tv_progress.visibility = View.VISIBLE
@@ -107,6 +105,5 @@ class TvShowsFragment : Fragment() {
                 }
             }
         }
-        if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) EspressoIdlingResource.decrement()
     }
 }
