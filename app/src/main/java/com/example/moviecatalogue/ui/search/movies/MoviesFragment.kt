@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
+import com.example.moviecatalogue.core.ui.search.MoviesAdapter
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.shashank.sony.fancytoastlib.FancyToast

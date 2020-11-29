@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
+import com.example.moviecatalogue.core.ui.popular.PopularTvShowAdapter
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
-import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class PopularTvShowFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = PopularTvShowFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

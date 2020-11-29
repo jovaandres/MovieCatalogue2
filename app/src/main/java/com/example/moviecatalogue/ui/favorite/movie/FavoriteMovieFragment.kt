@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.domain.model.DetailMovie
+import com.example.moviecatalogue.core.ui.favorite.FavoriteMovieAdapter
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.FavoriteMovieFragmentBinding

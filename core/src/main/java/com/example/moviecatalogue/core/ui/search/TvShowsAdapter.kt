@@ -1,25 +1,26 @@
-package com.example.moviecatalogue.ui.popular.tvshows
+package com.example.moviecatalogue.core.ui.search
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.R
+import com.example.moviecatalogue.core.databinding.ItemTvShowBinding
 import com.example.moviecatalogue.core.domain.model.TvShow
-import com.example.moviecatalogue.core.utils.Constant
-import com.example.moviecatalogue.databinding.ItemTvShowBinding
+import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
 import com.squareup.picasso.Picasso
 
-class PopularTvShowAdapter : RecyclerView.Adapter<PopularTvShowAdapter.TvShowsViewHolder>() {
+class TvShowsAdapter :
+    RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
     private var tvShowList = ArrayList<TvShow>()
     var onItemClick: ((TvShow) -> Unit)? = null
 
-    fun setPopularTvShowList(newTvShowList: List<TvShow>?) {
+    fun setListTvShow(newTvShowList: List<TvShow>?) {
         if (newTvShowList == null) return
-        tvShowList.clear()
-        tvShowList.addAll(newTvShowList)
-        notifyDataSetChanged()
+            tvShowList.clear()
+            tvShowList.addAll(newTvShowList)
+            notifyDataSetChanged()
     }
 
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,7 +31,7 @@ class PopularTvShowAdapter : RecyclerView.Adapter<PopularTvShowAdapter.TvShowsVi
                 descTvShow.text = tvShowsData.overview
                 rating.rating = tvShowsData.vote_average?.toFloat()?.div(2) ?: 0f
                 Picasso.get()
-                    .load(Constant.IMAGE_URL + tvShowsData.poster_path)
+                    .load(IMAGE_URL + tvShowsData.poster_path)
                     .into(imgTvShow)
             }
         }
@@ -48,7 +49,7 @@ class PopularTvShowAdapter : RecyclerView.Adapter<PopularTvShowAdapter.TvShowsVi
         )
 
     override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
-        holder.bind(tvShowList[position])
+            holder.bind(tvShowList[position])
     }
 
     override fun getItemCount(): Int = tvShowList.size
