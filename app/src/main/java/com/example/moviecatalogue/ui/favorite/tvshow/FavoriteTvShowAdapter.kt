@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.favorite.tvshow
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
-import com.example.moviecatalogue.ui.detail.DetailTvActivity
+import com.example.moviecatalogue.databinding.ItemTvShowBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_tv_show.view.*
 
 class FavoriteTvShowAdapter :
     RecyclerView.Adapter<FavoriteTvShowAdapter.FavoriteTvShowViewHolder>() {
 
     private var tvList = ArrayList<DetailTvShow>()
+    var onItemClick: ((DetailTvShow) -> Unit)? = null
 
     fun setTvShowFavoriteList(newTvList: List<DetailTvShow>?) {
         if (newTvList == null) return
@@ -24,20 +23,22 @@ class FavoriteTvShowAdapter :
         notifyDataSetChanged()
     }
 
-    class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemTvShowBinding.bind(itemView)
         fun bind(tvShowsData: DetailTvShow) {
-            with(itemView) {
-                title_tv_show.text = tvShowsData.title
-                desc_tv_show.text = tvShowsData.overview
+            with(binding) {
+                titleTvShow.text = tvShowsData.title
+                descTvShow.text = tvShowsData.overview
                 rating.rating = tvShowsData.vote_average?.toFloat()?.div(2) ?: 0f
                 Picasso.get()
                     .load(Constant.IMAGE_URL + tvShowsData.poster_path)
-                    .into(img_tv_show)
-                setOnClickListener {
-                    val intent = Intent(it.context, DetailTvActivity::class.java)
-                    intent.putExtra(DetailTvActivity.EXTRA_ID, tvShowsData.id.toString())
-                    it.context.startActivity(intent)
-                }
+                    .into(imgTvShow)
+            }
+        }
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(tvList[adapterPosition])
             }
         }
     }

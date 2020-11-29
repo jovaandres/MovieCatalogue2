@@ -1,6 +1,7 @@
 package com.example.moviecatalogue.ui.search.tvshows
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +15,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
+import com.example.moviecatalogue.databinding.TvShowsFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.tv_shows_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class TvShowsFragment : Fragment() {
+
+    private var _binding: TvShowsFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: TvShowsViewModel by viewModels()
     private val tvShowsAdapter = TvShowsAdapter()
 
     @Inject
     lateinit var bundle: Bundle
-    private lateinit var searchView: SearchView
 
     companion object {
         private const val RECENT_QUERY = "recent_query"
@@ -36,14 +40,24 @@ class TvShowsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.tv_shows_fragment, container, false)
+    ): View {
+        _binding = TvShowsFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            tvShowsAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailTvActivity::class.java)
+                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        searchView = search_tv_show as SearchView
 
         searchTvShowByTitle()
 
@@ -54,7 +68,7 @@ class TvShowsFragment : Fragment() {
     }
 
     private fun searchTvShowByTitle() {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchTvShow.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 getTvShowFromViewModel(query.toString())
@@ -68,7 +82,8 @@ class TvShowsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                getTvShowFromViewModel(newText.toString())
+                return true
             }
         })
     }
@@ -80,12 +95,12 @@ class TvShowsFragment : Fragment() {
     private val tvShowObserver = Observer<Resource<List<TvShow>>> { data ->
         if (data != null) {
             when (data) {
-                is Resource.Loading -> tv_progress.visibility = View.VISIBLE
+                is Resource.Loading -> binding.tvProgress.visibility = View.VISIBLE
                 is Resource.Success -> {
-                    tv_progress.visibility = View.GONE
+                    binding.tvProgress.visibility = View.GONE
                     tvShowsAdapter.setListTvShow(data.data)
                     tvShowsAdapter.notifyDataSetChanged()
-                    rv_tv_shows.apply {
+                    binding.rvTvShows.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = tvShowsAdapter
@@ -101,9 +116,14 @@ class TvShowsFragment : Fragment() {
                     }
                 }
                 is Resource.Error -> {
-                    tv_progress.visibility = View.GONE
+                    binding.tvProgress.visibility = View.GONE
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

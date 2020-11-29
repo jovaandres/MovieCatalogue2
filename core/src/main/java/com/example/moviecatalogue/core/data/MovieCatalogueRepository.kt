@@ -20,9 +20,9 @@ import com.example.moviecatalogue.core.utils.DataMapper
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -86,6 +86,7 @@ class MovieCatalogueRepository @Inject constructor(
         }.asFlow()
     }
 
+    @FlowPreview
     override fun getSearchedMovie(
         title: String
     ): Flow<Resource<List<Movie>>> {
@@ -109,8 +110,12 @@ class MovieCatalogueRepository @Inject constructor(
                 localDataSource.insertSearchedMovie(movieResult)
             }
         }.asFlow()
+            .debounce(500)
+            .distinctUntilChanged()
+            .filter { title.trim().isNotEmpty() }
     }
 
+    @FlowPreview
     override fun getSearchedTvShow(
         title: String
     ): Flow<Resource<List<TvShow>>> {
@@ -135,6 +140,9 @@ class MovieCatalogueRepository @Inject constructor(
                 localDataSource.insertSearchedTvShow(tvShowResult)
             }
         }.asFlow()
+            .debounce(500)
+            .distinctUntilChanged()
+            .filter { title.trim().isNotEmpty() }
     }
 
     override fun getDetailMovie(id: String): Flow<Resource<DetailMovie>> {

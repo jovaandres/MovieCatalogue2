@@ -1,9 +1,5 @@
 package com.example.moviecatalogue.core.domain.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class Movie(
     var adult: Boolean?,
     var backdrop_path: String?,
@@ -20,4 +16,4 @@ data class Movie(
     var video: Boolean?,
     var vote_average: Double?,
     var vote_count: Int?
-): Parcelable
+)

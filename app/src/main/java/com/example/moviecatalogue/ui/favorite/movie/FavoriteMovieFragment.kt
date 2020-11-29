@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.ui.favorite.movie
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -12,13 +13,17 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.databinding.FavoriteMovieFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.favorite_movie_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteMovieFragment : Fragment() {
+
+    private var _binding: FavoriteMovieFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: FavoriteMovieViewModel by viewModels()
     private val favoriteMovieAdapter = FavoriteMovieAdapter()
@@ -29,8 +34,20 @@ class FavoriteMovieFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.favorite_movie_fragment, container, false)
+    ): View {
+        _binding = FavoriteMovieFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            favoriteMovieAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailMovieActivity::class.java)
+                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +57,7 @@ class FavoriteMovieFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        itemTouchHelper.attachToRecyclerView(rv_fav_movies)
+        itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
         showFavoriteMovie()
     }
 
@@ -84,20 +101,20 @@ class FavoriteMovieFragment : Fragment() {
     }
 
     private fun showFavoriteMovie() {
-        fav_movie_progress.visibility = View.VISIBLE
+        binding.favMovieProgress.visibility = View.VISIBLE
         val simpleQuery = "SELECT * FROM movie_detail WHERE isFavorite = 1 "
         sortPreferences.getSortFavoriteMovie()?.let {
             viewModel.showFavoriteMovie(simpleQuery, it)
                 .observe(viewLifecycleOwner, movieObserver)
         }
-        fav_movie_progress.visibility = View.GONE
+        binding.favMovieProgress.visibility = View.GONE
     }
 
     private val movieObserver = Observer<List<DetailMovie>> { data ->
         if (data != null) {
             favoriteMovieAdapter.setMovieFavoriteList(data)
             favoriteMovieAdapter.notifyDataSetChanged()
-            rv_fav_movies.apply {
+            binding.rvFavMovies.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(context)
                 adapter = favoriteMovieAdapter
@@ -124,18 +141,23 @@ class FavoriteMovieFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (view != null) {
                 val swipedPosition = viewHolder.adapterPosition
-                val favoriteMovieEntity = favoriteMovieAdapter.getSwipedData(swipedPosition)
-                favoriteMovieEntity.let { viewModel.addToFavoriteMovie(it) }
+                val favoriteMovie = favoriteMovieAdapter.getSwipedData(swipedPosition)
+                favoriteMovie.let { viewModel.addToFavoriteMovie(it, false) }
 
                 val snackbar =
                     Snackbar.make(view as View, getString(R.string.delete_success), Snackbar.LENGTH_SHORT)
-                snackbar.setAction("Undo") {
-                    favoriteMovieEntity.let { viewModel.addToFavoriteMovie(it) }
+                snackbar.setAction("Undo") { _ ->
+                    favoriteMovie.let { viewModel.addToFavoriteMovie(it, true) }
                 }
                 snackbar.show()
             }
         }
 
     })
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

@@ -12,10 +12,10 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.example.moviecatalogue.databinding.ActivityDetailMovieBinding
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_detail_movie.*
 
 @AndroidEntryPoint
 class DetailMovieActivity : AppCompatActivity() {
@@ -26,20 +26,22 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private val viewModel: DetailMovieViewModel by viewModels()
     private lateinit var movieData: DetailMovie
+    private lateinit var _binding: ActivityDetailMovieBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_movie)
+        _binding = ActivityDetailMovieBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val id = intent?.getStringExtra(EXTRA_ID) as String
 
-        add_fav_fab.setOnClickListener {
+        _binding.addFavFab.setOnClickListener {
             val state = movieData.isFavorite
             if (state == true) {
                 showDialog(movieData)
             } else {
                 viewModel.addToFavoriteMovie(movieData)
-                add_fav_fab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFavFab.setImageResource(R.drawable.ic_favorite)
                 FancyToast.makeText(
                     this,
                     getString(R.string.add_success),
@@ -54,14 +56,14 @@ class DetailMovieActivity : AppCompatActivity() {
             run {
                 if (data != null) {
                     when (data) {
-                        is Resource.Loading -> movie_detail_progress.visibility = View.VISIBLE
+                        is Resource.Loading -> _binding.movieDetailProgress.visibility = View.VISIBLE
                         is Resource.Success -> {
                             setMovieDetail(data.data)
-                            movie_detail_progress.visibility = View.GONE
+                            _binding.movieDetailProgress.visibility = View.GONE
 
                         }
                         is Resource.Error -> {
-                            movie_detail_progress.visibility = View.GONE
+                            _binding.movieDetailProgress.visibility = View.GONE
                         }
                     }
                 }
@@ -71,28 +73,30 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private fun setMovieDetail(data: DetailMovie?) {
         if (data != null) {
-            length.text = getString(R.string.length_movie, data.runtime)
-            name.text = data.title
-            date.text = data.release_date
-            rating.rating = data.vote_average?.toFloat()?.div(2) ?: 0f
-            overview.text = data.overview
-            Picasso.get()
-                .load(IMAGE_URL + data.backdrop_path)
-                .into(background)
-            Picasso.get()
-                .load(IMAGE_URL + data.poster_path)
-                .into(poster)
+            _binding.apply {
+                length.text = getString(R.string.length_movie, data.runtime)
+                name.text = data.title
+                date.text = data.release_date
+                rating.rating = data.vote_average?.toFloat()?.div(2) ?: 0f
+                overview.text = data.overview
+                Picasso.get()
+                    .load(IMAGE_URL + data.backdrop_path)
+                    .into(background)
+                Picasso.get()
+                    .load(IMAGE_URL + data.poster_path)
+                    .into(poster)
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            overview.justificationMode = JUSTIFICATION_MODE_INTER_WORD
+            _binding.overview.justificationMode = JUSTIFICATION_MODE_INTER_WORD
         }
         try {
             movieData = data as DetailMovie
             if (movieData.isFavorite == true){
-                add_fav_fab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFavFab.setImageResource(R.drawable.ic_favorite)
             } else {
-                add_fav_fab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFavFab.setImageResource(R.drawable.ic_not_favorite)
             }
             supportActionBar?.title = movieData.title
         } catch (e: Exception) {
@@ -122,7 +126,7 @@ class DetailMovieActivity : AppCompatActivity() {
                     FancyToast.SUCCESS,
                     false
                 ).show()
-                add_fav_fab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFavFab.setImageResource(R.drawable.ic_not_favorite)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog?.cancel()

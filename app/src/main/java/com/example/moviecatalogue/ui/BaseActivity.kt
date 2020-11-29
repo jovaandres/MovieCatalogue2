@@ -5,62 +5,85 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.databinding.ActivityFavoriteBinding
+import com.example.moviecatalogue.databinding.ActivityMainBinding
+import com.example.moviecatalogue.databinding.ActivityPopularBinding
 import com.example.moviecatalogue.ui.favorite.FavoriteActivity
 import com.example.moviecatalogue.ui.favorite.FavoriteSectionPagerAdapter
-import com.example.moviecatalogue.ui.search.SearchActivity
-import com.example.moviecatalogue.ui.search.SearchSectionPagerAdapter
 import com.example.moviecatalogue.ui.popular.PopularActivity
 import com.example.moviecatalogue.ui.popular.PopularSectionPagerAdapter
+import com.example.moviecatalogue.ui.search.SearchActivity
+import com.example.moviecatalogue.ui.search.SearchSectionPagerAdapter
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-import kotlinx.android.synthetic.main.activity_favorite.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_popular.*
-import kotlinx.android.synthetic.main.item_bottom_navigation.*
 
 abstract class BaseActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelectedListener {
 
+    private lateinit var _mainBinding: ActivityMainBinding
+    private lateinit var _popularBinding: ActivityPopularBinding
+    private lateinit var _favoriteBinding: ActivityFavoriteBinding
+    private lateinit var bottomMenu: ChipNavigationBar
+
+    companion object {
+        const val SEARCH = "search"
+        const val POPULAR = "popular"
+        const val FAVORITE = "favorite"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewId = getContentViewId()
-        setContentView(viewId)
 
-        when (viewId) {
-            R.layout.activity_main -> {
+        when (getContentViewId()) {
+            SEARCH -> {
+                _mainBinding = ActivityMainBinding.inflate(layoutInflater)
+                setContentView(_mainBinding.root)
+                bottomMenu = findViewById(R.id.bottom_menu)
                 val sectionPagerAdapter =
                     SearchSectionPagerAdapter(
                         this,
                         supportFragmentManager
                     )
-                view_pager.adapter = sectionPagerAdapter
-                tabs.setupWithViewPager(view_pager)
-                bottom_menu.setItemSelected(R.id.search)
+                _mainBinding.apply {
+                    viewPager.adapter = sectionPagerAdapter
+                    tabs.setupWithViewPager(viewPager)
+                }
+                bottomMenu.setItemSelected(R.id.search)
             }
-            R.layout.activity_favorite -> {
+            FAVORITE -> {
+                _favoriteBinding = ActivityFavoriteBinding.inflate(layoutInflater)
+                setContentView(_favoriteBinding.root)
+                bottomMenu = findViewById(R.id.bottom_menu)
                 val sectionPagerAdapter =
                     FavoriteSectionPagerAdapter(
                         this,
                         supportFragmentManager
                     )
-                fav_view_pager.adapter = sectionPagerAdapter
-                fav_tabs.setupWithViewPager(fav_view_pager)
-                bottom_menu.setItemSelected(R.id.favorite)
+                _favoriteBinding.apply {
+                    favViewPager.adapter = sectionPagerAdapter
+                    favTabs.setupWithViewPager(favViewPager)
+                }
+                bottomMenu.setItemSelected(R.id.favorite)
                 supportActionBar?.title = getString(R.string.favorite)
             }
-            R.layout.activity_popular -> {
+            POPULAR -> {
+                _popularBinding = ActivityPopularBinding.inflate(layoutInflater)
+                setContentView(_popularBinding.root)
+                bottomMenu = findViewById(R.id.bottom_menu)
                 val sectionPagerAdapter =
                     PopularSectionPagerAdapter(
                         this,
                         supportFragmentManager
                     )
-                pop_view_pager.adapter = sectionPagerAdapter
-                pop_tabs.setupWithViewPager(pop_view_pager)
-                bottom_menu.setItemSelected(R.id.popular)
+                _popularBinding.apply {
+                    popViewPager.adapter = sectionPagerAdapter
+                    popTabs.setupWithViewPager(popViewPager)
+                }
+                bottomMenu.setItemSelected(R.id.popular)
                 supportActionBar?.title = getString(R.string.popular)
             }
         }
         supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.action_bar_color)))
         supportActionBar?.elevation = 0f
-        bottom_menu.setOnItemSelectedListener(this)
+        bottomMenu.setOnItemSelectedListener(this)
     }
 
     override fun onItemSelected(id: Int) {
@@ -89,5 +112,5 @@ abstract class BaseActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelec
         overridePendingTransition(0, 0)
     }
 
-    abstract fun getContentViewId(): Int
+    abstract fun getContentViewId(): String
 }

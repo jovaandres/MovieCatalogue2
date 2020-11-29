@@ -13,8 +13,7 @@ class FavoriteMovieViewModel @ViewModelInject constructor(val movieCatalogueUseC
     fun showFavoriteMovie(simpleQuery: String, sort: String): LiveData<List<DetailMovie>> =
         movieCatalogueUseCase.getFavoriteMovie(simpleQuery, sort).asLiveData()
 
-    fun addToFavoriteMovie(detailMovie: DetailMovie) {
-        val newState = !detailMovie.isFavorite!!
+    fun addToFavoriteMovie(detailMovie: DetailMovie, newState: Boolean) {
         movieCatalogueUseCase.insertFavoriteMovie(detailMovie, newState)
     }
 }

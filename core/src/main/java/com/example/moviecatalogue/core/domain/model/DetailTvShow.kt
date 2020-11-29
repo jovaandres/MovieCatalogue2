@@ -1,9 +1,5 @@
 package com.example.moviecatalogue.core.domain.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class DetailTvShow(
     var backdrop_path: String?,
     var first_air_date: String?,
@@ -24,4 +20,4 @@ data class DetailTvShow(
     var type: String?,
     var vote_average: Double?,
     var vote_count: Int?
-): Parcelable
+)

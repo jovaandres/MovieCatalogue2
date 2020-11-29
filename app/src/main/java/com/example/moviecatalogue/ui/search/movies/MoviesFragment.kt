@@ -1,6 +1,7 @@
 package com.example.moviecatalogue.ui.search.movies
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +15,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
+import com.example.moviecatalogue.databinding.MoviesFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.movies_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
+
+    private var _binding: MoviesFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: MoviesViewModel by viewModels()
     private val moviesAdapter = MoviesAdapter()
 
     @Inject
     lateinit var bundle: Bundle
-    private lateinit var searchView: SearchView
 
     companion object {
         private const val RECENT_QUERY = "recent_query"
@@ -36,14 +40,24 @@ class MoviesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.movies_fragment, container, false)
+    ): View {
+        _binding = MoviesFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            moviesAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailMovieActivity::class.java)
+                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        searchView = search_movie as SearchView
 
         searchMovieByTitle()
 
@@ -54,7 +68,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun searchMovieByTitle() {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchMovie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 getMovieFromViewModel(query.toString())
@@ -68,7 +82,8 @@ class MoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                getMovieFromViewModel(newText.toString())
+                return true
             }
         })
     }
@@ -81,13 +96,13 @@ class MoviesFragment : Fragment() {
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {
-                    movie_progress.visibility = View.VISIBLE
+                    binding.movieProgress.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
-                    movie_progress.visibility = View.GONE
+                    binding.movieProgress.visibility = View.GONE
                     moviesAdapter.setListMovie(data.data)
                     moviesAdapter.notifyDataSetChanged()
-                    rv_movies.apply {
+                    binding.rvMovies.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = moviesAdapter
@@ -103,9 +118,14 @@ class MoviesFragment : Fragment() {
                     }
                 }
                 is Resource.Error -> {
-                    movie_progress.visibility = View.GONE
+                    binding.movieProgress.visibility = View.GONE
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

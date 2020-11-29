@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.favorite.movie
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant
-import com.example.moviecatalogue.ui.detail.DetailMovieActivity
+import com.example.moviecatalogue.databinding.ItemMoviesBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_movies.view.*
 
 class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteMovieViewHolder>() {
 
     private var movieList = ArrayList<DetailMovie>()
+    var onItemClick: ((DetailMovie) -> Unit)? = null
 
     fun setMovieFavoriteList(newMovieList: List<DetailMovie>?) {
         if (newMovieList == null) return
@@ -23,20 +22,21 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
         notifyDataSetChanged()
     }
 
-    class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemMoviesBinding.bind(itemView)
         fun bind(moviesData: DetailMovie) {
-            with(itemView) {
-                title_movie.text = moviesData.title
-                desc_movie.text = moviesData.overview
+            with(binding) {
+                titleMovie.text = moviesData.title
+                descMovie.text = moviesData.overview
                 rating.rating = moviesData.vote_average?.toFloat()?.div(2) ?: 0f
                 Picasso.get()
                     .load(Constant.IMAGE_URL + moviesData.poster_path)
-                    .into(img_movie)
-                setOnClickListener {
-                    val intent = Intent(it.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_ID, moviesData.id.toString())
-                    it.context.startActivity(intent)
-                }
+                    .into(imgMovie)
+            }
+        }
+        init {
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(movieList[adapterPosition])
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.ui.popular.movies
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,12 +12,16 @@ import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.popular_movies_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
+
+    private var _binding: PopularMoviesFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: PopularMoviesViewModel by viewModels()
     private val popularMoviesAdapter = PopularMoviesAdapter()
@@ -28,7 +33,19 @@ class PopularMoviesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.popular_movies_fragment, container, false)
+        _binding = PopularMoviesFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            popularMoviesAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailMovieActivity::class.java)
+                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -92,22 +109,27 @@ class PopularMoviesFragment : Fragment() {
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {
-                    pop_movie_progress.visibility = View.VISIBLE
+                    binding.popMovieProgress.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
-                    pop_movie_progress.visibility = View.GONE
+                    binding.popMovieProgress.visibility = View.GONE
                     popularMoviesAdapter.setPopularMovieList(data.data)
                     popularMoviesAdapter.notifyDataSetChanged()
-                    rv_pop_movies.apply {
+                    binding.rvPopMovies.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = popularMoviesAdapter
                     }
                 }
                 is Resource.Error -> {
-                    pop_movie_progress.visibility = View.GONE
+                    binding.popMovieProgress.visibility = View.GONE
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

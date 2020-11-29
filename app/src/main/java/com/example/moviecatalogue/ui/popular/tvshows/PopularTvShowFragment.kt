@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.ui.popular.tvshows
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,12 +12,17 @@ import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailMovieActivity
+import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.popular_tv_show_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PopularTvShowFragment : Fragment() {
+
+    private var _binding: PopularTvShowFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: PopularTvShowViewModel by viewModels()
     private val popularTvShowAdapter = PopularTvShowAdapter()
@@ -28,7 +34,19 @@ class PopularTvShowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.popular_tv_show_fragment, container, false)
+        _binding = PopularTvShowFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            popularTvShowAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailTvActivity::class.java)
+                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -92,22 +110,27 @@ class PopularTvShowFragment : Fragment() {
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {
-                    pop_tv_progress.visibility = View.VISIBLE
+                    binding.popTvProgress.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
-                    pop_tv_progress.visibility = View.GONE
+                    binding.popTvProgress.visibility = View.GONE
                     popularTvShowAdapter.setPopularTvShowList(data.data)
                     popularTvShowAdapter.notifyDataSetChanged()
-                    rv_pop_tv_shows.apply {
+                    binding.rvPopTvShows.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(context)
                         adapter = popularTvShowAdapter
                     }
                 }
                 is Resource.Error -> {
-                    pop_tv_progress.visibility = View.GONE
+                    binding.popTvProgress.visibility = View.GONE
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

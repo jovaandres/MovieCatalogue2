@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.ui.favorite.tvshow
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -12,13 +13,17 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.databinding.FavoriteTvShowFragmentBinding
+import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.favorite_tv_show_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoriteTvShowFragment : Fragment() {
+
+    private var _binding: FavoriteTvShowFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: FavoriteTvShowViewModel by viewModels()
     private val favoriteTvShowAdapter = FavoriteTvShowAdapter()
@@ -29,13 +34,25 @@ class FavoriteTvShowFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.favorite_tv_show_fragment, container, false)
+    ): View {
+        _binding = FavoriteTvShowFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            favoriteTvShowAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailTvActivity::class.java)
+                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        itemTouchHelper.attachToRecyclerView(rv_fav_tv_shows)
+        itemTouchHelper.attachToRecyclerView(binding.rvFavTvShows)
         showFavoriteTvShow()
     }
 
@@ -84,20 +101,20 @@ class FavoriteTvShowFragment : Fragment() {
     }
 
     private fun showFavoriteTvShow() {
-        fav_tv_progress.visibility = View.VISIBLE
+        binding.favTvProgress.visibility = View.VISIBLE
         val simpleQuery = "SELECT * FROM tv_show_detail WHERE isFavorite = 1 "
         sortPreferences.getSortFavoriteTv()?.let {
             viewModel.showFavoriteTvShow(simpleQuery, it)
                 .observe(viewLifecycleOwner, tvShowObserver)
         }
-        fav_tv_progress.visibility = View.GONE
+        binding.favTvProgress.visibility = View.GONE
     }
 
     private val tvShowObserver = Observer<List<DetailTvShow>> { data ->
         if (data != null) {
             favoriteTvShowAdapter.setTvShowFavoriteList(data)
             favoriteTvShowAdapter.notifyDataSetChanged()
-            rv_fav_tv_shows.apply {
+            binding.rvFavTvShows.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(context)
                 adapter = favoriteTvShowAdapter
@@ -125,18 +142,21 @@ class FavoriteTvShowFragment : Fragment() {
 
             if (view != null) {
                 val swipedPosition = viewHolder.adapterPosition
-                val favoriteTvShowEntity = favoriteTvShowAdapter.getSwipedData(swipedPosition)
-                favoriteTvShowEntity.let { viewModel.addToFavoriteTvShow(it) }
+                val favoriteTvShow = favoriteTvShowAdapter.getSwipedData(swipedPosition)
+                favoriteTvShow.let { viewModel.addToFavoriteTvShow(it, false) }
 
                 val snackbar =
                     Snackbar.make(view as View, getString(R.string.delete_success), Snackbar.LENGTH_SHORT)
-                snackbar.setAction("Undo") {
-                    favoriteTvShowEntity.let { viewModel.addToFavoriteTvShow(it) }
+                snackbar.setAction("Undo") { _ ->
+                    favoriteTvShow.let { viewModel.addToFavoriteTvShow(it, true) }
                 }
                 snackbar.show()
             }
         }
     })
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
