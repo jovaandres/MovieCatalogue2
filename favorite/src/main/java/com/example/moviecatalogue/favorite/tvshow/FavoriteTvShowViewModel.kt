@@ -1,13 +1,13 @@
-package com.example.moviecatalogue.ui.favorite.tvshow
+package com.example.moviecatalogue.favorite.tvshow
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
+import javax.inject.Inject
 
-class FavoriteTvShowViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
+class FavoriteTvShowViewModel @Inject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
     fun showFavoriteTvShow(simpleQuery: String, sort: String): LiveData<List<DetailTvShow>> =

@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RemoteDataSource @Inject constructor(
     val theMovieDBService: TheMovieDBService,
     @ApplicationContext val context: Context

@@ -1,11 +1,11 @@
-package com.example.moviecatalogue.core.ui.favorite
+package com.example.moviecatalogue.favorite.tvshow
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.core.R
-import com.example.moviecatalogue.core.databinding.ItemTvShowBinding
+import com.example.moviecatalogue.favorite.R
+import com.example.moviecatalogue.favorite.databinding.ItemTvShowBinding
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
 import com.squareup.picasso.Picasso

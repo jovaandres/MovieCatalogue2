@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.favorite.FavoriteActivity">
+    tools:context=".FavoriteActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,12 +26,5 @@
             android:layout_below="@id/fav_tabs" />
 
     </RelativeLayout>
-
-    <include
-        layout="@layout/item_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        android:layout_gravity="bottom"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

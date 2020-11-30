@@ -8,7 +8,9 @@ import com.example.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
 import com.example.moviecatalogue.core.utils.SortUtils
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class LocalDataSource @Inject constructor(val mMovieCatalogueDao: MovieCatalogueDao) {
 
     fun getPopularMovie(
