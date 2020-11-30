@@ -3,10 +3,12 @@ package com.example.moviecatalogue.favorite.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
+import com.example.moviecatalogue.favorite.di.FeatureScope
 import com.example.moviecatalogue.favorite.movie.FavoriteMovieViewModel
 import com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowViewModel
 import javax.inject.Inject
 
+@FeatureScope
 class FavoriteViewModelFactory @Inject constructor(private val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModelProvider.Factory {
 

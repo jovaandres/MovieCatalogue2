@@ -6,9 +6,8 @@ import com.example.moviecatalogue.favorite.movie.FavoriteMovieFragment
 import com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowFragment
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
+@FeatureScope
 @Component(dependencies = [CoreModuleDependencies::class])
 interface FavoriteComponent {
 
