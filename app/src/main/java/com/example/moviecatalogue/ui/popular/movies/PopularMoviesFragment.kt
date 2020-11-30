@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
-import com.example.moviecatalogue.core.ui.popular.PopularMoviesAdapter
+import com.example.moviecatalogue.core.ui.MoviesAdapter
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
@@ -25,7 +25,7 @@ class PopularMoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PopularMoviesViewModel by viewModels()
-    private val popularMoviesAdapter = PopularMoviesAdapter()
+    private val popularMoviesAdapter = MoviesAdapter()
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -114,7 +114,7 @@ class PopularMoviesFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.popMovieProgress.visibility = View.GONE
-                    popularMoviesAdapter.setPopularMovieList(data.data)
+                    popularMoviesAdapter.setListMovie(data.data)
                     popularMoviesAdapter.notifyDataSetChanged()
                     binding.rvPopMovies.apply {
                         setHasFixedSize(true)

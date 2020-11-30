@@ -25,7 +25,7 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
     inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMoviesBinding.bind(itemView)
         fun bind(moviesData: DetailMovie) {
-            with(binding) {
+            binding.apply {
                 titleMovie.text = moviesData.title
                 descMovie.text = moviesData.overview
                 rating.rating = moviesData.vote_average?.toFloat()?.div(2) ?: 0f

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
-import com.example.moviecatalogue.core.ui.popular.PopularTvShowAdapter
+import com.example.moviecatalogue.core.ui.TvShowsAdapter
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
@@ -25,7 +25,7 @@ class PopularTvShowFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PopularTvShowViewModel by viewModels()
-    private val popularTvShowAdapter = PopularTvShowAdapter()
+    private val popularTvShowAdapter = TvShowsAdapter()
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -114,7 +114,7 @@ class PopularTvShowFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.popTvProgress.visibility = View.GONE
-                    popularTvShowAdapter.setPopularTvShowList(data.data)
+                    popularTvShowAdapter.setListTvShow(data.data)
                     popularTvShowAdapter.notifyDataSetChanged()
                     binding.rvPopTvShows.apply {
                         setHasFixedSize(true)

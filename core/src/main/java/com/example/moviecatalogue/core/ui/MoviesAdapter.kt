@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.core.ui.search
+package com.example.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.View

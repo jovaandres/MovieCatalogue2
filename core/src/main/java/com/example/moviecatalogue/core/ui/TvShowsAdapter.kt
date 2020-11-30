@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.core.ui.search
+package com.example.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +26,7 @@ class TvShowsAdapter :
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
         fun bind(tvShowsData: TvShow) {
-            with(binding) {
+            binding.run {
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview
                 rating.rating = tvShowsData.vote_average?.toFloat()?.div(2) ?: 0f

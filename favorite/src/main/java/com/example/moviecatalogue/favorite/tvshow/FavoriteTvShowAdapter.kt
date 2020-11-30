@@ -26,7 +26,7 @@ class FavoriteTvShowAdapter :
     inner class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
         fun bind(tvShowsData: DetailTvShow) {
-            with(binding) {
+            binding.run {
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview
                 rating.rating = tvShowsData.vote_average?.toFloat()?.div(2) ?: 0f
