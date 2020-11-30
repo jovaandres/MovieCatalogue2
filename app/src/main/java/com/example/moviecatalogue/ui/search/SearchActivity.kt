@@ -9,8 +9,4 @@ class SearchActivity : BaseActivity() {
     override fun getContentViewId(): String {
         return SEARCH
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
 }

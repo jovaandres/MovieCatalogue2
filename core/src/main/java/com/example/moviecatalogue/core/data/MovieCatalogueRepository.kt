@@ -110,9 +110,6 @@ class MovieCatalogueRepository @Inject constructor(
                 localDataSource.insertSearchedMovie(movieResult)
             }
         }.asFlow()
-            .debounce(500)
-            .distinctUntilChanged()
-            .filter { title.trim().isNotEmpty() }
     }
 
     @FlowPreview
@@ -140,9 +137,6 @@ class MovieCatalogueRepository @Inject constructor(
                 localDataSource.insertSearchedTvShow(tvShowResult)
             }
         }.asFlow()
-            .debounce(500)
-            .distinctUntilChanged()
-            .filter { title.trim().isNotEmpty() }
     }
 
     override fun getDetailMovie(id: String): Flow<Resource<DetailMovie>> {

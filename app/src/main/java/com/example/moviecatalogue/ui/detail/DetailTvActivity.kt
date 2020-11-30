@@ -73,17 +73,17 @@ class DetailTvActivity : AppCompatActivity() {
     private fun setTvShowDetail(data: DetailTvShow?) {
         if (data != null) {
             _binding.apply {
-                length.text = getString(R.string.season_number, data.number_of_seasons)
-                episode.text = getString(R.string.episode_number, data.number_of_episodes)
+                length.text = getString(R.string.season_number, data.numberOfSeasons)
+                episode.text = getString(R.string.episode_number, data.numberOfEpisodes)
                 name.text = data.title
-                date.text = data.first_air_date
-                rating.rating = data.vote_average?.toFloat()?.div(2) ?: 0f
+                date.text = data.firstAirDate
+                rating.rating = data.voteAverage?.toFloat()?.div(2) ?: 0f
                 overview.text = data.overview
                 Picasso.get()
-                    .load(Constant.IMAGE_URL + data.backdrop_path)
+                    .load(Constant.IMAGE_URL + data.backdropPath)
                     .into(background)
                 Picasso.get()
-                    .load(Constant.IMAGE_URL + data.poster_path)
+                    .load(Constant.IMAGE_URL + data.posterPath)
                     .into(poster)
             }
 

@@ -28,9 +28,9 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
             binding.apply {
                 titleMovie.text = moviesData.title
                 descMovie.text = moviesData.overview
-                rating.rating = moviesData.vote_average?.toFloat()?.div(2) ?: 0f
+                rating.rating = moviesData.voteAverage?.toFloat()?.div(2) ?: 0f
                 Picasso.get()
-                    .load(Constant.IMAGE_URL + moviesData.poster_path)
+                    .load(Constant.IMAGE_URL + moviesData.posterPath)
                     .into(imgMovie)
             }
         }

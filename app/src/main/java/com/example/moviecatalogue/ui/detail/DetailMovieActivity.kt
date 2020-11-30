@@ -76,14 +76,14 @@ class DetailMovieActivity : AppCompatActivity() {
             _binding.apply {
                 length.text = getString(R.string.length_movie, data.runtime)
                 name.text = data.title
-                date.text = data.release_date
-                rating.rating = data.vote_average?.toFloat()?.div(2) ?: 0f
+                date.text = data.releaseDate
+                rating.rating = data.voteAverage?.toFloat()?.div(2) ?: 0f
                 overview.text = data.overview
                 Picasso.get()
-                    .load(IMAGE_URL + data.backdrop_path)
+                    .load(IMAGE_URL + data.backdropPath)
                     .into(background)
                 Picasso.get()
-                    .load(IMAGE_URL + data.poster_path)
+                    .load(IMAGE_URL + data.posterPath)
                     .into(poster)
             }
         }

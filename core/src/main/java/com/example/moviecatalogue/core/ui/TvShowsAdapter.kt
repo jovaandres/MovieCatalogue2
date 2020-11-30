@@ -29,9 +29,9 @@ class TvShowsAdapter :
             binding.run {
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview
-                rating.rating = tvShowsData.vote_average?.toFloat()?.div(2) ?: 0f
+                rating.rating = tvShowsData.voteAverage?.toFloat()?.div(2) ?: 0f
                 Picasso.get()
-                    .load(IMAGE_URL + tvShowsData.poster_path)
+                    .load(IMAGE_URL + tvShowsData.posterPath)
                     .into(imgTvShow)
             }
         }

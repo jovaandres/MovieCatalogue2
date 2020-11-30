@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.databinding.ActivityMainBinding
 import com.example.moviecatalogue.databinding.ActivityPopularBinding
+import com.example.moviecatalogue.databinding.ActivitySearchBinding
 import com.example.moviecatalogue.ui.popular.PopularActivity
 import com.example.moviecatalogue.ui.popular.PopularSectionPagerAdapter
 import com.example.moviecatalogue.ui.search.SearchActivity
@@ -16,7 +16,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar
 
 abstract class BaseActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelectedListener {
 
-    private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var mainBinding: ActivitySearchBinding
     private lateinit var popularBinding: ActivityPopularBinding
     private lateinit var bottomMenu: ChipNavigationBar
 
@@ -29,7 +29,7 @@ abstract class BaseActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelec
         super.onCreate(savedInstanceState)
         when (getContentViewId()) {
             SEARCH -> {
-                mainBinding = ActivityMainBinding.inflate(layoutInflater)
+                mainBinding = ActivitySearchBinding.inflate(layoutInflater)
                 setContentView(mainBinding.root)
                 bottomMenu = findViewById(R.id.bottom_menu)
                 val sectionPagerAdapter =

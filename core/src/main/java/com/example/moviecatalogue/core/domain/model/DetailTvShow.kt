@@ -1,23 +1,23 @@
 package com.example.moviecatalogue.core.domain.model
 
 data class DetailTvShow(
-    var backdrop_path: String?,
-    var first_air_date: String?,
+    var backdropPath: String?,
+    var firstAirDate: String?,
     var homepage: String?,
     var id: Int?,
-    var in_production: Boolean?,
+    var inProduction: Boolean?,
     var isFavorite: Boolean? = false,
-    var last_air_date: String?,
+    var lastAirDate: String?,
     var title: String?,
-    var number_of_episodes: Int?,
-    var number_of_seasons: Int?,
-    var original_language: String?,
-    var original_name: String?,
+    var numberOfEpisodes: Int?,
+    var numberOfSeasons: Int?,
+    var originalLanguage: String?,
+    var originalName: String?,
     var overview: String?,
     var popularity: Double?,
-    var poster_path: String?,
+    var posterPath: String?,
     var status: String?,
     var type: String?,
-    var vote_average: Double?,
-    var vote_count: Int?
+    var voteAverage: Double?,
+    var voteCount: Int?
 )

@@ -1,18 +1,17 @@
 package com.example.moviecatalogue.ui.search.tvshows
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.utils.RxSearchObservable
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.ui.TvShowsAdapter
@@ -20,6 +19,9 @@ import com.example.moviecatalogue.databinding.TvShowsFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,7 +62,7 @@ class TvShowsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        searchTvShowByTitle()
+        observeSearchMovie()
 
         val title = arguments?.getString(RECENT_QUERY)
         if (title != null) {
@@ -68,25 +70,15 @@ class TvShowsFragment : Fragment() {
         }
     }
 
-    private fun searchTvShowByTitle() {
-        binding.searchTvShow.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                getTvShowFromViewModel(query.toString())
-                arguments = bundle.apply {
-                    putString(RECENT_QUERY, query.toString())
-                }
-                val input =
-                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                input.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                getTvShowFromViewModel(newText.toString())
-                return true
-            }
-        })
+    @SuppressLint("CheckResult")
+    private fun observeSearchMovie() {
+        RxSearchObservable.fromView(binding.searchTvShow)
+            .distinctUntilChanged()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .filter { it.isNotEmpty() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { getTvShowFromViewModel(it.toString()) }
     }
 
     private fun getTvShowFromViewModel(title: String) {
