@@ -2,22 +2,22 @@ package com.example.moviecatalogue.favorite.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
 import com.example.moviecatalogue.favorite.di.FeatureScope
-import com.example.moviecatalogue.favorite.movie.FavoriteMovieViewModel
-import com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
 @FeatureScope
-class FavoriteViewModelFactory @Inject constructor(private val movieCatalogueUseCase: MovieCatalogueUseCase) :
+class FavoriteViewModelFactory @Inject constructor(
+    private val creators: Map<Class<out ViewModel>,
+            @JvmSuppressWildcards Provider<ViewModel>>
+) :
     ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return when(modelClass) {
-            FavoriteMovieViewModel::class.java -> FavoriteMovieViewModel(movieCatalogueUseCase) as T
-            FavoriteTvShowViewModel::class.java -> FavoriteTvShowViewModel(movieCatalogueUseCase) as T
-            else -> throw IllegalArgumentException("Unknown class ${modelClass.name}")
-        }
+        val creator = creators[modelClass] ?: creators.entries.firstOrNull {
+            modelClass.isAssignableFrom(it.key)
+        }?.value ?: throw  IllegalArgumentException("Unknown model class ${modelClass.name}")
+        return creator.get() as T
     }
 }

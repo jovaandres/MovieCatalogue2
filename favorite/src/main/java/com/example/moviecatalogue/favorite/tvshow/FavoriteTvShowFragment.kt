@@ -41,10 +41,10 @@ class FavoriteTvShowFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         DaggerFavoriteComponent.builder()
-            .context(requireContext())
+            .context(context)
             .coreDependencies(
                 EntryPointAccessors.fromApplication(
-                    requireActivity(),
+                    context.applicationContext,
                     CoreModuleDependencies::class.java
                 )
             )

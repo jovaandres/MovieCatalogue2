@@ -8,7 +8,7 @@ import dagger.BindsInstance
 import dagger.Component
 
 @FeatureScope
-@Component(dependencies = [CoreModuleDependencies::class])
+@Component(dependencies = [CoreModuleDependencies::class], modules = [ViewModelModule::class])
 interface FavoriteComponent {
 
     fun inject(fragment: FavoriteMovieFragment)
