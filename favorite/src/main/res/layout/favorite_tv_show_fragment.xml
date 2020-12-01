@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.favorite.tvshow.FavoriteTvShowFragment">
+    tools:context=".tvshow.FavoriteTvShowFragment">
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/fav_tv_progress"

@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.favorite.movie.FavoriteMovieFragment
 import com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class FavoriteSectionPagerAdapter(private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

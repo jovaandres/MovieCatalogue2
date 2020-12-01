@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.di.CoreModuleDependencies
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.SortPreferences
@@ -21,8 +22,11 @@ import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class FavoriteMovieFragment : Fragment() {
 
     private var _binding: FavoriteMovieFragmentBinding? = null
@@ -118,7 +122,11 @@ class FavoriteMovieFragment : Fragment() {
             }
         }
         viewModel.showFavoriteMovie(simpleQuery, sort)
-        viewModel.favoriteMovie.observe(this, movieObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.favoriteMovies.collect {
+                movieObserver(it)
+            }
+        }
         item.isChecked = true
         sortPreferences.setPrefFavoriteMovie(index, sort)
         return super.onOptionsItemSelected(item)
@@ -127,21 +135,34 @@ class FavoriteMovieFragment : Fragment() {
     private fun showFavoriteMovie() {
         binding.favMovieProgress.visibility = View.VISIBLE
         val simpleQuery = "SELECT * FROM movie_detail WHERE isFavorite = 1 "
-        sortPreferences.getSortFavoriteMovie()?.let {
-            viewModel.showFavoriteMovie(simpleQuery, it)
+        if (viewModel.favoriteMovies.value is Resource.Loading) {
+            sortPreferences.getSortFavoriteMovie()?.let {
+                viewModel.showFavoriteMovie(simpleQuery, it)
+            }
         }
-        viewModel.favoriteMovie.observe(viewLifecycleOwner, movieObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.favoriteMovies.collect {
+                movieObserver(it)
+            }
+        }
         binding.favMovieProgress.visibility = View.GONE
     }
 
-    private val movieObserver = Observer<List<DetailMovie>> { data ->
+    private fun movieObserver(data: Resource<List<DetailMovie>>?) {
         if (data != null) {
-            favoriteMovieAdapter.setMovieFavoriteList(data)
-            favoriteMovieAdapter.notifyDataSetChanged()
-            binding.rvFavMovies.apply {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(context)
-                adapter = favoriteMovieAdapter
+            when (data) {
+                is Resource.Loading -> binding.favMovieProgress.visibility = View.VISIBLE
+                is Resource.Success -> {
+                    favoriteMovieAdapter.setMovieFavoriteList(data.data)
+                    favoriteMovieAdapter.notifyDataSetChanged()
+                    binding.rvFavMovies.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = favoriteMovieAdapter
+                    }
+                    binding.favMovieProgress.visibility = View.GONE
+                }
+                else -> binding.favMovieProgress.visibility = View.GONE
             }
         }
     }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
@@ -16,8 +16,11 @@ import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PopularTvShowFragment : Fragment() {
 
@@ -93,7 +96,11 @@ class PopularTvShowFragment : Fragment() {
             }
         }
         viewModel.getPopularTvShow(simpleQuery, sort)
-        viewModel.popularTvShows.observe(this, tvShowObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.popularTvShows.collect {
+                tvShowObserver(it)
+            }
+        }
         item.isChecked = true
         sortPreferences.setPrefPopularTv(index, sort)
         return super.onOptionsItemSelected(item)
@@ -101,13 +108,19 @@ class PopularTvShowFragment : Fragment() {
 
     private fun showPopularTvShow() {
         val simpleQuery = "SELECT * FROM tv_show_result WHERE isPopular = 1 "
-        sortPreferences.getSortPopularTv()?.let {
-            viewModel.getPopularTvShow(simpleQuery, it)
+        if (viewModel.popularTvShows.value is Resource.Loading) {
+            sortPreferences.getSortPopularTv()?.let {
+                viewModel.getPopularTvShow(simpleQuery, it)
+            }
         }
-        viewModel.popularTvShows.observe(viewLifecycleOwner, tvShowObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.popularTvShows.collect {
+                tvShowObserver(it)
+            }
+        }
     }
 
-    private val tvShowObserver = Observer<Resource<List<TvShow>>> { data ->
+    private fun tvShowObserver(data: Resource<List<TvShow>>?) {
         if (data != null) {
             when (data) {
                 is Resource.Loading -> {

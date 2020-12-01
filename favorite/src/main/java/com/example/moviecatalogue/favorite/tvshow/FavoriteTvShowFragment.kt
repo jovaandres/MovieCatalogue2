@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.di.CoreModuleDependencies
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.SortPreferences
@@ -21,8 +22,11 @@ import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class FavoriteTvShowFragment : Fragment() {
 
     private var _binding: FavoriteTvShowFragmentBinding? = null
@@ -117,7 +121,11 @@ class FavoriteTvShowFragment : Fragment() {
             }
         }
         viewModel.showFavoriteTvShow(simpleQuery, sort)
-        viewModel.favoriteTvShow.observe(this, tvShowObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.favoriteTvShow.collect {
+                tvShowObserver(it)
+            }
+        }
         item.isChecked = true
         sortPreferences.setPrefFavoriteTv(index, sort)
         return super.onOptionsItemSelected(item)
@@ -126,21 +134,34 @@ class FavoriteTvShowFragment : Fragment() {
     private fun showFavoriteTvShow() {
         binding.favTvProgress.visibility = View.VISIBLE
         val simpleQuery = "SELECT * FROM tv_show_detail WHERE isFavorite = 1 "
-        sortPreferences.getSortFavoriteTv()?.let {
-            viewModel.showFavoriteTvShow(simpleQuery, it)
+        if (viewModel.favoriteTvShow.value is Resource.Loading) {
+            sortPreferences.getSortFavoriteTv()?.let {
+                viewModel.showFavoriteTvShow(simpleQuery, it)
+            }
         }
-        viewModel.favoriteTvShow.observe(viewLifecycleOwner, tvShowObserver)
+        lifecycleScope.launchWhenStarted {
+            viewModel.favoriteTvShow.collect {
+                tvShowObserver(it)
+            }
+        }
         binding.favTvProgress.visibility = View.GONE
     }
 
-    private val tvShowObserver = Observer<List<DetailTvShow>> { data ->
+    private fun tvShowObserver(data: Resource<List<DetailTvShow>>?) {
         if (data != null) {
-            favoriteTvShowAdapter.setTvShowFavoriteList(data)
-            favoriteTvShowAdapter.notifyDataSetChanged()
-            binding.rvFavTvShows.apply {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(context)
-                adapter = favoriteTvShowAdapter
+            when (data) {
+                is Resource.Loading -> binding.favTvProgress.visibility = View.VISIBLE
+                is Resource.Success -> {
+                    favoriteTvShowAdapter.setTvShowFavoriteList(data.data)
+                    favoriteTvShowAdapter.notifyDataSetChanged()
+                    binding.rvFavTvShows.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = favoriteTvShowAdapter
+                    }
+                    binding.favTvProgress.visibility = View.GONE
+                }
+                else -> binding.favTvProgress.visibility = View.GONE
             }
         }
     }

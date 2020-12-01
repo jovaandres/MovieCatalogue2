@@ -1,25 +1,29 @@
 package com.example.moviecatalogue.favorite.movie
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class FavoriteMovieViewModel @Inject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
-    private val _favoriteMovie = MutableLiveData<List<DetailMovie>>()
+    private val _favoriteMovies = MutableStateFlow<Resource<List<DetailMovie>>>(Resource.Loading())
 
-    val favoriteMovie: LiveData<List<DetailMovie>> = _favoriteMovie
+    val favoriteMovies: StateFlow<Resource<List<DetailMovie>>> = _favoriteMovies
 
     fun showFavoriteMovie(simpleQuery: String, sort: String) {
         viewModelScope.launch {
-            _favoriteMovie.value = movieCatalogueUseCase.getFavoriteMovie(simpleQuery, sort)
-                .filter { it.isNotEmpty() }
-                .first()
+            movieCatalogueUseCase.getFavoriteMovie(simpleQuery, sort)
+                .collect { _favoriteMovies.value = Resource.Success(it) }
         }
     }
 
