@@ -117,7 +117,8 @@ class FavoriteMovieFragment : Fragment() {
                 index = 4
             }
         }
-        viewModel.showFavoriteMovie(simpleQuery, sort).observe(this, movieObserver)
+        viewModel.showFavoriteMovie(simpleQuery, sort)
+        viewModel.favoriteMovie.observe(this, movieObserver)
         item.isChecked = true
         sortPreferences.setPrefFavoriteMovie(index, sort)
         return super.onOptionsItemSelected(item)
@@ -128,8 +129,8 @@ class FavoriteMovieFragment : Fragment() {
         val simpleQuery = "SELECT * FROM movie_detail WHERE isFavorite = 1 "
         sortPreferences.getSortFavoriteMovie()?.let {
             viewModel.showFavoriteMovie(simpleQuery, it)
-                .observe(viewLifecycleOwner, movieObserver)
         }
+        viewModel.favoriteMovie.observe(viewLifecycleOwner, movieObserver)
         binding.favMovieProgress.visibility = View.GONE
     }
 

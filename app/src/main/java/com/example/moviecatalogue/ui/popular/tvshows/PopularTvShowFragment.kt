@@ -92,7 +92,8 @@ class PopularTvShowFragment : Fragment() {
                 index = 4
             }
         }
-        viewModel.getPopularTvShow(simpleQuery, sort).observe(this, tvShowObserver)
+        viewModel.getPopularTvShow(simpleQuery, sort)
+        viewModel.popularTvShows.observe(this, tvShowObserver)
         item.isChecked = true
         sortPreferences.setPrefPopularTv(index, sort)
         return super.onOptionsItemSelected(item)
@@ -102,8 +103,8 @@ class PopularTvShowFragment : Fragment() {
         val simpleQuery = "SELECT * FROM tv_show_result WHERE isPopular = 1 "
         sortPreferences.getSortPopularTv()?.let {
             viewModel.getPopularTvShow(simpleQuery, it)
-                .observe(viewLifecycleOwner, tvShowObserver)
         }
+        viewModel.popularTvShows.observe(viewLifecycleOwner, tvShowObserver)
     }
 
     private val tvShowObserver = Observer<Resource<List<TvShow>>> { data ->

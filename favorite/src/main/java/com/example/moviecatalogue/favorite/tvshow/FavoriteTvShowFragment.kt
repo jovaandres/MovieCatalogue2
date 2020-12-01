@@ -116,7 +116,8 @@ class FavoriteTvShowFragment : Fragment() {
                 index = 4
             }
         }
-        viewModel.showFavoriteTvShow(simpleQuery, sort).observe(this, tvShowObserver)
+        viewModel.showFavoriteTvShow(simpleQuery, sort)
+        viewModel.favoriteTvShow.observe(this, tvShowObserver)
         item.isChecked = true
         sortPreferences.setPrefFavoriteTv(index, sort)
         return super.onOptionsItemSelected(item)
@@ -127,8 +128,8 @@ class FavoriteTvShowFragment : Fragment() {
         val simpleQuery = "SELECT * FROM tv_show_detail WHERE isFavorite = 1 "
         sortPreferences.getSortFavoriteTv()?.let {
             viewModel.showFavoriteTvShow(simpleQuery, it)
-                .observe(viewLifecycleOwner, tvShowObserver)
         }
+        viewModel.favoriteTvShow.observe(viewLifecycleOwner, tvShowObserver)
         binding.favTvProgress.visibility = View.GONE
     }
 

@@ -92,7 +92,8 @@ class PopularMoviesFragment : Fragment() {
                 index = 4
             }
         }
-        viewModel.getPopularMovies(simpleQuery, sort).observe(this, movieObserver)
+        viewModel.getPopularMovies(simpleQuery, sort)
+        viewModel.popularMovies.observe(this, movieObserver)
         item.isChecked = true
         sortPreferences.setPrefPopularMovie(index, sort)
         return super.onOptionsItemSelected(item)
@@ -102,8 +103,8 @@ class PopularMoviesFragment : Fragment() {
         val simpleQuery = "SELECT * FROM movie_result WHERE isPopular = 1 "
         sortPreferences.getSortPopularMovie()?.let {
             viewModel.getPopularMovies(simpleQuery, it)
-                .observe(viewLifecycleOwner, movieObserver)
         }
+        viewModel.popularMovies.observe(viewLifecycleOwner, movieObserver)
     }
 
     private val movieObserver = Observer<Resource<List<Movie>>> { data ->
