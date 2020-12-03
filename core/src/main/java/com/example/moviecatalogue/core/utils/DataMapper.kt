@@ -22,21 +22,15 @@ object DataMapper {
         val movieList = ArrayList<MovieResultEntity>()
         input.map {
             val movie = MovieResultEntity(
-                adult = it.adult,
                 backdropPath = it.backdropPath,
                 id = it.id,
                 isPopular = isPopular,
-                originalLanguage = it.originalLanguage,
-                originalTitle = it.originalTitle,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
                 releaseDate = it.releaseDate,
                 title = it.title,
                 textQuery = textQuery,
-                video = it.video,
                 voteAverage = it.voteAverage,
-                voteCount = it.voteCount
             )
             movieList.add(movie)
         }
@@ -48,21 +42,15 @@ object DataMapper {
     ): List<Movie> =
         input.map {
             Movie(
-                adult = it.adult,
                 backdropPath = it.backdropPath,
                 id = it.id,
                 isPopular = it.isPopular,
-                originalLanguage = it.originalLanguage,
-                originalTitle = it.originalTitle,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
                 releaseDate = it.releaseDate,
                 title = it.title,
                 textQuery = it.textQuery,
-                video = it.video,
                 voteAverage = it.voteAverage,
-                voteCount = it.voteCount
             )
         }
 
@@ -79,14 +67,10 @@ object DataMapper {
                 id = it.id,
                 isPopular = isPopular,
                 title = it.name,
-                originalLanguage = it.originalLanguage,
-                originalName = it.originalName,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
                 textQuery = textQuery,
                 voteAverage = it.voteAverage,
-                voteCount = it.voteCount
             )
             tvList.add(tvShow)
         }
@@ -103,14 +87,10 @@ object DataMapper {
                 id = it.id,
                 isPopular = it.isPopular,
                 title = it.title,
-                originalLanguage = it.originalLanguage,
-                originalName = it.originalName,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
                 textQuery = it.textQuery,
                 voteAverage = it.voteAverage,
-                voteCount = it.voteCount
             )
         }
 
@@ -119,54 +99,32 @@ object DataMapper {
         isFavorite: Boolean
     ): MovieDetailEntity =
         MovieDetailEntity(
-            adult = it.adult,
             backdropPath = it.backdropPath,
-            budget = it.budget,
             homepage = it.homepage,
             id = it.id,
-            imdbId = it.imdbId,
             isFavorite = isFavorite,
-            originalLanguage = it.originalLanguage,
-            originalTitle = it.originalTitle,
             overview = it.overview,
-            popularity = it.popularity,
             posterPath = it.posterPath,
             releaseDate = it.releaseDate,
-            revenue = it.revenue,
             runtime = it.runtime,
-            status = it.status,
-            tagline = it.tagline,
             title = it.title,
-            video = it.video,
             voteAverage = it.voteAverage,
-            voteCount = it.voteCount
         )
 
     fun mapMovieDetailEntitiesToDomain(
         it: MovieDetailEntity?
     ): DetailMovie =
         DetailMovie(
-            adult = it?.adult,
             backdropPath = it?.backdropPath,
-            budget = it?.budget,
             homepage = it?.homepage,
             id = it?.id,
-            imdbId = it?.imdbId,
             isFavorite = it?.isFavorite,
-            originalLanguage = it?.originalLanguage,
-            originalTitle = it?.originalTitle,
             overview = it?.overview,
-            popularity = it?.popularity,
             posterPath = it?.posterPath,
             releaseDate = it?.releaseDate,
-            revenue = it?.revenue,
             runtime = it?.runtime,
-            status = it?.status,
-            tagline = it?.tagline,
             title = it?.title,
-            video = it?.video,
-            voteAverage = it?.voteAverage,
-            voteCount = it?.voteCount
+            voteAverage = it?.voteAverage
         )
 
     fun mapMovieFavoriteEntitiesToDomain(
@@ -175,27 +133,16 @@ object DataMapper {
         val movieList = ArrayList<DetailMovie>()
         input.map {
             val movie = DetailMovie(
-                adult = it.adult,
                 backdropPath = it.backdropPath,
-                budget = it.budget,
                 homepage = it.homepage,
                 id = it.id,
-                imdbId = it.imdbId,
                 isFavorite = it.isFavorite,
-                originalLanguage = it.originalLanguage,
-                originalTitle = it.originalTitle,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
                 releaseDate = it.releaseDate,
-                revenue = it.revenue,
                 runtime = it.runtime,
-                status = it.status,
-                tagline = it.tagline,
                 title = it.title,
-                video = it.video,
                 voteAverage = it.voteAverage,
-                voteCount = it.voteCount
             )
             movieList.add(movie)
         }
@@ -205,27 +152,16 @@ object DataMapper {
 
     fun mapMovieDetailDomainToEntity(input: DetailMovie, isFavorite: Boolean): MovieDetailEntity =
         MovieDetailEntity(
-            adult = input.adult,
             backdropPath = input.backdropPath,
-            budget = input.budget,
             homepage = input.homepage,
             id = input.id,
-            imdbId = input.imdbId,
             isFavorite = isFavorite,
-            originalLanguage = input.originalLanguage,
-            originalTitle = input.originalTitle,
             overview = input.overview,
-            popularity = input.popularity,
             posterPath = input.posterPath,
             releaseDate = input.releaseDate,
-            revenue = input.revenue,
             runtime = input.runtime,
-            status = input.status,
-            tagline = input.tagline,
             title = input.title,
-            video = input.video,
-            voteAverage = input.voteAverage,
-            voteCount = input.voteCount
+            voteAverage = input.voteAverage
         )
 
     fun mapTvShowDetailResponseToEntities(
@@ -237,21 +173,13 @@ object DataMapper {
             firstAirDate = it.firstAirDate,
             homepage = it.homepage,
             id = it.id,
-            inProduction = it.inProduction,
             isFavorite = isFavorite,
-            lastAirDate = it.lastAirDate,
             title = it.name,
             numberOfEpisodes = it.numberOfEpisodes,
             numberOfSeasons = it.numberOfSeasons,
-            originalLanguage = it.originalLanguage,
-            originalName = it.originalName,
             overview = it.overview,
-            popularity = it.popularity,
             posterPath = it.posterPath,
-            status = it.status,
-            type = it.type,
-            voteAverage = it.voteAverage,
-            voteCount = it.voteCount
+            voteAverage = it.voteAverage
         )
 
     fun mapTvShowDetailEntitiesToDomain(
@@ -262,21 +190,13 @@ object DataMapper {
             firstAirDate = it?.firstAirDate,
             homepage = it?.homepage,
             id = it?.id,
-            inProduction = it?.inProduction,
             isFavorite = it?.isFavorite,
-            lastAirDate = it?.lastAirDate,
             title = it?.title,
             numberOfEpisodes = it?.numberOfEpisodes,
             numberOfSeasons = it?.numberOfSeasons,
-            originalLanguage = it?.originalLanguage,
-            originalName = it?.originalName,
             overview = it?.overview,
-            popularity = it?.popularity,
             posterPath = it?.posterPath,
-            status = it?.status,
-            type = it?.type,
-            voteAverage = it?.voteAverage,
-            voteCount = it?.voteCount
+            voteAverage = it?.voteAverage
         )
 
     fun mapTvShowFavoriteEntitiesToDomain(
@@ -289,21 +209,13 @@ object DataMapper {
                 firstAirDate = it.firstAirDate,
                 homepage = it.homepage,
                 id = it.id,
-                inProduction = it.inProduction,
                 isFavorite = it.isFavorite,
-                lastAirDate = it.lastAirDate,
                 title = it.title,
                 numberOfEpisodes = it.numberOfEpisodes,
                 numberOfSeasons = it.numberOfSeasons,
-                originalLanguage = it.originalLanguage,
-                originalName = it.originalName,
                 overview = it.overview,
-                popularity = it.popularity,
                 posterPath = it.posterPath,
-                status = it.status,
-                type = it.type,
-                voteAverage = it.voteAverage,
-                voteCount = it.voteCount
+                voteAverage = it.voteAverage
             )
             tvShowList.add(tvShow)
         }
@@ -316,21 +228,13 @@ object DataMapper {
             firstAirDate = input.firstAirDate,
             homepage = input.homepage,
             id = input.id,
-            inProduction = input.inProduction,
             isFavorite = isFavorite,
-            lastAirDate = input.lastAirDate,
             title = input.title,
             numberOfEpisodes = input.numberOfEpisodes,
             numberOfSeasons = input.numberOfSeasons,
-            originalLanguage = input.originalLanguage,
-            originalName = input.originalName,
             overview = input.overview,
-            popularity = input.popularity,
             posterPath = input.posterPath,
-            status = input.status,
-            type = input.type,
-            voteAverage = input.voteAverage,
-            voteCount = input.voteCount
+            voteAverage = input.voteAverage
         )
 
 }
