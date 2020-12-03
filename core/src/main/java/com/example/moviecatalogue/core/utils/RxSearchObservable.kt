@@ -11,7 +11,7 @@ object RxSearchObservable {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                subject.onComplete()
+                subject.onNext(query.toString())
                 searchView.clearFocus()
                 return false
             }

@@ -1,7 +1,6 @@
 package com.example.moviecatalogue.core.di
 
 import android.content.Context
-import android.os.Bundle
 import com.example.moviecatalogue.core.utils.SortPreferences
 import dagger.Module
 import dagger.Provides
@@ -17,7 +16,4 @@ object CoreModule {
     @Singleton
     @Provides
     fun providesSortPreferences(@ApplicationContext app: Context) = SortPreferences(app)
-
-    @Provides
-    fun providesBundle() = Bundle()
 }

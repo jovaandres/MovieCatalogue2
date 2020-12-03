@@ -120,25 +120,23 @@ class PopularTvShowFragment : Fragment() {
         }
     }
 
-    private fun tvShowObserver(data: Resource<List<TvShow>>?) {
-        if (data != null) {
-            when (data) {
-                is Resource.Loading -> {
-                    binding.popTvProgress.visibility = View.VISIBLE
+    private fun tvShowObserver(data: Resource<List<TvShow>>) {
+        when (data) {
+            is Resource.Loading -> {
+                binding.popTvProgress.visibility = View.VISIBLE
+            }
+            is Resource.Success -> {
+                binding.popTvProgress.visibility = View.GONE
+                popularTvShowAdapter.setListTvShow(data.data)
+                popularTvShowAdapter.notifyDataSetChanged()
+                binding.rvPopTvShows.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = popularTvShowAdapter
                 }
-                is Resource.Success -> {
-                    binding.popTvProgress.visibility = View.GONE
-                    popularTvShowAdapter.setListTvShow(data.data)
-                    popularTvShowAdapter.notifyDataSetChanged()
-                    binding.rvPopTvShows.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = popularTvShowAdapter
-                    }
-                }
-                is Resource.Error -> {
-                    binding.popTvProgress.visibility = View.GONE
-                }
+            }
+            is Resource.Error -> {
+                binding.popTvProgress.visibility = View.GONE
             }
         }
     }

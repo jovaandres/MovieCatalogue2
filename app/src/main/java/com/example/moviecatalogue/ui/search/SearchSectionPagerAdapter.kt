@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.ui.search.movies.MoviesFragment
 import com.example.moviecatalogue.ui.search.tvshows.TvShowsFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class SearchSectionPagerAdapter(private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

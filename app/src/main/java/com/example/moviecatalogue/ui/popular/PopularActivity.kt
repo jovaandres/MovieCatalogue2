@@ -3,7 +3,9 @@ package com.example.moviecatalogue.ui.popular
 import android.content.Intent
 import com.example.moviecatalogue.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PopularActivity : BaseActivity() {
 

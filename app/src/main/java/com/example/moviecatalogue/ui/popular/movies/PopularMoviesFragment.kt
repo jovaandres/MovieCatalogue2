@@ -120,25 +120,23 @@ class PopularMoviesFragment : Fragment() {
         }
     }
 
-    private fun movieObserver(data: Resource<List<Movie>>?) {
-        if (data != null) {
-            when (data) {
-                is Resource.Loading -> {
-                    binding.popMovieProgress.visibility = View.VISIBLE
+    private fun movieObserver(data: Resource<List<Movie>>) {
+        when (data) {
+            is Resource.Loading -> {
+                binding.popMovieProgress.visibility = View.VISIBLE
+            }
+            is Resource.Success -> {
+                binding.popMovieProgress.visibility = View.GONE
+                popularMoviesAdapter.setListMovie(data.data)
+                popularMoviesAdapter.notifyDataSetChanged()
+                binding.rvPopMovies.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = popularMoviesAdapter
                 }
-                is Resource.Success -> {
-                    binding.popMovieProgress.visibility = View.GONE
-                    popularMoviesAdapter.setListMovie(data.data)
-                    popularMoviesAdapter.notifyDataSetChanged()
-                    binding.rvPopMovies.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = popularMoviesAdapter
-                    }
-                }
-                is Resource.Error -> {
-                    binding.popMovieProgress.visibility = View.GONE
-                }
+            }
+            is Resource.Error -> {
+                binding.popMovieProgress.visibility = View.GONE
             }
         }
     }

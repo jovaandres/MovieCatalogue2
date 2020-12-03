@@ -38,7 +38,6 @@ class FavoriteMovieFragment : Fragment() {
     private val viewModel: FavoriteMovieViewModel by viewModels {
         factory
     }
-
     private val favoriteMovieAdapter = FavoriteMovieAdapter()
 
     @Inject
@@ -75,17 +74,13 @@ class FavoriteMovieFragment : Fragment() {
                 startActivity(intent)
             }
         }
+        itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
+        showFavoriteMovie()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
-        showFavoriteMovie()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -148,22 +143,20 @@ class FavoriteMovieFragment : Fragment() {
         binding.favMovieProgress.visibility = View.GONE
     }
 
-    private fun movieObserver(data: Resource<List<DetailMovie>>?) {
-        if (data != null) {
-            when (data) {
-                is Resource.Loading -> binding.favMovieProgress.visibility = View.VISIBLE
-                is Resource.Success -> {
-                    favoriteMovieAdapter.setMovieFavoriteList(data.data)
-                    favoriteMovieAdapter.notifyDataSetChanged()
-                    binding.rvFavMovies.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = favoriteMovieAdapter
-                    }
-                    binding.favMovieProgress.visibility = View.GONE
+    private fun movieObserver(data: Resource<List<DetailMovie>>) {
+        when (data) {
+            is Resource.Loading -> binding.favMovieProgress.visibility = View.VISIBLE
+            is Resource.Success -> {
+                favoriteMovieAdapter.setMovieFavoriteList(data.data)
+                favoriteMovieAdapter.notifyDataSetChanged()
+                binding.rvFavMovies.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = favoriteMovieAdapter
                 }
-                else -> binding.favMovieProgress.visibility = View.GONE
+                binding.favMovieProgress.visibility = View.GONE
             }
+            else -> binding.favMovieProgress.visibility = View.GONE
         }
     }
 

@@ -11,8 +11,8 @@ object SortUtils {
 
     fun getSortedQuery(simpleQuery: String, filter: String): SimpleSQLiteQuery {
         val query: String =  when (filter) {
-            RATING_DESC -> simpleQuery + "ORDER BY vote_average DESC"
-            RATING_ASC -> simpleQuery + "ORDER BY vote_average ASC"
+            RATING_DESC -> simpleQuery + "ORDER BY voteAverage DESC"
+            RATING_ASC -> simpleQuery + "ORDER BY voteAverage ASC"
             ALPHABET_DESC -> simpleQuery + "ORDER BY title DESC"
             ALPHABET_ASC -> simpleQuery + "ORDER BY title ASC"
             RANDOM -> simpleQuery + "ORDER BY RANDOM()"

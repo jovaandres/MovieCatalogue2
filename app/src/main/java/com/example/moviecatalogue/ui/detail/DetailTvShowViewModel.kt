@@ -15,7 +15,7 @@ class DetailTvShowViewModel @ViewModelInject constructor(val movieCatalogueUseCa
         movieCatalogueUseCase.getDetailTvShow(id).asLiveData()
 
     fun addToFavoriteTvShow(detailTvShow: DetailTvShow) {
-        val newState = !detailTvShow.isFavorite!!
-        movieCatalogueUseCase.insertFavoriteTvShow(detailTvShow, newState)
+        val newState = detailTvShow.isFavorite ?: false
+        movieCatalogueUseCase.insertFavoriteTvShow(detailTvShow, !newState)
     }
 }

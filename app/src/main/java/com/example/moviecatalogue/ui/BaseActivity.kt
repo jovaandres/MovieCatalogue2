@@ -13,7 +13,9 @@ import com.example.moviecatalogue.ui.popular.PopularSectionPagerAdapter
 import com.example.moviecatalogue.ui.search.SearchActivity
 import com.example.moviecatalogue.ui.search.SearchSectionPagerAdapter
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 abstract class BaseActivity : AppCompatActivity(), ChipNavigationBar.OnItemSelectedListener {
 
     private lateinit var mainBinding: ActivitySearchBinding

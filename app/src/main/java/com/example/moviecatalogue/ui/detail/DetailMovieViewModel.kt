@@ -15,7 +15,7 @@ class DetailMovieViewModel @ViewModelInject constructor(val movieCatalogueUseCas
         movieCatalogueUseCase.getDetailMovie(id).asLiveData()
 
     fun addToFavoriteMovie(detailMovie: DetailMovie) {
-        val newState = !detailMovie.isFavorite!!
-        movieCatalogueUseCase.insertFavoriteMovie(detailMovie, newState)
+        val newState = detailMovie.isFavorite ?: false
+        movieCatalogueUseCase.insertFavoriteMovie(detailMovie, !newState)
     }
 }

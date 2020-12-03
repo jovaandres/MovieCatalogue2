@@ -74,10 +74,6 @@ class FavoriteTvShowFragment : Fragment() {
                 startActivity(intent)
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         itemTouchHelper.attachToRecyclerView(binding.rvFavTvShows)
         showFavoriteTvShow()
     }
@@ -147,22 +143,20 @@ class FavoriteTvShowFragment : Fragment() {
         binding.favTvProgress.visibility = View.GONE
     }
 
-    private fun tvShowObserver(data: Resource<List<DetailTvShow>>?) {
-        if (data != null) {
-            when (data) {
-                is Resource.Loading -> binding.favTvProgress.visibility = View.VISIBLE
-                is Resource.Success -> {
-                    favoriteTvShowAdapter.setTvShowFavoriteList(data.data)
-                    favoriteTvShowAdapter.notifyDataSetChanged()
-                    binding.rvFavTvShows.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context)
-                        adapter = favoriteTvShowAdapter
-                    }
-                    binding.favTvProgress.visibility = View.GONE
+    private fun tvShowObserver(data: Resource<List<DetailTvShow>>) {
+        when (data) {
+            is Resource.Loading -> binding.favTvProgress.visibility = View.VISIBLE
+            is Resource.Success -> {
+                favoriteTvShowAdapter.setTvShowFavoriteList(data.data)
+                favoriteTvShowAdapter.notifyDataSetChanged()
+                binding.rvFavTvShows.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = favoriteTvShowAdapter
                 }
-                else -> binding.favTvProgress.visibility = View.GONE
+                binding.favTvProgress.visibility = View.GONE
             }
+            else -> binding.favTvProgress.visibility = View.GONE
         }
     }
 
