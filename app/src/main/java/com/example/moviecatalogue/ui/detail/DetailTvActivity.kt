@@ -3,7 +3,6 @@ package com.example.moviecatalogue.ui.detail
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -100,7 +99,13 @@ class DetailTvActivity : AppCompatActivity() {
             }
             supportActionBar?.title = tvShowData.title
         } catch (e: Exception) {
-            Log.d("Detail Exception","${e.message}")
+            FancyToast.makeText(
+                this,
+                "Unable to finish request ${e.message}",
+                FancyToast.LENGTH_SHORT,
+                FancyToast.ERROR,
+                false
+            )
         }
 
     }

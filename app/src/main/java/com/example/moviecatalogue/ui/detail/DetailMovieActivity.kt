@@ -3,7 +3,6 @@ package com.example.moviecatalogue.ui.detail
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -56,7 +55,8 @@ class DetailMovieActivity : AppCompatActivity() {
             run {
                 if (data != null) {
                     when (data) {
-                        is Resource.Loading -> _binding.movieDetailProgress.visibility = View.VISIBLE
+                        is Resource.Loading -> _binding.movieDetailProgress.visibility =
+                            View.VISIBLE
                         is Resource.Success -> {
                             setMovieDetail(data.data)
                             _binding.movieDetailProgress.visibility = View.GONE
@@ -93,14 +93,20 @@ class DetailMovieActivity : AppCompatActivity() {
         }
         try {
             movieData = data as DetailMovie
-            if (movieData.isFavorite == true){
+            if (movieData.isFavorite == true) {
                 _binding.addFavFab.setImageResource(R.drawable.ic_favorite)
             } else {
                 _binding.addFavFab.setImageResource(R.drawable.ic_not_favorite)
             }
             supportActionBar?.title = movieData.title
         } catch (e: Exception) {
-            Log.d("Detail Exception","${e.message}")
+            FancyToast.makeText(
+                this,
+                "Unable to finish request ${e.message}",
+                FancyToast.LENGTH_SHORT,
+                FancyToast.ERROR,
+                false
+            )
         }
 
     }
