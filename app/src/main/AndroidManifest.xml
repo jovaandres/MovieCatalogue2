@@ -16,11 +16,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".ui.popular.PopularActivity" />
         <activity android:name=".ui.search.SearchActivity" />
-        <activity android:name=".ui.favorite.FavoriteActivity" />
         <activity android:name=".ui.detail.DetailTvActivity" />
         <activity android:name=".ui.detail.DetailMovieActivity" />
-        <activity android:name=".ui.popular.PopularActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
