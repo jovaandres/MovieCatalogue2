@@ -22,4 +22,6 @@
     <string name="random">Random</string>
     <string name="title_favorite">Favorite</string>
     <string name="home">Home</string>
+    <string name="movie">Movie</string>
+    <string name="tv">TV</string>
 </resources>
