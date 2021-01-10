@@ -2,4 +2,5 @@
 <resources>
     <string name="connection_error">Connection Error</string>
     <string name="poster">Poster</string>
+    <string name="favorite">Favorite</string>
 </resources>

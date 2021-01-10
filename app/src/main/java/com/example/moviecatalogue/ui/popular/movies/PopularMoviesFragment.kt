@@ -3,7 +3,6 @@ package com.example.moviecatalogue.ui.popular.movies
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +11,7 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.ui.MoviesAdapter
+import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
@@ -30,6 +30,7 @@ class PopularMoviesFragment : Fragment() {
 
     private val viewModel: PopularMoviesViewModel by viewModels()
     private val popularMoviesAdapter = MoviesAdapter()
+    private val nowPlayingMoviesAdapter = MoviesAdapterHorizontal()
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -46,6 +47,11 @@ class PopularMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
             popularMoviesAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailMovieActivity::class.java)
+                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+            nowPlayingMoviesAdapter.onItemClick = { data ->
                 val intent = Intent(activity, DetailMovieActivity::class.java)
                 intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
                 startActivity(intent)
@@ -114,9 +120,17 @@ class PopularMoviesFragment : Fragment() {
                 viewModel.getPopularMovies(simpleQuery, it)
             }
         }
+        if (viewModel.nowPlayingMovies.value is Resource.Loading) {
+            viewModel.getNowPlayingMovies()
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.popularMovies.collect {
                 movieObserver(it)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.nowPlayingMovies.collect {
+                nowPlayingObserver(it)
             }
         }
     }
@@ -128,12 +142,35 @@ class PopularMoviesFragment : Fragment() {
             }
             is Resource.Success -> {
                 binding.popMovieProgress.visibility = View.GONE
+                binding.moviePop.visibility = View.VISIBLE
                 popularMoviesAdapter.setListMovie(data.data)
                 popularMoviesAdapter.notifyDataSetChanged()
                 binding.rvPopMovies.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     adapter = popularMoviesAdapter
+                }
+            }
+            is Resource.Error -> {
+                binding.popMovieProgress.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun nowPlayingObserver(data: Resource<List<Movie>>) {
+        when (data) {
+            is Resource.Loading -> {
+                binding.popMovieProgress.visibility = View.VISIBLE
+            }
+            is Resource.Success -> {
+                binding.popMovieProgress.visibility = View.GONE
+                binding.movieNow.visibility = View.VISIBLE
+                nowPlayingMoviesAdapter.setListMovie(data.data)
+                nowPlayingMoviesAdapter.notifyDataSetChanged()
+                binding.rvNowMovies.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = nowPlayingMoviesAdapter
                 }
             }
             is Resource.Error -> {

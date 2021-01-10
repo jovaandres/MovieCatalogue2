@@ -2,10 +2,7 @@ package com.example.moviecatalogue.core.data.source.local.room
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.example.moviecatalogue.core.data.source.local.entity.MovieDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.MovieResultEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowResultEntity
+import com.example.moviecatalogue.core.data.source.local.entity.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,6 +13,9 @@ interface MovieCatalogueDao {
 
     @RawQuery(observedEntities = [TvShowResultEntity::class])
     fun getPopularTvShow(query: SupportSQLiteQuery): Flow<List<TvShowResultEntity>>
+
+    @Query("SELECT * FROM movie_now_playing")
+    fun getNowPlayingMovie(): Flow<List<MovieNowPlayingEntity>>
 
     @Query("SELECT * FROM movie_result WHERE textQuery = :title")
     fun getSearchedMovie(title: String): Flow<List<MovieResultEntity>>
@@ -40,6 +40,9 @@ interface MovieCatalogueDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSearchedTvShow(tvShowResultEntity: List<TvShowResultEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNowPlayingMovie(movieNowPlayingEntity: List<MovieNowPlayingEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertDetailMovie(movieDetailEntity: MovieDetailEntity)

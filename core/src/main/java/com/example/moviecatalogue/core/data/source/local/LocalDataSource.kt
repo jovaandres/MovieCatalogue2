@@ -1,9 +1,6 @@
 package com.example.moviecatalogue.core.data.source.local
 
-import com.example.moviecatalogue.core.data.source.local.entity.MovieDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.MovieResultEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowResultEntity
+import com.example.moviecatalogue.core.data.source.local.entity.*
 import com.example.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
 import com.example.moviecatalogue.core.utils.SortUtils
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +24,11 @@ class LocalDataSource @Inject constructor(val mMovieCatalogueDao: MovieCatalogue
     ): Flow<List<TvShowResultEntity>> {
         val query = SortUtils.getSortedQuery(simpleQuery, sort)
         return mMovieCatalogueDao.getPopularTvShow(query)
+    }
+
+    fun getNowPlayingMovie(
+    ): Flow<List<MovieNowPlayingEntity>> {
+        return mMovieCatalogueDao.getNowPlayingMovie()
     }
 
     fun getSearchedMovie(
@@ -69,6 +71,9 @@ class LocalDataSource @Inject constructor(val mMovieCatalogueDao: MovieCatalogue
 
     suspend fun insertSearchedTvShow(tvShowResultEntity: List<TvShowResultEntity>) =
         mMovieCatalogueDao.insertSearchedTvShow(tvShowResultEntity)
+
+    suspend fun insertNowPlayingMovie(movieNowPlayingEntity: List<MovieNowPlayingEntity>) =
+        mMovieCatalogueDao.insertNowPlayingMovie(movieNowPlayingEntity)
 
     suspend fun insertDetailMovie(movieDetailEntity: MovieDetailEntity) =
         mMovieCatalogueDao.insertDetailMovie(movieDetailEntity)

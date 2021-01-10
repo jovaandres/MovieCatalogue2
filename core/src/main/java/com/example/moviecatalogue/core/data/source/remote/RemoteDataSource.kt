@@ -52,6 +52,21 @@ class RemoteDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getNowPlayingMovie(): Flow<ApiResponse<MovieSearchDataResponse>> {
+        return flow {
+            try {
+                val response = theMovieDBService.getNowPlayingMovieAsync(API_KEY)
+                if (response.results.isNotEmpty()) {
+                    emit(ApiResponse.Success(response))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun searchMovieFromApi(query: String): Flow<ApiResponse<MovieSearchDataResponse>> {
         return flow {
             try {

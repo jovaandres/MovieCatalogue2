@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/img_card_movie"
+        android:layout_width="120dp"
+        android:layout_height="180dp"
+        app:cardCornerRadius="6dp">
+
+        <ImageView
+            android:id="@+id/img_movie_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/poster"
+            android:scaleType="fitXY" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/title_h"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:lines="2"
+        android:ellipsize="end"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="Hello Dear" />
+
+    <TextView
+        android:id="@+id/rating_h"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_favorite_border"
+        android:gravity="right"
+        android:paddingHorizontal="4dp"
+        android:textColor="@android:color/white"
+        tools:text="7.9" />
+
+</LinearLayout>

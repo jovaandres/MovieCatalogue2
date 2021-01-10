@@ -24,6 +24,8 @@ class MovieCatalogueInteractor @Inject constructor(val movieCatalogueRepository:
     ): Flow<Resource<List<TvShow>>> =
         movieCatalogueRepository.getPopularTv(simpleQuery, sort)
 
+    override fun getNowPlayingMovie(): Flow<Resource<List<Movie>>> =
+        movieCatalogueRepository.getNowPlayingMovie()
 
     override fun getSearchedMovie(title: String): Flow<Resource<List<Movie>>> =
         movieCatalogueRepository.getSearchedMovie(title)

@@ -6,7 +6,7 @@ import com.example.moviecatalogue.core.data.source.local.entity.*
 
 @Database(
     entities = [MovieResultEntity::class, MovieDetailEntity::class,
-        TvShowResultEntity::class, TvShowDetailEntity::class],
+        TvShowResultEntity::class, TvShowDetailEntity::class, MovieNowPlayingEntity::class],
     version = 1,
     exportSchema = false
 )

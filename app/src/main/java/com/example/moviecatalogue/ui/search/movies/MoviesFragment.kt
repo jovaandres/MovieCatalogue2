@@ -3,7 +3,6 @@ package com.example.moviecatalogue.ui.search.movies
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
-import com.example.moviecatalogue.core.ui.MoviesAdapter
+import com.example.moviecatalogue.core.domain.model.TvShow
+import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
+import com.example.moviecatalogue.core.ui.TvShowsAdapterHorizontal
 import com.example.moviecatalogue.core.utils.RxSearchObservable
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
+import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,7 +36,8 @@ class MoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MoviesViewModel by viewModels()
-    private val moviesAdapter = MoviesAdapter()
+    private val moviesAdapter = MoviesAdapterHorizontal()
+    private val tvAdapter = TvShowsAdapterHorizontal()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +53,11 @@ class MoviesFragment : Fragment() {
             moviesAdapter.onItemClick = { data ->
                 val intent = Intent(activity, DetailMovieActivity::class.java)
                 intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
+                startActivity(intent)
+            }
+            tvAdapter.onItemClick = { data ->
+                val intent = Intent(activity, DetailTvActivity::class.java)
+                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
                 startActivity(intent)
             }
         }
@@ -72,40 +80,71 @@ class MoviesFragment : Fragment() {
     }
 
     private fun getMovieFromViewModel(title: String) {
-       var recentQuery = ""
-        try {
-            recentQuery = viewModel.searchMovie.value.data?.get(0)?.textQuery.toString()
-        } catch (e: IndexOutOfBoundsException) {
-            Log.d("IndexOutOfRange", e.message.toString())
-        }
-        if (recentQuery != title && title.isNotEmpty()) {
+        if (title.isNotEmpty()) {
             viewModel.getMovies(title)
+            viewModel.getTvShows(title)
         }
         lifecycleScope.launchWhenStarted {
-            viewModel.searchMovie.collect {
-                movieObserver(it)
-            }
+            viewModel.searchMovie.collect { movieObserver(it) }
+
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchTvShow.collect { tvObserver(it) }
         }
     }
 
-    private fun movieObserver(data: Resource<List<Movie>>) {
-        when (data) {
+    private fun movieObserver(data_movie: Resource<List<Movie>>) {
+        when (data_movie) {
             is Resource.Loading -> {
                 binding.movieProgress.visibility = View.VISIBLE
             }
             is Resource.Success -> {
                 binding.movieProgress.visibility = View.GONE
-                moviesAdapter.setListMovie(data.data)
+                binding.movie.visibility = View.VISIBLE
+                moviesAdapter.setListMovie(data_movie.data)
                 moviesAdapter.notifyDataSetChanged()
                 binding.rvMovies.apply {
                     setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context)
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     adapter = moviesAdapter
                 }
-                if (data.data?.isEmpty() == true) {
+                if (data_movie.data?.isEmpty() == true) {
                     FancyToast.makeText(
                         requireContext(),
                         getString(R.string.movie_not_found),
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.ERROR,
+                        false
+                    ).show()
+                }
+            }
+            is Resource.Error -> {
+                binding.movieProgress.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun tvObserver(data_tv: Resource<List<TvShow>>) {
+        when (data_tv) {
+            is Resource.Loading -> {
+                binding.movieProgress.visibility = View.VISIBLE
+            }
+            is Resource.Success -> {
+                binding.movieProgress.visibility = View.GONE
+                binding.tv.visibility = View.VISIBLE
+                tvAdapter.setListTvShow(data_tv.data)
+                tvAdapter.notifyDataSetChanged()
+                binding.rvTv.apply {
+                    setHasFixedSize(true)
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = tvAdapter
+                }
+                if (data_tv.data?.isEmpty() == true) {
+                    FancyToast.makeText(
+                        requireContext(),
+                        getString(R.string.tv_show_not_found),
                         FancyToast.LENGTH_SHORT,
                         FancyToast.ERROR,
                         false

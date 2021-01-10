@@ -1,9 +1,6 @@
 package com.example.moviecatalogue.core.utils
 
-import com.example.moviecatalogue.core.data.source.local.entity.MovieDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.MovieResultEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowDetailEntity
-import com.example.moviecatalogue.core.data.source.local.entity.TvShowResultEntity
+import com.example.moviecatalogue.core.data.source.local.entity.*
 import com.example.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
 import com.example.moviecatalogue.core.data.source.remote.response.MovieResultResponse
 import com.example.moviecatalogue.core.data.source.remote.response.TvShowDetailResponse
@@ -83,7 +80,7 @@ object DataMapper {
         input.map {
             TvShow(
                 backdropPath = it.backdropPath,
-                firstAirDate = it.firstAirDate,
+                releaseDate = it.firstAirDate,
                 id = it.id,
                 isPopular = it.isPopular,
                 title = it.title,
@@ -236,5 +233,45 @@ object DataMapper {
             posterPath = input.posterPath,
             voteAverage = input.voteAverage
         )
+
+    fun mapMovieResponseToNowPlayingEntities(
+        input: List<MovieResultResponse>,
+        textQuery: String?
+    ): List<MovieNowPlayingEntity> {
+        val movieList = ArrayList<MovieNowPlayingEntity>()
+        input.map {
+            val movie = MovieNowPlayingEntity(
+                backdropPath = it.backdropPath,
+                id = it.id,
+                overview = it.overview,
+                posterPath = it.posterPath,
+                releaseDate = it.releaseDate,
+                title = it.title,
+                textQuery = textQuery,
+                voteAverage = it.voteAverage,
+            )
+            movieList.add(movie)
+        }
+        return movieList
+    }
+
+    fun mapMovieNowPlayingEntityToDomain(input: List<MovieNowPlayingEntity>): List<Movie> {
+        val movieList = ArrayList<Movie>()
+        input.map {
+            val movie = Movie(
+                backdropPath = it.backdropPath,
+                id = it.id,
+                overview = it.overview,
+                posterPath = it.posterPath,
+                releaseDate = it.releaseDate,
+                title = it.title,
+                isPopular = false,
+                textQuery = null,
+                voteAverage = it.voteAverage,
+            )
+            movieList.add(movie)
+        }
+        return movieList
+    }
 
 }

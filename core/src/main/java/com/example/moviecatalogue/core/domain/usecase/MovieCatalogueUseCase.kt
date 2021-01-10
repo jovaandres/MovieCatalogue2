@@ -19,6 +19,8 @@ interface MovieCatalogueUseCase {
         sort: String
     ): Flow<Resource<List<TvShow>>>
 
+    fun getNowPlayingMovie(): Flow<Resource<List<Movie>>>
+
     fun getSearchedMovie(
         title: String
     ): Flow<Resource<List<Movie>>>

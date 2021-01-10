@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
+import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +18,22 @@ class MoviesViewModel @ViewModelInject constructor(val movieCatalogueUseCase: Mo
     ViewModel() {
 
     private val _searchMovie = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
+    private val _searchTvShow = MutableStateFlow<Resource<List<TvShow>>>(Resource.Loading())
 
     val searchMovie: StateFlow<Resource<List<Movie>>> = _searchMovie
+    val searchTvShow: StateFlow<Resource<List<TvShow>>> = _searchTvShow
 
     fun getMovies(title: String) {
         viewModelScope.launch {
             movieCatalogueUseCase.getSearchedMovie(title)
                 .collect { _searchMovie.value = it }
+        }
+    }
+
+    fun getTvShows(title: String) {
+        viewModelScope.launch {
+            movieCatalogueUseCase.getSearchedTvShow(title)
+                .collect { _searchTvShow.value = it }
         }
     }
 }

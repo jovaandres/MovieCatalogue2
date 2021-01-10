@@ -87,6 +87,28 @@ class MovieCatalogueRepository @Inject constructor(
         }.asFlow()
     }
 
+    override fun getNowPlayingMovie(): Flow<Resource<List<Movie>>> {
+        return object : NetworkBoundResource<List<Movie>, MovieSearchDataResponse>() {
+            override fun loadFromDB(): Flow<List<Movie>> {
+                return localDataSource.getNowPlayingMovie()
+                    .map { DataMapper.mapMovieNowPlayingEntityToDomain(it) }
+            }
+
+            override fun shouldFetch(data: List<Movie>?): Boolean {
+                return isConnected()
+            }
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieSearchDataResponse>> {
+                return remoteDataSource.getNowPlayingMovie()
+            }
+
+            override suspend fun saveCallResult(data: MovieSearchDataResponse) {
+                val movieResult = DataMapper.mapMovieResponseToNowPlayingEntities(data.results, null)
+                localDataSource.insertNowPlayingMovie(movieResult)
+            }
+        }.asFlow()
+    }
+
     @FlowPreview
     override fun getSearchedMovie(
         title: String

@@ -22,6 +22,12 @@ interface TheMovieDBService {
         @Query("page") page: Int = 1
     ): TvShowSearchDataResponse
 
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovieAsync(
+        @Query("api_key") key: String,
+        @Query("page") page: Int = 1
+    ): MovieSearchDataResponse
+
     @GET("search/movie")
     suspend fun searchMovieAsync(
         @Query("api_key") key: String,
