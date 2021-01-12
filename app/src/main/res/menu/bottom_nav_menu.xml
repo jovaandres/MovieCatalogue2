@@ -6,12 +6,12 @@
         android:icon="@drawable/ic_movies"
         android:title="@string/movie" />
 
-   <item
+    <item
         android:id="@+id/navigation_tv"
         android:icon="@drawable/ic_tv"
         android:title="@string/tv" />
 
-   <item
+    <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />

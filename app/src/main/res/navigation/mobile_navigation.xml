@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/navigation_movie"
-    android:id="@+id/mobile_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_movie">
 
     <fragment
         android:id="@+id/navigation_movie"
@@ -11,13 +11,13 @@
         android:label="@string/movie"
         tools:layout="@layout/popular_movies_fragment" />
 
-   <fragment
+    <fragment
         android:id="@+id/navigation_tv"
         android:name="com.example.moviecatalogue.ui.popular.tvshows.PopularTvShowFragment"
         android:label="@string/tv"
         tools:layout="@layout/popular_tv_show_fragment" />
 
-   <fragment
+    <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.moviecatalogue.ui.search.movies.MoviesFragment"
         android:label="@string/search"

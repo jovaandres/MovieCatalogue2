@@ -21,33 +21,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:popupTheme="@style/Theme.NavigationDrawer.PopupOverlay"/>
+                app:popupTheme="@style/Theme.NavigationDrawer.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <fragment
             android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_weight="1"
             app:defaultNavHost="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/mobile_navigation" />
 
-    </LinearLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/background_transparent"
+            app:itemIconTint="@drawable/nav_color_state"
+            app:itemTextColor="@drawable/nav_color_state"
+            app:menu="@menu/bottom_nav_menu" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_gravity="bottom"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:itemIconTint="@drawable/nav_color_state"
-        app:itemTextColor="@drawable/nav_color_state"
-        android:background="@drawable/background_transparent"
-        app:menu="@menu/bottom_nav_menu" />
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

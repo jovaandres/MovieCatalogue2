@@ -37,15 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie"
-            app:shimmer_auto_start="true"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            app:shimmer_auto_start="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
@@ -80,15 +83,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv"
-            app:shimmer_auto_start="true"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            app:shimmer_auto_start="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
+
                 <include layout="@layout/item_horizontal_list_placeholder" />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
