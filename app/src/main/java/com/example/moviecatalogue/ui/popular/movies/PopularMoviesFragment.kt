@@ -135,20 +135,21 @@ class PopularMoviesFragment : Fragment() {
         }
     }
 
-    private fun movieObserver(data: Resource<List<Movie>>) {
+    private fun nowPlayingObserver(data: Resource<List<Movie>>) {
         when (data) {
             is Resource.Loading -> {
-                binding.popMovieProgress.visibility = View.VISIBLE
+                binding.nowMovieProgress.visibility = View.VISIBLE
+                binding.movieNow.visibility = View.INVISIBLE
             }
             is Resource.Success -> {
-                binding.popMovieProgress.visibility = View.GONE
-                binding.moviePop.visibility = View.VISIBLE
-                popularMoviesAdapter.setListMovie(data.data)
-                popularMoviesAdapter.notifyDataSetChanged()
-                binding.rvPopMovies.apply {
+                binding.nowMovieProgress.visibility = View.INVISIBLE
+                binding.movieNow.visibility = View.VISIBLE
+                nowPlayingMoviesAdapter.setListMovie(data.data)
+                nowPlayingMoviesAdapter.notifyDataSetChanged()
+                binding.rvNowMovies.apply {
                     setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = popularMoviesAdapter
+                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = nowPlayingMoviesAdapter
                 }
             }
             is Resource.Error -> {
@@ -157,20 +158,21 @@ class PopularMoviesFragment : Fragment() {
         }
     }
 
-    private fun nowPlayingObserver(data: Resource<List<Movie>>) {
+    private fun movieObserver(data: Resource<List<Movie>>) {
         when (data) {
             is Resource.Loading -> {
                 binding.popMovieProgress.visibility = View.VISIBLE
+                binding.moviePop.visibility = View.INVISIBLE
             }
             is Resource.Success -> {
-                binding.popMovieProgress.visibility = View.GONE
-                binding.movieNow.visibility = View.VISIBLE
-                nowPlayingMoviesAdapter.setListMovie(data.data)
-                nowPlayingMoviesAdapter.notifyDataSetChanged()
-                binding.rvNowMovies.apply {
+                binding.popMovieProgress.visibility = View.INVISIBLE
+                binding.moviePop.visibility = View.VISIBLE
+                popularMoviesAdapter.setListMovie(data.data)
+                popularMoviesAdapter.notifyDataSetChanged()
+                binding.rvPopMovies.apply {
                     setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = nowPlayingMoviesAdapter
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = popularMoviesAdapter
                 }
             }
             is Resource.Error -> {

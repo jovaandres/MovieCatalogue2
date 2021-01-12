@@ -27,4 +27,7 @@
     <string name="now_playing">Now Playing</string>
     <string name="favorite_movies">Favorite Movies</string>
     <string name="favorite_tv">Favorite Tv</string>
+    <string name="dummy_title">Dummy Title</string>
+    <string name="dummy_desc1">Lorem Ipsum is simply dummy text.</string>
+    <string name="dummy_desc2">Lorem Ipsum.</string>
 </resources>

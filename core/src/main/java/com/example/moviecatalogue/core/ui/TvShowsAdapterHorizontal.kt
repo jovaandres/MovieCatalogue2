@@ -23,6 +23,11 @@ class TvShowsAdapterHorizontal :
             notifyDataSetChanged()
     }
 
+    fun deleteList() {
+        tvShowList.clear()
+        notifyDataSetChanged()
+    }
+
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvHorizontalBinding.bind(itemView)
         fun bind(tvShowsData: TvShow) {

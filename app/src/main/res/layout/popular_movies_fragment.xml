@@ -6,36 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".ui.popular.movies.PopularMoviesFragment">
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/pop_movie_progress"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:indeterminateTint="@color/colorPrimary"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/movie_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/pop_movie_progress"
         android:text="@string/now_playing"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:visibility="gone"/>
+        android:visibility="invisible" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/now_movie_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_now"
+        app:shimmer_auto_start="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_horizontal_list_placeholder" />
+
+                <include layout="@layout/item_horizontal_list_placeholder" />
+
+                <include layout="@layout/item_horizontal_list_placeholder" />
+            </LinearLayout>
+        </ScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_now_movies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/movie_now"
-        android:orientation="horizontal"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_movie_horizontal" />
 
@@ -43,12 +58,34 @@
         android:id="@+id/movie_pop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/now_movie_progress"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/rv_now_movies"
         android:text="@string/popular"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:visibility="gone"/>
+        android:visibility="invisible" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/pop_movie_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_pop"
+        app:shimmer_auto_start="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/item_vertical_list_placeholder" />
+                <include layout="@layout/item_vertical_list_placeholder" />
+                <include layout="@layout/item_vertical_list_placeholder" />
+            </LinearLayout>
+        </ScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_pop_movies"

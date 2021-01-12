@@ -96,13 +96,14 @@ class MoviesFragment : Fragment() {
     private fun movieObserver(data_movie: Resource<List<Movie>>) {
         when (data_movie) {
             is Resource.Loading -> {
+                moviesAdapter.deleteList()
                 binding.movieProgress.visibility = View.VISIBLE
+                binding.movie.visibility = View.INVISIBLE
             }
             is Resource.Success -> {
-                binding.movieProgress.visibility = View.GONE
+                binding.movieProgress.visibility = View.INVISIBLE
                 binding.movie.visibility = View.VISIBLE
                 moviesAdapter.setListMovie(data_movie.data)
-                moviesAdapter.notifyDataSetChanged()
                 binding.rvMovies.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -128,13 +129,14 @@ class MoviesFragment : Fragment() {
     private fun tvObserver(data_tv: Resource<List<TvShow>>) {
         when (data_tv) {
             is Resource.Loading -> {
-                binding.movieProgress.visibility = View.VISIBLE
+                tvAdapter.deleteList()
+                binding.tvProgress.visibility = View.VISIBLE
+                binding.tv.visibility = View.INVISIBLE
             }
             is Resource.Success -> {
-                binding.movieProgress.visibility = View.GONE
+                binding.tvProgress.visibility = View.INVISIBLE
                 binding.tv.visibility = View.VISIBLE
                 tvAdapter.setListTvShow(data_tv.data)
-                tvAdapter.notifyDataSetChanged()
                 binding.rvTv.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -152,7 +154,7 @@ class MoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.movieProgress.visibility = View.GONE
+                binding.tvProgress.visibility = View.GONE
             }
         }
     }

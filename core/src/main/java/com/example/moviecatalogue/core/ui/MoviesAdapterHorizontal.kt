@@ -22,6 +22,11 @@ class MoviesAdapterHorizontal : RecyclerView.Adapter<MoviesAdapterHorizontal.Mov
         notifyDataSetChanged()
     }
 
+    fun deleteList() {
+        movieList.clear()
+        notifyDataSetChanged()
+    }
+
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMovieHorizontalBinding.bind(itemView)
         fun bind(moviesData: Movie) {
