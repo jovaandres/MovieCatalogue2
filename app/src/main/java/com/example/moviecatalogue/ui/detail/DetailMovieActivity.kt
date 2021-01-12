@@ -31,16 +31,15 @@ class DetailMovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailMovieBinding.inflate(layoutInflater)
         setContentView(_binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val id = intent?.getStringExtra(EXTRA_ID) as String
 
-        _binding.addFavFab.setOnClickListener {
+        _binding.addFav.setOnClickListener {
             val state = movieData.isFavorite
             if (state == true) {
                 showDialog(movieData)
             } else {
                 viewModel.addToFavoriteMovie(movieData)
-                _binding.addFavFab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_favorite)
                 FancyToast.makeText(
                     this,
                     getString(R.string.add_success),
@@ -49,6 +48,10 @@ class DetailMovieActivity : AppCompatActivity() {
                     false
                 ).show()
             }
+        }
+
+        _binding.back.setOnClickListener {
+            onBackPressed()
         }
 
         viewModel.getDetailMovie(id).observe(this, { data ->
@@ -94,9 +97,9 @@ class DetailMovieActivity : AppCompatActivity() {
         try {
             movieData = data as DetailMovie
             if (movieData.isFavorite == true) {
-                _binding.addFavFab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_favorite)
             } else {
-                _binding.addFavFab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
             supportActionBar?.title = movieData.title
         } catch (e: Exception) {
@@ -109,11 +112,6 @@ class DetailMovieActivity : AppCompatActivity() {
             )
         }
 
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     private fun showDialog(movieData: DetailMovie) {
@@ -132,7 +130,7 @@ class DetailMovieActivity : AppCompatActivity() {
                     FancyToast.SUCCESS,
                     false
                 ).show()
-                _binding.addFavFab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog?.cancel()

@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:context=".ui.search.movies.MoviesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.search.movies.MoviesFragment">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_movie"
@@ -72,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_progress"
+            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
             android:text="@string/tv"
             android:textColor="@android:color/white"

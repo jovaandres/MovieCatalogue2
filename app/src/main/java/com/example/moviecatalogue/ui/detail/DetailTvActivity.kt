@@ -31,10 +31,9 @@ class DetailTvActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailTvBinding.inflate(layoutInflater)
         setContentView(_binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val id = intent?.getStringExtra(EXTRA_ID) as String
 
-        _binding.addFavTvFab.setOnClickListener {
+        _binding.addFav.setOnClickListener {
             val state = tvShowData.isFavorite
             if (state == true) {
                 showDialog(tvShowData)
@@ -47,8 +46,12 @@ class DetailTvActivity : AppCompatActivity() {
                     FancyToast.SUCCESS,
                     false
                 ).show()
-                _binding.addFavTvFab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_favorite)
             }
+        }
+
+        _binding.back.setOnClickListener {
+            onBackPressed()
         }
 
         viewModel.getDetailTvShow(id).observe(this, { data ->
@@ -93,9 +96,9 @@ class DetailTvActivity : AppCompatActivity() {
         try {
             tvShowData = data as DetailTvShow
             if (tvShowData.isFavorite == true){
-                _binding.addFavTvFab.setImageResource(R.drawable.ic_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_favorite)
             } else {
-                _binding.addFavTvFab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
             supportActionBar?.title = tvShowData.title
         } catch (e: Exception) {
@@ -108,11 +111,6 @@ class DetailTvActivity : AppCompatActivity() {
             )
         }
 
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     private fun showDialog(tvShowData: DetailTvShow) {
@@ -131,7 +129,7 @@ class DetailTvActivity : AppCompatActivity() {
                     FancyToast.SUCCESS,
                     false
                 ).show()
-                _binding.addFavTvFab.setImageResource(R.drawable.ic_not_favorite)
+                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog?.cancel()

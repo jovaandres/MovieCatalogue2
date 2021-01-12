@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="180dp"
             app:cardBackgroundColor="#99AFCF" />
 
@@ -29,7 +29,7 @@
             android:padding="2dp"
             android:text="@string/dummy_title"
             android:textColor="#6161A6"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView

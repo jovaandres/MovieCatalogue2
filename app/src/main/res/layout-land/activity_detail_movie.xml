@@ -6,152 +6,161 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_land"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/card">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_land"
-            android:layout_width="match_parent"
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/movie_detail_progress"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/card">
+            android:layout_centerHorizontal="true"
+            android:indeterminateTint="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/background_frame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/movie_detail_progress"
-                style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:indeterminateTint="@android:color/white"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <FrameLayout
+            android:id="@+id/background_frame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h,16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_detail_progress">
 
             <ImageView
                 android:id="@+id/background"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:contentDescription="@string/poster"
-                android:scaleType="fitXY"
-                app:layout_constraintDimensionRatio="h,16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movie_detail_progress" />
+                android:scaleType="fitXY" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/poster_card"
+            <ImageButton
+                android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/background">
+                android:background="#00000000"
+                android:src="@drawable/ic_arrow_back" />
 
-                <ImageView
-                    android:id="@+id/poster"
-                    android:layout_width="120dp"
-                    android:layout_height="180dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:contentDescription="@string/poster"
-                    android:scaleType="fitXY" />
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="400dp"
+            <ImageButton
+                android:id="@+id/add_fav"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toBottomOf="@id/background"
-                tools:text="How To Train Your Dragon" />
+                android:background="#00000000"
+                android:src="@drawable/ic_favorite_border" />
 
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/rating"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:numStars="5"
-                android:stepSize="0.1"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toBottomOf="@id/name" />
+        </FrameLayout>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/length_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="@color/text_card_one"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toBottomOf="@id/rating">
-
-                <TextView
-                    android:id="@+id/length"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    tools:text="8 Episodes" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:textColor="@android:color/white"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toBottomOf="@+id/length_card"
-                tools:text="2014-13-13" />
-
-            <TextView
-                android:id="@+id/overview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="32dp"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/poster_card" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_fav_fab"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/poster_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:contentDescription="@string/movie_not_found"
-            app:fabSize="auto"
-            app:backgroundTint="#00FFFFFF"
-            app:layout_anchor="@id/constraint_land"
-            app:layout_anchorGravity="end" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/background_frame">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="120dp"
+                android:layout_height="180dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:contentDescription="@string/poster"
+                android:scaleType="fitXY" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintTop_toBottomOf="@id/background_frame"
+            tools:text="How To Train Your Dragon" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            android:stepSize="0.1"
+            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintTop_toBottomOf="@id/name" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/length_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/text_card_one"
+            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintTop_toBottomOf="@id/rating">
+
+            <TextView
+                android:id="@+id/length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:text="8 Episodes" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintTop_toBottomOf="@+id/length_card"
+            tools:text="2014-13-13" />
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poster_card" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

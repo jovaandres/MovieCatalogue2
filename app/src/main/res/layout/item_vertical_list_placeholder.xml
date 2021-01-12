@@ -10,18 +10,16 @@
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="180dp"
-        app:cardBackgroundColor="#99AFCF"
-        app:cardCornerRadius="6dp">
+        app:cardBackgroundColor="#99AFCF">
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        app:cardBackgroundColor="#95B9F1"
-        app:cardCornerRadius="6dp">
+        android:layout_marginTop="18dp"
+        app:cardBackgroundColor="#95B9F1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,10 +32,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="#6161A6"
                 android:text="@string/dummy_title"
                 android:textColor="#6161A6"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRatingBar

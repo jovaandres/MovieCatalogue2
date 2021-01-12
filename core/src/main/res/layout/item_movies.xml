@@ -13,8 +13,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/img_card_movie"
         android:layout_width="120dp"
-        android:layout_height="180dp"
-        app:cardCornerRadius="6dp">
+        android:layout_height="180dp">
 
         <ImageView
             android:id="@+id/img_movie"
@@ -27,9 +26,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="6dp">
+        android:layout_marginTop="18dp"
+        app:cardBackgroundColor="#FFFFFF">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,8 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRatingBar
