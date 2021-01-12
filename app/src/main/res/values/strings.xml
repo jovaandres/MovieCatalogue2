@@ -24,4 +24,7 @@
     <string name="home">Home</string>
     <string name="movie">Movie</string>
     <string name="tv">TV</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="favorite_tv">Favorite Tv</string>
 </resources>

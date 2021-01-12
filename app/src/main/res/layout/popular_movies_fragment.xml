@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/pop_movie_progress"
-        android:text="@string/tv"
+        android:text="@string/now_playing"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:visibility="gone"/>
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/rv_now_movies"
-        android:text="@string/tv"
+        android:text="@string/popular"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:visibility="gone"/>

@@ -61,7 +61,6 @@
                     android:contentDescription="@string/poster"
                     android:scaleType="fitXY" />
 
-
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatRatingBar
