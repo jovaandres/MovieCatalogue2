@@ -9,15 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMovieCatalogueRepository {
 
-    fun getPopularMovie(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<Movie>>>
+    fun getPopularMovie(): Flow<Resource<List<Movie>>>
 
-    fun getPopularTv(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<TvShow>>>
+    fun getPopularTv(): Flow<Resource<List<TvShow>>>
 
     fun getNowPlayingMovie(): Flow<Resource<List<Movie>>>
 

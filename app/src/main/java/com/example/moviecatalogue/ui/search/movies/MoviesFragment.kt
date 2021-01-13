@@ -76,16 +76,16 @@ class MoviesFragment : Fragment() {
     }
 
     private fun getMovieFromViewModel(title: String) {
-        if (title.isNotEmpty()) {
-            viewModel.getMovies(title)
-            viewModel.getTvShows(title)
-        }
         lifecycleScope.launchWhenStarted {
             viewModel.searchMovie.collect { movieObserver(it) }
 
         }
         lifecycleScope.launchWhenStarted {
             viewModel.searchTvShow.collect { tvObserver(it) }
+        }
+        if (title.isNotEmpty()) {
+            viewModel.getMovies(title)
+            viewModel.getTvShows(title)
         }
     }
 

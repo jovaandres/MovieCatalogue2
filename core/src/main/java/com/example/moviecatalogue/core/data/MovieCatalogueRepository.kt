@@ -35,14 +35,11 @@ class MovieCatalogueRepository @Inject constructor(
     val localDataSource: LocalDataSource
 ) : IMovieCatalogueRepository {
 
-    override fun getPopularMovie(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<Movie>>> {
+    override fun getPopularMovie(): Flow<Resource<List<Movie>>> {
         return object :
             NetworkBoundResource<List<Movie>, MovieSearchDataResponse>() {
             override fun loadFromDB(): Flow<List<Movie>> {
-                return localDataSource.getPopularMovie(simpleQuery, sort)
+                return localDataSource.getPopularMovie()
                     .map { DataMapper.mapMovieEntitiesToDomain(it) }
             }
 
@@ -61,14 +58,11 @@ class MovieCatalogueRepository @Inject constructor(
         }.asFlow()
     }
 
-    override fun getPopularTv(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<TvShow>>> {
+    override fun getPopularTv(): Flow<Resource<List<TvShow>>> {
         return object :
             NetworkBoundResource<List<TvShow>, TvShowSearchDataResponse>() {
             override fun loadFromDB(): Flow<List<TvShow>> {
-                return localDataSource.getPopularTvShow(simpleQuery, sort)
+                return localDataSource.getPopularTvShow()
                     .map { DataMapper.mapTvShowEntitiesToDomain(it) }
             }
 

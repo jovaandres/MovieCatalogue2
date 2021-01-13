@@ -9,20 +9,15 @@ import com.example.moviecatalogue.core.domain.repository.IMovieCatalogueReposito
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieCatalogueInteractor @Inject constructor(val movieCatalogueRepository: IMovieCatalogueRepository): MovieCatalogueUseCase {
+class MovieCatalogueInteractor @Inject constructor(val movieCatalogueRepository: IMovieCatalogueRepository) :
+    MovieCatalogueUseCase {
 
-    override fun getPopularMovie(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<Movie>>> =
-        movieCatalogueRepository.getPopularMovie(simpleQuery, sort)
+    override fun getPopularMovie(): Flow<Resource<List<Movie>>> =
+        movieCatalogueRepository.getPopularMovie()
 
 
-    override fun getPopularTv(
-        simpleQuery: String,
-        sort: String
-    ): Flow<Resource<List<TvShow>>> =
-        movieCatalogueRepository.getPopularTv(simpleQuery, sort)
+    override fun getPopularTv(): Flow<Resource<List<TvShow>>> =
+        movieCatalogueRepository.getPopularTv()
 
     override fun getNowPlayingMovie(): Flow<Resource<List<Movie>>> =
         movieCatalogueRepository.getNowPlayingMovie()

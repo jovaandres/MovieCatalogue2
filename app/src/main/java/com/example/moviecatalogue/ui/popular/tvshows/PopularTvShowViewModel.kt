@@ -20,9 +20,9 @@ class PopularTvShowViewModel @ViewModelInject constructor(val movieCatalogueUseC
 
     val popularTvShows: StateFlow<Resource<List<TvShow>>> = _popularTvShows
 
-    fun getPopularTvShow(simpleQuery: String, sort: String) {
+    fun getPopularTvShow() {
         viewModelScope.launch {
-            movieCatalogueUseCase.getPopularTv(simpleQuery, sort)
+            movieCatalogueUseCase.getPopularTv()
                 .collect { _popularTvShows.value = it }
         }
     }

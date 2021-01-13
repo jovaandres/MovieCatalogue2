@@ -10,20 +10,12 @@ import javax.inject.Singleton
 @Singleton
 class LocalDataSource @Inject constructor(val mMovieCatalogueDao: MovieCatalogueDao) {
 
-    fun getPopularMovie(
-        simpleQuery: String,
-        sort: String
-    ): Flow<List<MovieResultEntity>> {
-        val query = SortUtils.getSortedQuery(simpleQuery, sort)
-        return mMovieCatalogueDao.getPopularMovie(query)
+    fun getPopularMovie(): Flow<List<MovieResultEntity>> {
+        return mMovieCatalogueDao.getPopularMovie()
     }
 
-    fun getPopularTvShow(
-        simpleQuery: String,
-        sort: String
-    ): Flow<List<TvShowResultEntity>> {
-        val query = SortUtils.getSortedQuery(simpleQuery, sort)
-        return mMovieCatalogueDao.getPopularTvShow(query)
+    fun getPopularTvShow(): Flow<List<TvShowResultEntity>> {
+        return mMovieCatalogueDao.getPopularTvShow()
     }
 
     fun getNowPlayingMovie(

@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieCatalogueDao {
 
-    @RawQuery(observedEntities = [MovieResultEntity::class])
-    fun getPopularMovie(query: SupportSQLiteQuery): Flow<List<MovieResultEntity>>
+    @Query("SELECT * FROM movie_result WHERE isPopular = 1")
+    fun getPopularMovie(): Flow<List<MovieResultEntity>>
 
-    @RawQuery(observedEntities = [TvShowResultEntity::class])
-    fun getPopularTvShow(query: SupportSQLiteQuery): Flow<List<TvShowResultEntity>>
+    @Query("SELECT * FROM tv_show_result WHERE isPopular = 1")
+    fun getPopularTvShow(): Flow<List<TvShowResultEntity>>
 
     @Query("SELECT * FROM movie_now_playing")
     fun getNowPlayingMovie(): Flow<List<MovieNowPlayingEntity>>
