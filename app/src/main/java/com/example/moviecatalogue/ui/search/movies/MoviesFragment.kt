@@ -61,10 +61,6 @@ class MoviesFragment : Fragment() {
                 startActivity(intent)
             }
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         observeSearchMovie()
     }
 
@@ -121,7 +117,7 @@ class MoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.movieProgress.visibility = View.GONE
+                binding.movieProgress.visibility = View.INVISIBLE
             }
         }
     }
@@ -134,7 +130,7 @@ class MoviesFragment : Fragment() {
                 binding.tv.visibility = View.INVISIBLE
             }
             is Resource.Success -> {
-                binding.tvProgress.visibility = View.INVISIBLE
+                binding.tvProgress.visibility = View.GONE
                 binding.tv.visibility = View.VISIBLE
                 tvAdapter.setListTvShow(data_tv.data)
                 binding.rvTv.apply {

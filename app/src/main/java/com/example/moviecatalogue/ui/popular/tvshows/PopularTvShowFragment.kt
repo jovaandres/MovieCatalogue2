@@ -49,12 +49,8 @@ class PopularTvShowFragment : Fragment() {
                 intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
                 startActivity(intent)
             }
+            showPopularTvShow()
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        showPopularTvShow()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

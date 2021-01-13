@@ -56,12 +56,8 @@ class PopularMoviesFragment : Fragment() {
                 intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
                 startActivity(intent)
             }
+            showPopularMovie()
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        showPopularMovie()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,7 +149,7 @@ class PopularMoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.popMovieProgress.visibility = View.GONE
+                binding.nowMovieProgress.visibility = View.INVISIBLE
             }
         }
     }
@@ -162,10 +158,10 @@ class PopularMoviesFragment : Fragment() {
         when (data) {
             is Resource.Loading -> {
                 binding.popMovieProgress.visibility = View.VISIBLE
-                binding.moviePop.visibility = View.INVISIBLE
+                binding.moviePop.visibility = View.GONE
             }
             is Resource.Success -> {
-                binding.popMovieProgress.visibility = View.INVISIBLE
+                binding.popMovieProgress.visibility = View.GONE
                 binding.moviePop.visibility = View.VISIBLE
                 popularMoviesAdapter.setListMovie(data.data)
                 popularMoviesAdapter.notifyDataSetChanged()
