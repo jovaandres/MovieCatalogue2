@@ -8,7 +8,7 @@ apply from: '../shared_dependencies.gradle'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.moviecatalogue"
@@ -27,10 +27,6 @@ android {
         }
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -42,6 +38,9 @@ android {
 
     buildFeatures {
         viewBinding true
+    }
+    lintOptions {
+        abortOnError false
     }
     dynamicFeatures = [':favorite']
 }
