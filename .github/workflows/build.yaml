@@ -2,10 +2,8 @@ name: Build
 on: [ pull_request, push ]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Build the app
