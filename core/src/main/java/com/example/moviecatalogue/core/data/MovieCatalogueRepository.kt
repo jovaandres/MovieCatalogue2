@@ -44,7 +44,7 @@ class MovieCatalogueRepository @Inject constructor(
             }
 
             override fun shouldFetch(data: List<Movie>?): Boolean {
-                return (data == null || data.isEmpty()) && isConnected()
+                return isConnected()
             }
 
             override suspend fun createCall(): Flow<ApiResponse<MovieSearchDataResponse>> {
@@ -67,7 +67,7 @@ class MovieCatalogueRepository @Inject constructor(
             }
 
             override fun shouldFetch(data: List<TvShow>?): Boolean {
-                return (data == null || data.isEmpty()) && isConnected()
+                return isConnected()
             }
 
             override suspend fun createCall(): Flow<ApiResponse<TvShowSearchDataResponse>> {
