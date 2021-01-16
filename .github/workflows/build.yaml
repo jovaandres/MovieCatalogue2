@@ -28,6 +28,12 @@ on:
       - 'v*'
 
 jobs:
+  setup:
+    name: Install NDK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        run: sudo /usr/local/lib/android/tools/bin/sdkmanager --install "ndk;21.0.6113669" --sdk_root=${ANDROID_SDK_ROOT}
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
