@@ -40,16 +40,9 @@ jobs:
           java-version: 1.8
       - name: Run Tests
         run: bash ./gradlew test --stacktrace
-  setup:
-    name: Install NDK
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install
-        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669"
   apk:
     name: Generate APK
-    needs: setup
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,6 +51,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Install
+        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669"
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
