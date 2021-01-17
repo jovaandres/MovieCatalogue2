@@ -5,10 +5,12 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
 import android.webkit.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityWebViewBinding
+
 
 @SuppressLint("SetJavaScriptEnabled")
 class WebViewActivity : AppCompatActivity() {
@@ -38,7 +40,12 @@ class WebViewActivity : AppCompatActivity() {
                 handler: SslErrorHandler?,
                 error: SslError?
             ) {
-                handler?.proceed()
+                val builder = AlertDialog.Builder(this@WebViewActivity)
+                builder.setMessage("SSL Certificate Error")
+                builder.setPositiveButton("continue") { _, _ -> handler?.proceed() }
+                builder.setNegativeButton("cancel") { _, _ -> handler?.cancel() }
+                val dialog = builder.create()
+                dialog.show()
             }
 
             override fun shouldOverrideUrlLoading(
