@@ -14,6 +14,9 @@ import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.ui.MoviesAdapter
 import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
 import com.example.moviecatalogue.core.utils.SortPreferences
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.invisible
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,12 +85,12 @@ class PopularMoviesFragment : Fragment() {
     private fun nowPlayingObserver(data: Resource<List<Movie>>) {
         when (data) {
             is Resource.Loading -> {
-                binding.nowMovieProgress.visibility = View.VISIBLE
-                binding.movieNow.visibility = View.INVISIBLE
+                binding.nowMovieProgress.visible()
+                binding.movieNow.invisible()
             }
             is Resource.Success -> {
-                binding.nowMovieProgress.visibility = View.INVISIBLE
-                binding.movieNow.visibility = View.VISIBLE
+                binding.nowMovieProgress.invisible()
+                binding.movieNow.visible()
                 nowPlayingMoviesAdapter.setListMovie(data.data)
                 nowPlayingMoviesAdapter.notifyDataSetChanged()
                 binding.rvNowMovies.apply {
@@ -98,7 +101,7 @@ class PopularMoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.nowMovieProgress.visibility = View.INVISIBLE
+                binding.nowMovieProgress.invisible()
             }
         }
     }
@@ -106,12 +109,12 @@ class PopularMoviesFragment : Fragment() {
     private fun movieObserver(data: Resource<List<Movie>>) {
         when (data) {
             is Resource.Loading -> {
-                binding.popMovieProgress.visibility = View.VISIBLE
-                binding.moviePop.visibility = View.INVISIBLE
+                binding.popMovieProgress.visible()
+                binding.moviePop.invisible()
             }
             is Resource.Success -> {
-                binding.popMovieProgress.visibility = View.GONE
-                binding.moviePop.visibility = View.VISIBLE
+                binding.popMovieProgress.gone()
+                binding.moviePop.visible()
                 popularMoviesAdapter.setListMovie(data.data)
                 popularMoviesAdapter.notifyDataSetChanged()
                 binding.rvPopMovies.apply {
@@ -121,13 +124,15 @@ class PopularMoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.popMovieProgress.visibility = View.GONE
+                binding.popMovieProgress.gone()
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvNowMovies.adapter = null
+        binding.rvPopMovies.adapter = null
         _binding = null
     }
 }

@@ -16,6 +16,8 @@ import com.example.moviecatalogue.core.di.CoreModuleDependencies
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteTvShowFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
@@ -140,12 +142,12 @@ class FavoriteTvShowFragment : Fragment() {
                 tvShowObserver(it)
             }
         }
-        binding.favTvProgress.visibility = View.GONE
+        binding.favTvProgress.gone()
     }
 
     private fun tvShowObserver(data: Resource<List<DetailTvShow>>) {
         when (data) {
-            is Resource.Loading -> binding.favTvProgress.visibility = View.VISIBLE
+            is Resource.Loading -> binding.favTvProgress.visible()
             is Resource.Success -> {
                 favoriteTvShowAdapter.setTvShowFavoriteList(data.data)
                 favoriteTvShowAdapter.notifyDataSetChanged()
@@ -154,9 +156,9 @@ class FavoriteTvShowFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                     adapter = favoriteTvShowAdapter
                 }
-                binding.favTvProgress.visibility = View.GONE
+                binding.favTvProgress.gone()
             }
-            else -> binding.favTvProgress.visibility = View.GONE
+            else -> binding.favTvProgress.gone()
         }
     }
 
@@ -177,7 +179,6 @@ class FavoriteTvShowFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
             if (view != null) {
                 val swipedPosition = viewHolder.adapterPosition
                 val favoriteTvShow = favoriteTvShowAdapter.getSwipedData(swipedPosition)
@@ -199,6 +200,7 @@ class FavoriteTvShowFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvFavTvShows.adapter = null
         _binding = null
     }
 }

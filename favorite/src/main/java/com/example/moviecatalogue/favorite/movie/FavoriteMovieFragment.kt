@@ -16,6 +16,8 @@ import com.example.moviecatalogue.core.di.CoreModuleDependencies
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.SortUtils
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteMovieFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
@@ -140,12 +142,12 @@ class FavoriteMovieFragment : Fragment() {
                 movieObserver(it)
             }
         }
-        binding.favMovieProgress.visibility = View.GONE
+        binding.favMovieProgress.gone()
     }
 
     private fun movieObserver(data: Resource<List<DetailMovie>>) {
         when (data) {
-            is Resource.Loading -> binding.favMovieProgress.visibility = View.VISIBLE
+            is Resource.Loading -> binding.favMovieProgress.visible()
             is Resource.Success -> {
                 favoriteMovieAdapter.setMovieFavoriteList(data.data)
                 favoriteMovieAdapter.notifyDataSetChanged()
@@ -154,9 +156,9 @@ class FavoriteMovieFragment : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                     adapter = favoriteMovieAdapter
                 }
-                binding.favMovieProgress.visibility = View.GONE
+                binding.favMovieProgress.gone()
             }
-            else -> binding.favMovieProgress.visibility = View.GONE
+            else -> binding.favMovieProgress.gone()
         }
     }
 
@@ -199,6 +201,7 @@ class FavoriteMovieFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvFavMovies.adapter = null
         _binding = null
     }
 

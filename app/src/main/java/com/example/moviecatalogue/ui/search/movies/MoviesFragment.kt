@@ -17,6 +17,9 @@ import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
 import com.example.moviecatalogue.core.ui.TvShowsAdapterHorizontal
 import com.example.moviecatalogue.core.utils.RxSearchObservable
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.invisible
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
@@ -93,12 +96,12 @@ class MoviesFragment : Fragment() {
         when (data_movie) {
             is Resource.Loading -> {
                 moviesAdapter.deleteList()
-                binding.movieProgress.visibility = View.VISIBLE
-                binding.movie.visibility = View.INVISIBLE
+                binding.movieProgress.visible()
+                binding.movie.invisible()
             }
             is Resource.Success -> {
-                binding.movieProgress.visibility = View.INVISIBLE
-                binding.movie.visibility = View.VISIBLE
+                binding.movieProgress.invisible()
+                binding.movie.visible()
                 moviesAdapter.setListMovie(data_movie.data)
                 binding.rvMovies.apply {
                     setHasFixedSize(true)
@@ -117,7 +120,7 @@ class MoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.movieProgress.visibility = View.INVISIBLE
+                binding.movieProgress.invisible()
             }
         }
     }
@@ -126,12 +129,12 @@ class MoviesFragment : Fragment() {
         when (data_tv) {
             is Resource.Loading -> {
                 tvAdapter.deleteList()
-                binding.tvProgress.visibility = View.VISIBLE
-                binding.tv.visibility = View.INVISIBLE
+                binding.tvProgress.visible()
+                binding.tv.invisible()
             }
             is Resource.Success -> {
-                binding.tvProgress.visibility = View.GONE
-                binding.tv.visibility = View.VISIBLE
+                binding.tvProgress.gone()
+                binding.tv.visible()
                 tvAdapter.setListTvShow(data_tv.data)
                 binding.rvTv.apply {
                     setHasFixedSize(true)
@@ -150,13 +153,15 @@ class MoviesFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.tvProgress.visibility = View.GONE
+                binding.tvProgress.gone()
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvMovies.adapter = null
+        binding.rvTv.adapter = null
         _binding = null
     }
 }

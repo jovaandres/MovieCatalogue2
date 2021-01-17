@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.ui.TvShowsAdapter
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,10 +64,10 @@ class PopularTvShowFragment : Fragment() {
     private fun tvShowObserver(data: Resource<List<TvShow>>) {
         when (data) {
             is Resource.Loading -> {
-                binding.popTvProgress.visibility = View.VISIBLE
+                binding.popTvProgress.visible()
             }
             is Resource.Success -> {
-                binding.popTvProgress.visibility = View.GONE
+                binding.popTvProgress.gone()
                 popularTvShowAdapter.setListTvShow(data.data)
                 popularTvShowAdapter.notifyDataSetChanged()
                 binding.rvPopTvShows.apply {
@@ -75,13 +77,14 @@ class PopularTvShowFragment : Fragment() {
                 }
             }
             is Resource.Error -> {
-                binding.popTvProgress.visibility = View.GONE
+                binding.popTvProgress.gone()
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvPopTvShows.adapter = null
         _binding = null
     }
 }
