@@ -10,16 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.SearchView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_movie"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/search"
-            app:queryHint="Search By Title" />
+            android:hint="@string/search_by_title"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="4dp"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxStrokeColor="@android:color/holo_blue_light"
+            app:endIconMode="clear_text"
+            app:endIconTint="@android:color/holo_blue_light">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/movie"
@@ -72,8 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_progress"
-            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
             android:text="@string/tv"
             android:textColor="@android:color/white"
             android:textSize="18sp"

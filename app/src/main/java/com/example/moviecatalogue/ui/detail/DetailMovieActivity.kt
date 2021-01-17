@@ -1,5 +1,7 @@
 package com.example.moviecatalogue.ui.detail
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +13,10 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.example.moviecatalogue.core.utils.underline
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityDetailMovieBinding
+import com.example.moviecatalogue.ui.WebViewActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,6 +79,7 @@ class DetailMovieActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setMovieDetail(data: DetailMovie?) {
         if (data != null) {
             _binding.apply {
@@ -82,6 +88,16 @@ class DetailMovieActivity : AppCompatActivity() {
                 date.text = data.releaseDate
                 rating.rating = data.voteAverage?.toFloat()?.div(2) ?: 0f
                 overview.text = data.overview
+                if (data.homepage?.isNotEmpty() == true) {
+                    homepage.visible()
+                    homepageLink.text = data.homepage
+                    homepageLink.underline = true
+                    homepageLink.setOnClickListener {
+                        val intent = Intent(this@DetailMovieActivity, WebViewActivity::class.java)
+                        intent.putExtra(WebViewActivity.URL, data.homepage)
+                        startActivity(intent)
+                    }
+                }
                 Picasso.get()
                     .load(IMAGE_URL + data.backdropPath)
                     .into(background)

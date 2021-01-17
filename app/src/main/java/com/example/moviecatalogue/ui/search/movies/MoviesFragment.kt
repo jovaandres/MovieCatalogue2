@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,14 +17,13 @@ import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
 import com.example.moviecatalogue.core.ui.TvShowsAdapterHorizontal
-import com.example.moviecatalogue.core.utils.RxSearchObservable
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
 import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.example.moviecatalogue.ui.detail.DetailTvActivity
-import com.shashank.sony.fancytoastlib.FancyToast
+import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -42,6 +42,8 @@ class MoviesFragment : Fragment() {
     private val moviesAdapter = MoviesAdapterHorizontal()
     private val tvAdapter = TvShowsAdapterHorizontal()
 
+    private lateinit var toast: Toast
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,11 +55,18 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            toast = Toast.makeText(
+                activity,
+                null,
+                Toast.LENGTH_SHORT
+            )
+
             moviesAdapter.onItemClick = { data ->
                 val intent = Intent(activity, DetailMovieActivity::class.java)
                 intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
                 startActivity(intent)
             }
+
             tvAdapter.onItemClick = { data ->
                 val intent = Intent(activity, DetailTvActivity::class.java)
                 intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
@@ -69,9 +78,9 @@ class MoviesFragment : Fragment() {
 
     @SuppressLint("CheckResult")
     private fun observeSearchMovie() {
-        RxSearchObservable.fromView(binding.searchMovie)
-            .distinctUntilChanged()
-            .debounce(300, TimeUnit.MILLISECONDS)
+        RxTextView.textChanges(binding.search)
+            .skipInitialValue()
+            .debounce(500, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -110,13 +119,8 @@ class MoviesFragment : Fragment() {
                     adapter = moviesAdapter
                 }
                 if (data_movie.data?.isEmpty() == true) {
-                    FancyToast.makeText(
-                        requireContext(),
-                        getString(R.string.movie_not_found),
-                        FancyToast.LENGTH_SHORT,
-                        FancyToast.ERROR,
-                        false
-                    ).show()
+                    toast.setText(R.string.movie_not_found)
+                    toast.show()
                 }
             }
             is Resource.Error -> {
@@ -143,13 +147,8 @@ class MoviesFragment : Fragment() {
                     adapter = tvAdapter
                 }
                 if (data_tv.data?.isEmpty() == true) {
-                    FancyToast.makeText(
-                        requireContext(),
-                        getString(R.string.tv_show_not_found),
-                        FancyToast.LENGTH_SHORT,
-                        FancyToast.ERROR,
-                        false
-                    ).show()
+                    toast.setText(R.string.tv_show_not_found)
+                    toast.show()
                 }
             }
             is Resource.Error -> {
@@ -162,6 +161,7 @@ class MoviesFragment : Fragment() {
         super.onDestroyView()
         binding.rvMovies.adapter = null
         binding.rvTv.adapter = null
+        toast.cancel()
         _binding = null
     }
 }

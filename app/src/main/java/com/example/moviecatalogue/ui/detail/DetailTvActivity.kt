@@ -1,5 +1,6 @@
 package com.example.moviecatalogue.ui.detail
 
+import android.content.Intent
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +12,10 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.core.utils.underline
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityDetailTvBinding
+import com.example.moviecatalogue.ui.WebViewActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,6 +85,16 @@ class DetailTvActivity : AppCompatActivity() {
                 date.text = data.firstAirDate
                 rating.rating = data.voteAverage?.toFloat()?.div(2) ?: 0f
                 overview.text = data.overview
+                if (data.homepage?.isNotEmpty() == true) {
+                    homepage.visible()
+                    homepageLink.text = data.homepage
+                    homepageLink.underline = true
+                    homepageLink.setOnClickListener {
+                        val intent = Intent(this@DetailTvActivity, WebViewActivity::class.java)
+                        intent.putExtra(WebViewActivity.URL, data.homepage)
+                        startActivity(intent)
+                    }
+                }
                 Picasso.get()
                     .load(Constant.IMAGE_URL + data.backdropPath)
                     .into(background)

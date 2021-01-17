@@ -30,4 +30,6 @@
     <string name="dummy_title">Dummy Title</string>
     <string name="dummy_desc1">Lorem Ipsum is simply dummy text.</string>
     <string name="dummy_desc2">Lorem Ipsum.</string>
+    <string name="official_home_page">Official Home Page</string>
+    <string name="search_by_title">Search By Title</string>
 </resources>
