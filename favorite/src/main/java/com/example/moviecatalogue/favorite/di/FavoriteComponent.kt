@@ -6,9 +6,7 @@ import com.example.moviecatalogue.favorite.movie.FavoriteMovieFragment
 import com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowFragment
 import dagger.BindsInstance
 import dagger.Component
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 @FeatureScope
 @Component(dependencies = [CoreModuleDependencies::class], modules = [ViewModelModule::class])
 interface FavoriteComponent {

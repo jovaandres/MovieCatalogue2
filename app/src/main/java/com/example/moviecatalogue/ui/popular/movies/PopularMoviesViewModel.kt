@@ -6,21 +6,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class PopularMoviesViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
     private val _popularMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
     private val _nowPlayingMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
 
-    val popularMovies: StateFlow<Resource<List<Movie>>> = _popularMovies
-    val nowPlayingMovies: StateFlow<Resource<List<Movie>>> = _nowPlayingMovies
+    val popularMovies: StateFlow<Resource<List<Movie>>> get() = _popularMovies
+    val nowPlayingMovies: StateFlow<Resource<List<Movie>>> get() = _nowPlayingMovies
 
     fun getPopularMovies() {
         viewModelScope.launch {

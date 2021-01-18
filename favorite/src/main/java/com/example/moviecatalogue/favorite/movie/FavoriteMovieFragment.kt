@@ -23,11 +23,9 @@ import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 class FavoriteMovieFragment : Fragment() {
 
     private var _binding: FavoriteMovieFragmentBinding? = null

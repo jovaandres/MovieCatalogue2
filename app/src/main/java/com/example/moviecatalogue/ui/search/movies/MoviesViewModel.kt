@@ -7,21 +7,19 @@ import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class MoviesViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
     private val _searchMovie = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
     private val _searchTvShow = MutableStateFlow<Resource<List<TvShow>>>(Resource.Loading())
 
-    val searchMovie: StateFlow<Resource<List<Movie>>> = _searchMovie
-    val searchTvShow: StateFlow<Resource<List<TvShow>>> = _searchTvShow
+    val searchMovie: StateFlow<Resource<List<Movie>>> get() = _searchMovie
+    val searchTvShow: StateFlow<Resource<List<TvShow>>> get() = _searchTvShow
 
     fun getMovies(title: String) {
         viewModelScope.launch {

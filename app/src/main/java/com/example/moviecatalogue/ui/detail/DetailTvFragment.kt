@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
@@ -21,6 +22,7 @@ import com.example.moviecatalogue.databinding.FragmentDetailTvBinding
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class DetailTvFragment : Fragment() {
@@ -72,8 +74,9 @@ class DetailTvFragment : Fragment() {
             if (args == "0") {
                 args = idFromFavorite.toString()
             }
-            viewModel.getDetailTvShow(args).observe(viewLifecycleOwner, { data ->
-                if (data != null) {
+            viewModel.getDetailTvShow(args)
+            lifecycleScope.launchWhenStarted {
+                viewModel.detailTv.collect { data ->
                     when (data) {
                         is Resource.Loading -> binding.tvDetailProgress.visible()
                         is Resource.Success -> {
@@ -85,7 +88,7 @@ class DetailTvFragment : Fragment() {
                         }
                     }
                 }
-            })
+            }
         }
     }
 

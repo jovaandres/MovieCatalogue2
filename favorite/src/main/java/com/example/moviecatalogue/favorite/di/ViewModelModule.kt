@@ -10,9 +10,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.multibindings.IntoMap
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 @Suppress("unused")
 @Module
 @InstallIn(FragmentComponent::class)

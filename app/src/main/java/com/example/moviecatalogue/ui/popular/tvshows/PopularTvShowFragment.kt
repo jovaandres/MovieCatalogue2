@@ -16,10 +16,8 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PopularTvShowFragment : Fragment() {
 

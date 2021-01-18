@@ -6,19 +6,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class PopularTvShowViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
     private val _popularTvShows = MutableStateFlow<Resource<List<TvShow>>>(Resource.Loading())
 
-    val popularTvShows: StateFlow<Resource<List<TvShow>>> = _popularTvShows
+    val popularTvShows: StateFlow<Resource<List<TvShow>>> get() = _popularTvShows
 
     fun getPopularTvShow() {
         viewModelScope.launch {

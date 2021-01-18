@@ -19,11 +19,9 @@ import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
 

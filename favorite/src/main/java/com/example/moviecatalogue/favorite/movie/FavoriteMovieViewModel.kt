@@ -5,14 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 class FavoriteMovieViewModel @Inject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 

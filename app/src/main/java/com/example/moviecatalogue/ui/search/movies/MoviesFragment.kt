@@ -25,11 +25,9 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import java.util.concurrent.TimeUnit
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
