@@ -16,19 +16,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.WebViewActivity">
-            <meta-data
-                android:name="android.webkit.WebView.EnableSafeBrowsing"
-                android:value="true" />
-        </activity>
-        <activity android:name=".ui.detail.DetailTvActivity" />
-        <activity android:name=".ui.detail.DetailMovieActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <nav-graph android:value="@navigation/mobile_navigation" />
         </activity>
     </application>
 

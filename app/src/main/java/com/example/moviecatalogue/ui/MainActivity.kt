@@ -42,13 +42,30 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.navigationView, navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (intArrayOf(R.id.navigation_favorite_movie, R.id.navigation_favorite_tv).contains(
+            if (intArrayOf(
+                    R.id.navigation_favorite_movie,
+                    R.id.navigation_favorite_tv,
+                    R.id.detailMovieFragment,
+                    R.id.detailTvFragment,
+                    R.id.webViewFragment
+                ).contains(
                     destination.id
                 )
             ) {
                 bottomNavigation.gone()
             } else {
                 bottomNavigation.visible()
+            }
+
+            if (intArrayOf(
+                    R.id.detailMovieFragment,
+                    R.id.detailTvFragment,
+                    R.id.webViewFragment
+                ).contains(destination.id)
+            ) {
+                supportActionBar?.hide()
+            } else {
+                supportActionBar?.show()
             }
         }
 

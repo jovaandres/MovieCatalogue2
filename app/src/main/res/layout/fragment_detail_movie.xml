@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_land"
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/card">
@@ -42,23 +42,14 @@
                 android:scaleType="fitXY" />
 
             <ImageButton
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="#00000000"
-                android:src="@drawable/ic_arrow_back" />
-
-            <ImageButton
                 android:id="@+id/add_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="#00000000"
+                android:contentDescription="@string/favorite"
                 android:src="@drawable/ic_favorite_border" />
 
         </FrameLayout>
@@ -68,10 +59,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="144dp"
             app:cardBackgroundColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/background_frame">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/poster"
@@ -86,37 +77,23 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/poster_card"
-            app:layout_constraintTop_toBottomOf="@id/background_frame"
-            tools:text="How To Train Your Dragon" />
-
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rating"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:numStars="5"
             android:stepSize="0.1"
             app:layout_constraintStart_toEndOf="@id/poster_card"
-            app:layout_constraintTop_toBottomOf="@id/name" />
+            app:layout_constraintTop_toBottomOf="@id/background_frame" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/length_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:cardBackgroundColor="@color/text_card_one"
             app:layout_constraintStart_toEndOf="@id/poster_card"
@@ -130,35 +107,52 @@
                 android:layout_marginEnd="2dp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                tools:text="8 Episodes" />
+                tools:text="80 min" />
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
             android:textSize="13sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/poster_card"
+            app:layout_constraintStart_toEndOf="@+id/poster_card"
             app:layout_constraintTop_toBottomOf="@+id/length_card"
             tools:text="2014-13-13" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poster_card"
+            tools:text="How To Train Your Dragon" />
 
         <TextView
             android:id="@+id/overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/poster_card" />
+            app:layout_constraintTop_toBottomOf="@id/name" />
 
         <TextView
             android:id="@+id/homepage"

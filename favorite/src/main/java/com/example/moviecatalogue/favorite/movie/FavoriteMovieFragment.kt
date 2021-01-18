@@ -1,12 +1,12 @@
 package com.example.moviecatalogue.favorite.movie
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +21,6 @@ import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteMovieFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
-import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -70,10 +69,11 @@ class FavoriteMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            favoriteMovieAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailMovieActivity::class.java)
-                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            favoriteMovieAdapter.onItemClick = {
+                val bundle = Bundle()
+                bundle.putString("movieId", it.id.toString())
+                view.findNavController()
+                    .navigate(R.id.action_navigation_favorite_movie_to_detailMovieFragment, bundle)
             }
         }
         itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)

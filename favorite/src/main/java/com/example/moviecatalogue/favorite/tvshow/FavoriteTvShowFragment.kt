@@ -1,12 +1,12 @@
 package com.example.moviecatalogue.favorite.tvshow
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +21,6 @@ import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteTvShowFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
-import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -70,10 +69,11 @@ class FavoriteTvShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            favoriteTvShowAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailTvActivity::class.java)
-                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            favoriteTvShowAdapter.onItemClick = {
+                val bundle = Bundle()
+                bundle.putString("tvId", it.id.toString())
+                view.findNavController()
+                    .navigate(R.id.action_navigation_favorite_tv_to_detailTvFragment, bundle)
             }
         }
         itemTouchHelper.attachToRecyclerView(binding.rvFavTvShows)

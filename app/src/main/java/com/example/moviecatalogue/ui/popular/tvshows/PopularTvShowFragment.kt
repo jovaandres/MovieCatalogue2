@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.popular.tvshows
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
@@ -15,7 +15,6 @@ import com.example.moviecatalogue.core.ui.TvShowsAdapter
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
-import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -41,10 +40,10 @@ class PopularTvShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            popularTvShowAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailTvActivity::class.java)
-                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            val action = PopularTvShowFragmentDirections.actionNavigationTvToDetailTvFragment()
+            popularTvShowAdapter.onItemClick = {
+                action.tvId = it.id.toString()
+                view.findNavController().navigate(action)
             }
             showPopularTvShow()
         }

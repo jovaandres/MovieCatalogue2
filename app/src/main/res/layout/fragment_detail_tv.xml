@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,13 +6,13 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint"
+        android:id="@+id/constraint_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/card">
 
         <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/movie_detail_progress"
+            android:id="@+id/tv_detail_progress"
             style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +31,7 @@
             app:layout_constraintDimensionRatio="h,16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movie_detail_progress">
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_progress">
 
             <ImageView
                 android:id="@+id/background"
@@ -42,16 +41,6 @@
                 android:scaleType="fitXY" />
 
             <ImageButton
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#00000000"
-                android:src="@drawable/ic_arrow_back" />
-
-            <ImageButton
                 android:id="@+id/add_fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,6 +48,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="#00000000"
+                android:contentDescription="@string/favorite"
                 android:src="@drawable/ic_favorite_border" />
 
         </FrameLayout>
@@ -116,7 +106,28 @@
                 android:layout_marginEnd="2dp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                tools:text="80 min" />
+                tools:text="8 Episodes" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/episode_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/text_card_two"
+            app:layout_constraintStart_toEndOf="@id/length_card"
+            app:layout_constraintTop_toBottomOf="@id/rating">
+
+            <TextView
+                android:id="@+id/episode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:text="49 min" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -143,7 +154,6 @@
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/poster_card"
             tools:text="How To Train Your Dragon" />
@@ -153,13 +163,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name" />
 

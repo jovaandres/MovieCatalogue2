@@ -1,88 +1,98 @@
 package com.example.moviecatalogue.ui.detail
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.viewModels
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
-import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.underline
 import com.example.moviecatalogue.core.utils.visible
-import com.example.moviecatalogue.databinding.ActivityDetailMovieBinding
-import com.example.moviecatalogue.ui.WebViewActivity
+import com.example.moviecatalogue.databinding.FragmentDetailMovieBinding
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailMovieActivity : AppCompatActivity() {
+class DetailMovieFragment : Fragment() {
+    private var idFromFavorite: String? = null
 
-    companion object {
-        const val EXTRA_ID = "extra_item"
-    }
+    private var _binding: FragmentDetailMovieBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: DetailMovieViewModel by viewModels()
+
     private lateinit var movieData: DetailMovie
-    private lateinit var _binding: ActivityDetailMovieBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityDetailMovieBinding.inflate(layoutInflater)
-        setContentView(_binding.root)
-        val id = intent?.getStringExtra(EXTRA_ID) as String
+        arguments?.let {
+            idFromFavorite = it.getString("movieId")
+        }
+    }
 
-        _binding.addFav.setOnClickListener {
-            val state = movieData.isFavorite
-            if (state == true) {
-                showDialog(movieData)
-            } else {
-                viewModel.addToFavoriteMovie(movieData)
-                _binding.addFav.setImageResource(R.drawable.ic_favorite)
-                FancyToast.makeText(
-                    this,
-                    getString(R.string.add_success),
-                    FancyToast.LENGTH_SHORT,
-                    FancyToast.SUCCESS,
-                    false
-                ).show()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDetailMovieBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            binding.addFav.setOnClickListener {
+                val state = movieData.isFavorite
+                if (state == true) {
+                    showDialog(movieData)
+                } else {
+                    viewModel.addToFavoriteMovie(movieData)
+                    binding.addFav.setImageResource(R.drawable.ic_favorite)
+                    FancyToast.makeText(
+                        activity,
+                        getString(R.string.add_success),
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.SUCCESS,
+                        false
+                    ).show()
+                }
             }
-        }
 
-        _binding.back.setOnClickListener {
-            onBackPressed()
-        }
-
-        viewModel.getDetailMovie(id).observe(this, { data ->
-            run {
+            var args = DetailMovieFragmentArgs.fromBundle(arguments as Bundle).movieId
+            if (args == "0") {
+                args = idFromFavorite.toString()
+            }
+            viewModel.getDetailMovie(args).observe(viewLifecycleOwner, { data ->
                 if (data != null) {
                     when (data) {
-                        is Resource.Loading -> _binding.movieDetailProgress.visibility =
-                            View.VISIBLE
+                        is Resource.Loading -> binding.movieDetailProgress.visible()
                         is Resource.Success -> {
                             setMovieDetail(data.data)
-                            _binding.movieDetailProgress.visibility = View.GONE
+                            binding.movieDetailProgress.gone()
 
                         }
                         is Resource.Error -> {
-                            _binding.movieDetailProgress.visibility = View.GONE
+                            binding.movieDetailProgress.gone()
                         }
                     }
                 }
-            }
-        })
+            })
+        }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun setMovieDetail(data: DetailMovie?) {
         if (data != null) {
-            _binding.apply {
+            binding.apply {
                 length.text = getString(R.string.length_movie, data.runtime)
                 name.text = data.title
                 date.text = data.releaseDate
@@ -93,34 +103,34 @@ class DetailMovieActivity : AppCompatActivity() {
                     homepageLink.text = data.homepage
                     homepageLink.underline = true
                     homepageLink.setOnClickListener {
-                        val intent = Intent(this@DetailMovieActivity, WebViewActivity::class.java)
-                        intent.putExtra(WebViewActivity.URL, data.homepage)
-                        startActivity(intent)
+                        val action =
+                            DetailMovieFragmentDirections.actionDetailMovieFragmentToWebViewFragment()
+                        action.url = data.homepage ?: "https://www.google.com"
+                        view?.findNavController()?.navigate(action)
                     }
                 }
                 Picasso.get()
-                    .load(IMAGE_URL + data.backdropPath)
+                    .load(Constant.IMAGE_URL + data.backdropPath)
                     .into(background)
                 Picasso.get()
-                    .load(IMAGE_URL + data.posterPath)
+                    .load(Constant.IMAGE_URL + data.posterPath)
                     .into(poster)
             }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            _binding.overview.justificationMode = JUSTIFICATION_MODE_INTER_WORD
+            binding.overview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
         }
         try {
             movieData = data as DetailMovie
             if (movieData.isFavorite == true) {
-                _binding.addFav.setImageResource(R.drawable.ic_favorite)
+                binding.addFav.setImageResource(R.drawable.ic_favorite)
             } else {
-                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
+                binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
-            supportActionBar?.title = movieData.title
         } catch (e: Exception) {
             FancyToast.makeText(
-                this,
+                activity,
                 "Unable to finish request ${e.message}",
                 FancyToast.LENGTH_SHORT,
                 FancyToast.ERROR,
@@ -133,20 +143,20 @@ class DetailMovieActivity : AppCompatActivity() {
     private fun showDialog(movieData: DetailMovie) {
         val dialogTitle = getString(R.string.dialog_title)
         val dialogMessage = getString(R.string.dialog_message)
-        val alertDialog = AlertDialog.Builder(this)
+        val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(dialogTitle)
             .setMessage(dialogMessage)
             .setCancelable(true)
             .setPositiveButton("Yes") { _, _ ->
                 viewModel.addToFavoriteMovie(movieData)
                 FancyToast.makeText(
-                    this,
+                    activity,
                     getString(R.string.delete_success),
                     FancyToast.LENGTH_SHORT,
                     FancyToast.SUCCESS,
                     false
                 ).show()
-                _binding.addFav.setImageResource(R.drawable.ic_not_favorite)
+                binding.addFav.setImageResource(R.drawable.ic_not_favorite)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog?.cancel()

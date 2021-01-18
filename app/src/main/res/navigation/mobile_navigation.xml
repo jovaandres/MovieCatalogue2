@@ -9,32 +9,92 @@
         android:id="@+id/navigation_movie"
         android:name="com.example.moviecatalogue.ui.popular.movies.PopularMoviesFragment"
         android:label="@string/movie"
-        tools:layout="@layout/popular_movies_fragment" />
+        tools:layout="@layout/popular_movies_fragment">
+        <action
+            android:id="@+id/action_navigation_movie_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_tv"
         android:name="com.example.moviecatalogue.ui.popular.tvshows.PopularTvShowFragment"
         android:label="@string/tv"
-        tools:layout="@layout/popular_tv_show_fragment" />
+        tools:layout="@layout/popular_tv_show_fragment">
+        <action
+            android:id="@+id/action_navigation_tv_to_detailTvFragment"
+            app:destination="@id/detailTvFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.moviecatalogue.ui.search.movies.MoviesFragment"
         android:label="@string/search"
-        tools:layout="@layout/movies_fragment" />
+        tools:layout="@layout/movies_fragment">
+        <action
+            android:id="@+id/action_navigation_search_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_detailTvFragment"
+            app:destination="@id/detailTvFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favorite_movie"
         android:name="com.example.moviecatalogue.favorite.movie.FavoriteMovieFragment"
         android:label="@string/favorite_movies"
-        app:moduleName="favoriteMovieDynamicFeature"
-        tools:layout="@layout/favorite_movie_fragment" />
+        app:moduleName="favorite">
+        <action
+            android:id="@+id/action_navigation_favorite_movie_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favorite_tv"
         android:name="com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowFragment"
         android:label="@string/favorite_tv"
-        app:moduleName="favoriteTvDynamicFeature"
-        tools:layout="@layout/favorite_tv_show_fragment" />
+        app:moduleName="favorite">
+        <action
+            android:id="@+id/action_navigation_favorite_tv_to_detailTvFragment"
+            app:destination="@id/detailTvFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="com.example.moviecatalogue.ui.detail.DetailMovieFragment"
+        android:label="DetailMovieFragment"
+        tools:layout="@layout/fragment_detail_movie">
+        <argument
+            android:name="movieId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailMovieFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailTvFragment"
+        android:name="com.example.moviecatalogue.ui.detail.DetailTvFragment"
+        android:label="DetailTvFragment"
+        tools:layout="@layout/fragment_detail_tv">
+        <argument
+            android:name="tvId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailTvFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.moviecatalogue.ui.webview.WebViewFragment"
+        android:label="WebViewFragment"
+        tools:layout="@layout/fragment_web_view">
+        <argument
+            android:name="url"
+            android:defaultValue="https://www.google.com"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

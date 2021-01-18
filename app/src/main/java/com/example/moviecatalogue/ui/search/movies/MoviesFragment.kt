@@ -1,7 +1,6 @@
 package com.example.moviecatalogue.ui.search.movies
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
@@ -21,8 +21,6 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
-import com.example.moviecatalogue.ui.detail.DetailMovieActivity
-import com.example.moviecatalogue.ui.detail.DetailTvActivity
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -61,16 +59,16 @@ class MoviesFragment : Fragment() {
                 Toast.LENGTH_SHORT
             )
 
-            moviesAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailMovieActivity::class.java)
-                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            moviesAdapter.onItemClick = {
+                val action = MoviesFragmentDirections.actionNavigationSearchToDetailMovieFragment()
+                action.movieId = it.id.toString()
+                view.findNavController().navigate(action)
             }
 
-            tvAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailTvActivity::class.java)
-                intent.putExtra(DetailTvActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            tvAdapter.onItemClick = {
+                val action = MoviesFragmentDirections.actionNavigationSearchToDetailTvFragment()
+                action.tvId = it.id.toString()
+                view.findNavController().navigate(action)
             }
         }
         observeSearchMovie()

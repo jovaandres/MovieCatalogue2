@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.popular.movies
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
@@ -18,7 +18,6 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
-import com.example.moviecatalogue.ui.detail.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -49,15 +48,15 @@ class PopularMoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            popularMoviesAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailMovieActivity::class.java)
-                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            val action =
+                PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
+            popularMoviesAdapter.onItemClick = {
+                action.movieId = it.id.toString()
+                view.findNavController().navigate(action)
             }
-            nowPlayingMoviesAdapter.onItemClick = { data ->
-                val intent = Intent(activity, DetailMovieActivity::class.java)
-                intent.putExtra(DetailMovieActivity.EXTRA_ID, data.id.toString())
-                startActivity(intent)
+            nowPlayingMoviesAdapter.onItemClick = {
+                action.movieId = it.id.toString()
+                view.findNavController().navigate(action)
             }
             showPopularMovie()
         }
