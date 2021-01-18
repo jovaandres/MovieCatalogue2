@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Proguard for leakcanary
+-keep class leakcanary.** { *; }
+-keep class shark.** { *; }
+-keep class androidx.navigation.dynamicfeatures.** { *; }

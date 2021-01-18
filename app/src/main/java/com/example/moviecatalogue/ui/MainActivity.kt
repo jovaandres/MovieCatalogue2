@@ -1,14 +1,16 @@
 package com.example.moviecatalogue.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.example.moviecatalogue.R
+import com.example.moviecatalogue.core.utils.gone
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +30,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        navController = findNavController(R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
@@ -42,9 +46,9 @@ class MainActivity : AppCompatActivity() {
                     destination.id
                 )
             ) {
-                bottomNavigation.visibility = View.GONE
+                bottomNavigation.gone()
             } else {
-                bottomNavigation.visibility = View.VISIBLE
+                bottomNavigation.visible()
             }
         }
 
@@ -52,7 +56,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        navController = findNavController(R.id.nav_host_fragment)
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

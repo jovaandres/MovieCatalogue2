@@ -27,12 +27,14 @@
         android:id="@+id/navigation_favorite_movie"
         android:name="com.example.moviecatalogue.favorite.movie.FavoriteMovieFragment"
         android:label="@string/favorite_movies"
+        app:moduleName="favoriteMovieDynamicFeature"
         tools:layout="@layout/favorite_movie_fragment" />
 
     <fragment
         android:id="@+id/navigation_favorite_tv"
         android:name="com.example.moviecatalogue.favorite.tvshow.FavoriteTvShowFragment"
         android:label="@string/favorite_tv"
+        app:moduleName="favoriteTvDynamicFeature"
         tools:layout="@layout/favorite_tv_show_fragment" />
 
 </navigation>
