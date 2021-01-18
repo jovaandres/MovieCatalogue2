@@ -91,10 +91,8 @@ class MoviesFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.searchTvShow.collect { tvObserver(it) }
         }
-        if (title.isNotEmpty()) {
-            viewModel.getMovies(title)
-            viewModel.getTvShows(title)
-        }
+        viewModel.getMovies(title)
+        viewModel.getTvShows(title)
     }
 
     private fun movieObserver(data_movie: Resource<List<Movie>>) {
@@ -107,7 +105,7 @@ class MoviesFragment : Fragment() {
             is Resource.Success -> {
                 binding.movieProgress.invisible()
                 binding.movie.visible()
-                moviesAdapter.setListMovie(data_movie.data)
+                moviesAdapter.movieList = data_movie.data as ArrayList<Movie>
                 binding.rvMovies.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -135,7 +133,7 @@ class MoviesFragment : Fragment() {
             is Resource.Success -> {
                 binding.tvProgress.gone()
                 binding.tv.visible()
-                tvAdapter.setListTvShow(data_tv.data)
+                tvAdapter.tvShowList = data_tv.data as ArrayList<TvShow>
                 binding.rvTv.apply {
                     setHasFixedSize(true)
                     layoutManager =

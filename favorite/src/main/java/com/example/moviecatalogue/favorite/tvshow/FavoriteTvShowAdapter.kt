@@ -4,24 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.favorite.R
-import com.example.moviecatalogue.favorite.databinding.ItemTvShowBinding
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.favorite.R
+import com.example.moviecatalogue.favorite.databinding.ItemTvShowBinding
 import com.squareup.picasso.Picasso
 
 class FavoriteTvShowAdapter :
     RecyclerView.Adapter<FavoriteTvShowAdapter.FavoriteTvShowViewHolder>() {
 
-    private var tvList = ArrayList<DetailTvShow>()
+    var tvList = ArrayList<DetailTvShow>()
+        set(value) {
+            tvList.clear()
+            tvList.addAll(value)
+            notifyDataSetChanged()
+        }
     var onItemClick: ((DetailTvShow) -> Unit)? = null
-
-    fun setTvShowFavoriteList(newTvList: List<DetailTvShow>?) {
-        if (newTvList == null) return
-        tvList.clear()
-        tvList.addAll(newTvList)
-        notifyDataSetChanged()
-    }
 
     inner class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)

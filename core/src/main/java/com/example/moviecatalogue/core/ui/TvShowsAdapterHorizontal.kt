@@ -13,15 +13,14 @@ import com.squareup.picasso.Picasso
 class TvShowsAdapterHorizontal :
     RecyclerView.Adapter<TvShowsAdapterHorizontal.TvShowsViewHolder>() {
 
-    private var tvShowList = ArrayList<TvShow>()
-    var onItemClick: ((TvShow) -> Unit)? = null
-
-    fun setListTvShow(newTvShowList: List<TvShow>?) {
-        if (newTvShowList == null) return
+    var tvShowList = ArrayList<TvShow>()
+        set(value) {
             tvShowList.clear()
-            tvShowList.addAll(newTvShowList)
+            tvShowList.addAll(value)
             notifyDataSetChanged()
-    }
+        }
+
+    var onItemClick: ((TvShow) -> Unit)? = null
 
     fun deleteList() {
         tvShowList.clear()

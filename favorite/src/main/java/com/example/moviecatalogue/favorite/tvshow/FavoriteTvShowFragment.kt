@@ -147,8 +147,7 @@ class FavoriteTvShowFragment : Fragment() {
         when (data) {
             is Resource.Loading -> binding.favTvProgress.visible()
             is Resource.Success -> {
-                favoriteTvShowAdapter.setTvShowFavoriteList(data.data)
-                favoriteTvShowAdapter.notifyDataSetChanged()
+                favoriteTvShowAdapter.tvList = data.data as ArrayList<DetailTvShow>
                 binding.rvFavTvShows.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

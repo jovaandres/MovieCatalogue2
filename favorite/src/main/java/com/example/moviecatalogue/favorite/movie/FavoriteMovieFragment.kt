@@ -147,8 +147,7 @@ class FavoriteMovieFragment : Fragment() {
         when (data) {
             is Resource.Loading -> binding.favMovieProgress.visible()
             is Resource.Success -> {
-                favoriteMovieAdapter.setMovieFavoriteList(data.data)
-                favoriteMovieAdapter.notifyDataSetChanged()
+                favoriteMovieAdapter.movieList = data.data as ArrayList<DetailMovie>
                 binding.rvFavMovies.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

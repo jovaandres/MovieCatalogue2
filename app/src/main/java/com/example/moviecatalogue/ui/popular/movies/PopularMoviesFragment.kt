@@ -88,8 +88,7 @@ class PopularMoviesFragment : Fragment() {
             is Resource.Success -> {
                 binding.nowMovieProgress.invisible()
                 binding.movieNow.visible()
-                nowPlayingMoviesAdapter.setListMovie(data.data)
-                nowPlayingMoviesAdapter.notifyDataSetChanged()
+                nowPlayingMoviesAdapter.movieList = data.data as ArrayList<Movie>
                 binding.rvNowMovies.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -112,8 +111,7 @@ class PopularMoviesFragment : Fragment() {
             is Resource.Success -> {
                 binding.popMovieProgress.gone()
                 binding.moviePop.visible()
-                popularMoviesAdapter.setListMovie(data.data)
-                popularMoviesAdapter.notifyDataSetChanged()
+                popularMoviesAdapter.movieList = data.data as ArrayList<Movie>
                 binding.rvPopMovies.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

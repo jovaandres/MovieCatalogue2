@@ -65,8 +65,7 @@ class PopularTvShowFragment : Fragment() {
             }
             is Resource.Success -> {
                 binding.popTvProgress.gone()
-                popularTvShowAdapter.setListTvShow(data.data)
-                popularTvShowAdapter.notifyDataSetChanged()
+                popularTvShowAdapter.tvShowList = data.data as ArrayList<TvShow>
                 binding.rvPopTvShows.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

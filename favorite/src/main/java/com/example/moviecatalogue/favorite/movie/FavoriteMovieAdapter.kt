@@ -4,23 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.favorite.R
-import com.example.moviecatalogue.favorite.databinding.ItemMoviesBinding
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.favorite.R
+import com.example.moviecatalogue.favorite.databinding.ItemMoviesBinding
 import com.squareup.picasso.Picasso
 
 class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteMovieViewHolder>() {
 
-    private var movieList = ArrayList<DetailMovie>()
-    var onItemClick: ((DetailMovie) -> Unit)? = null
+    var movieList = ArrayList<DetailMovie>()
+        set(value) {
+            movieList.clear()
+            movieList.addAll(value)
+            notifyDataSetChanged()
+        }
 
-    fun setMovieFavoriteList(newMovieList: List<DetailMovie>?) {
-        if (newMovieList == null) return
-        movieList.clear()
-        movieList.addAll(newMovieList)
-        notifyDataSetChanged()
-    }
+    var onItemClick: ((DetailMovie) -> Unit)? = null
 
     inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMoviesBinding.bind(itemView)

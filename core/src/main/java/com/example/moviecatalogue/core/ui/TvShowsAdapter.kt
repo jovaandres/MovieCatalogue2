@@ -13,15 +13,14 @@ import com.squareup.picasso.Picasso
 class TvShowsAdapter :
     RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-    private var tvShowList = ArrayList<TvShow>()
-    var onItemClick: ((TvShow) -> Unit)? = null
-
-    fun setListTvShow(newTvShowList: List<TvShow>?) {
-        if (newTvShowList == null) return
+    var tvShowList = ArrayList<TvShow>()
+        set(value) {
             tvShowList.clear()
-            tvShowList.addAll(newTvShowList)
+            tvShowList.addAll(value)
             notifyDataSetChanged()
-    }
+        }
+
+    var onItemClick: ((TvShow) -> Unit)? = null
 
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)

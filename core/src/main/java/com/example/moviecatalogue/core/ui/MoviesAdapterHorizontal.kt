@@ -12,15 +12,14 @@ import com.squareup.picasso.Picasso
 
 class MoviesAdapterHorizontal : RecyclerView.Adapter<MoviesAdapterHorizontal.MoviesViewHolder>() {
 
-    private var movieList = ArrayList<Movie>()
-    var onItemClick: ((Movie) -> Unit)? = null
+    var movieList = ArrayList<Movie>()
+        set(value) {
+            movieList.clear()
+            movieList.addAll(value)
+            notifyDataSetChanged()
+        }
 
-    fun setListMovie(newMovieList: List<Movie>?) {
-        if (newMovieList == null) return
-        movieList.clear()
-        movieList.addAll(newMovieList)
-        notifyDataSetChanged()
-    }
+    var onItemClick: ((Movie) -> Unit)? = null
 
     fun deleteList() {
         movieList.clear()
