@@ -69,6 +69,15 @@ class MoviesFragment : Fragment() {
                 view.findNavController().navigate(action)
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchMovie.collect { movieObserver(it) }
+
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchTvShow.collect { tvObserver(it) }
+        }
+
         observeSearchMovie()
     }
 
@@ -77,26 +86,24 @@ class MoviesFragment : Fragment() {
         RxTextView.textChanges(binding.search)
             .skipInitialValue()
             .debounce(500, TimeUnit.MILLISECONDS)
-            .filter { it.isNotEmpty() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { getMovieFromViewModel(it.toString()) }
+            .subscribe {
+                getMovieAndTv(it.toString())
+            }
     }
 
-    private fun getMovieFromViewModel(title: String) {
-        lifecycleScope.launchWhenStarted {
-            viewModel.searchMovie.collect { movieObserver(it) }
-
+    private fun getMovieAndTv(title: String) {
+        if (title.trim().isNotEmpty()) {
+            viewModel.getMovieAndTv(title)
+            viewModel.query.value = title
         }
-        lifecycleScope.launchWhenStarted {
-            viewModel.searchTvShow.collect { tvObserver(it) }
-        }
-        viewModel.getMovies(title)
-        viewModel.getTvShows(title)
     }
 
     private fun movieObserver(data_movie: Resource<List<Movie>>) {
         when (data_movie) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> {
                 moviesAdapter.deleteList()
                 binding.movieProgress.visible()
@@ -125,6 +132,8 @@ class MoviesFragment : Fragment() {
 
     private fun tvObserver(data_tv: Resource<List<TvShow>>) {
         when (data_tv) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> {
                 tvAdapter.deleteList()
                 binding.tvProgress.visible()

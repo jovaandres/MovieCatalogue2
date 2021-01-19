@@ -56,28 +56,6 @@ class FavoriteMovieFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FavoriteMovieFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (activity != null) {
-            favoriteMovieAdapter.onItemClick = {
-                val bundle = Bundle()
-                bundle.putString("movieId", it.id.toString())
-                view.findNavController()
-                    .navigate(R.id.action_navigation_favorite_movie_to_detailMovieFragment, bundle)
-            }
-        }
-        itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
-        showFavoriteMovie()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -117,27 +95,45 @@ class FavoriteMovieFragment : Fragment() {
             }
         }
         viewModel.showFavoriteMovie(simpleQuery, sort)
-        lifecycleScope.launchWhenStarted {
-            viewModel.favoriteMovies.collect {
-                movieObserver(it)
-            }
-        }
         item.isChecked = true
         sortPreferences.setPrefFavoriteMovie(index, sort)
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showFavoriteMovie() {
-        binding.favMovieProgress.visibility = View.VISIBLE
-        val simpleQuery = "SELECT * FROM movie_detail WHERE isFavorite = 1 "
-        if (viewModel.favoriteMovies.value is Resource.Loading) {
-            sortPreferences.getSortFavoriteMovie()?.let {
-                viewModel.showFavoriteMovie(simpleQuery, it)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FavoriteMovieFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            favoriteMovieAdapter.onItemClick = {
+                val bundle = Bundle()
+                bundle.putString("movieId", it.id.toString())
+                view.findNavController()
+                    .navigate(R.id.action_navigation_favorite_movie_to_detailMovieFragment, bundle)
             }
         }
+
         lifecycleScope.launchWhenStarted {
             viewModel.favoriteMovies.collect {
                 movieObserver(it)
+            }
+        }
+
+        itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
+        showFavoriteMovie()
+    }
+
+    private fun showFavoriteMovie() {
+        val simpleQuery = "SELECT * FROM movie_detail WHERE isFavorite = 1 "
+        if (viewModel.favoriteMovies.value is Resource.Init) {
+            sortPreferences.getSortFavoriteMovie()?.let {
+                viewModel.showFavoriteMovie(simpleQuery, it)
             }
         }
         binding.favMovieProgress.gone()
@@ -145,6 +141,8 @@ class FavoriteMovieFragment : Fragment() {
 
     private fun movieObserver(data: Resource<List<DetailMovie>>) {
         when (data) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> binding.favMovieProgress.visible()
             is Resource.Success -> {
                 favoriteMovieAdapter.movieList = data.data as ArrayList<DetailMovie>
@@ -155,7 +153,9 @@ class FavoriteMovieFragment : Fragment() {
                 }
                 binding.favMovieProgress.gone()
             }
-            else -> binding.favMovieProgress.gone()
+            is Resource.Error -> {
+                binding.favMovieProgress.gone()
+            }
         }
     }
 

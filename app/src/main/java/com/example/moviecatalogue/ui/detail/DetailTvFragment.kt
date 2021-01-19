@@ -78,6 +78,8 @@ class DetailTvFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
                 viewModel.detailTv.collect { data ->
                     when (data) {
+                        is Resource.Init -> {
+                        }
                         is Resource.Loading -> binding.tvDetailProgress.visible()
                         is Resource.Success -> {
                             setTvShowDetail(data.data)

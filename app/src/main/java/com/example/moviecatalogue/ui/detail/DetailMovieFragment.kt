@@ -78,11 +78,12 @@ class DetailMovieFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
                 viewModel.detailMovie.collect { data ->
                     when (data) {
+                        is Resource.Init -> {
+                        }
                         is Resource.Loading -> binding.movieDetailProgress.visible()
                         is Resource.Success -> {
                             setMovieDetail(data.data)
                             binding.movieDetailProgress.gone()
-
                         }
                         is Resource.Error -> {
                             binding.movieDetailProgress.gone()

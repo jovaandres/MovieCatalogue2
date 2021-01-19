@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FavoriteTvShowViewModel @Inject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
-    private val _favoriteTvShow = MutableStateFlow<Resource<List<DetailTvShow>>>(Resource.Loading())
+    private val _favoriteTvShow = MutableStateFlow<Resource<List<DetailTvShow>>>(Resource.Init())
 
     val favoriteTvShow: StateFlow<Resource<List<DetailTvShow>>> = _favoriteTvShow
 

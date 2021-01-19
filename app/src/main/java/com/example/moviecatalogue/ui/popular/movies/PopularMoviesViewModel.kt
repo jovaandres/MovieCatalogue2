@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 class PopularMoviesViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
-    private val _popularMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
-    private val _nowPlayingMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Loading())
+    private val _popularMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Init())
+    private val _nowPlayingMovies = MutableStateFlow<Resource<List<Movie>>>(Resource.Init())
 
     val popularMovies: StateFlow<Resource<List<Movie>>> get() = _popularMovies
     val nowPlayingMovies: StateFlow<Resource<List<Movie>>> get() = _nowPlayingMovies

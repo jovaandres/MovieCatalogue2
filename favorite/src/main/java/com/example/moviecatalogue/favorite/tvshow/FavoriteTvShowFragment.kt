@@ -56,28 +56,6 @@ class FavoriteTvShowFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FavoriteTvShowFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (activity != null) {
-            favoriteTvShowAdapter.onItemClick = {
-                val bundle = Bundle()
-                bundle.putString("tvId", it.id.toString())
-                view.findNavController()
-                    .navigate(R.id.action_navigation_favorite_tv_to_detailTvFragment, bundle)
-            }
-        }
-        itemTouchHelper.attachToRecyclerView(binding.rvFavTvShows)
-        showFavoriteTvShow()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -117,27 +95,45 @@ class FavoriteTvShowFragment : Fragment() {
             }
         }
         viewModel.showFavoriteTvShow(simpleQuery, sort)
-        lifecycleScope.launchWhenStarted {
-            viewModel.favoriteTvShow.collect {
-                tvShowObserver(it)
-            }
-        }
         item.isChecked = true
         sortPreferences.setPrefFavoriteTv(index, sort)
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showFavoriteTvShow() {
-        binding.favTvProgress.visibility = View.VISIBLE
-        val simpleQuery = "SELECT * FROM tv_show_detail WHERE isFavorite = 1 "
-        if (viewModel.favoriteTvShow.value is Resource.Loading) {
-            sortPreferences.getSortFavoriteTv()?.let {
-                viewModel.showFavoriteTvShow(simpleQuery, it)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FavoriteTvShowFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            favoriteTvShowAdapter.onItemClick = {
+                val bundle = Bundle()
+                bundle.putString("tvId", it.id.toString())
+                view.findNavController()
+                    .navigate(R.id.action_navigation_favorite_tv_to_detailTvFragment, bundle)
             }
         }
+
         lifecycleScope.launchWhenStarted {
             viewModel.favoriteTvShow.collect {
                 tvShowObserver(it)
+            }
+        }
+
+        itemTouchHelper.attachToRecyclerView(binding.rvFavTvShows)
+        showFavoriteTvShow()
+    }
+
+    private fun showFavoriteTvShow() {
+        val simpleQuery = "SELECT * FROM tv_show_detail WHERE isFavorite = 1 "
+        if (viewModel.favoriteTvShow.value is Resource.Init) {
+            sortPreferences.getSortFavoriteTv()?.let {
+                viewModel.showFavoriteTvShow(simpleQuery, it)
             }
         }
         binding.favTvProgress.gone()
@@ -145,6 +141,8 @@ class FavoriteTvShowFragment : Fragment() {
 
     private fun tvShowObserver(data: Resource<List<DetailTvShow>>) {
         when (data) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> binding.favTvProgress.visible()
             is Resource.Success -> {
                 favoriteTvShowAdapter.tvList = data.data as ArrayList<DetailTvShow>
@@ -155,7 +153,9 @@ class FavoriteTvShowFragment : Fragment() {
                 }
                 binding.favTvProgress.gone()
             }
-            else -> binding.favTvProgress.gone()
+            is Resource.Error -> {
+                binding.favTvProgress.gone()
+            }
         }
     }
 

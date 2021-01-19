@@ -43,23 +43,27 @@ class PopularTvShowFragment : Fragment() {
                 action.tvId = it.id.toString()
                 view.findNavController().navigate(action)
             }
+
+            lifecycleScope.launchWhenStarted {
+                viewModel.popularTvShows.collect {
+                    tvShowObserver(it)
+                }
+            }
+
             showPopularTvShow()
         }
     }
 
     private fun showPopularTvShow() {
-        if (viewModel.popularTvShows.value is Resource.Loading) {
+        if (viewModel.popularTvShows.value is Resource.Init) {
             viewModel.getPopularTvShow()
-        }
-        lifecycleScope.launchWhenStarted {
-            viewModel.popularTvShows.collect {
-                tvShowObserver(it)
-            }
         }
     }
 
     private fun tvShowObserver(data: Resource<List<TvShow>>) {
         when (data) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> {
                 binding.popTvProgress.visible()
             }

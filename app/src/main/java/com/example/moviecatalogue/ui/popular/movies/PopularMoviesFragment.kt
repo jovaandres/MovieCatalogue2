@@ -48,39 +48,45 @@ class PopularMoviesFragment : Fragment() {
         if (activity != null) {
             val action =
                 PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
+
             popularMoviesAdapter.onItemClick = {
                 action.movieId = it.id.toString()
                 view.findNavController().navigate(action)
             }
+
             nowPlayingMoviesAdapter.onItemClick = {
                 action.movieId = it.id.toString()
                 view.findNavController().navigate(action)
             }
+
+            lifecycleScope.launchWhenStarted {
+                viewModel.popularMovies.collect {
+                    movieObserver(it)
+                }
+            }
+            lifecycleScope.launchWhenStarted {
+                viewModel.nowPlayingMovies.collect {
+                    nowPlayingObserver(it)
+                }
+            }
+
             showPopularMovie()
         }
     }
 
     private fun showPopularMovie() {
-        if (viewModel.popularMovies.value is Resource.Loading) {
+        if (viewModel.popularMovies.value is Resource.Init) {
             viewModel.getPopularMovies()
         }
-        if (viewModel.nowPlayingMovies.value is Resource.Loading) {
+        if (viewModel.nowPlayingMovies.value is Resource.Init) {
             viewModel.getNowPlayingMovies()
-        }
-        lifecycleScope.launchWhenStarted {
-            viewModel.popularMovies.collect {
-                movieObserver(it)
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            viewModel.nowPlayingMovies.collect {
-                nowPlayingObserver(it)
-            }
         }
     }
 
     private fun nowPlayingObserver(data: Resource<List<Movie>>) {
         when (data) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> {
                 binding.nowMovieProgress.visible()
                 binding.movieNow.invisible()
@@ -104,6 +110,8 @@ class PopularMoviesFragment : Fragment() {
 
     private fun movieObserver(data: Resource<List<Movie>>) {
         when (data) {
+            is Resource.Init -> {
+            }
             is Resource.Loading -> {
                 binding.popMovieProgress.visible()
                 binding.moviePop.invisible()

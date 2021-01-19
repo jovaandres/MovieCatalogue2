@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class DetailTvShowViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
-    private val _detailTv = MutableStateFlow<Resource<DetailTvShow>>(Resource.Loading())
+    private val _detailTv = MutableStateFlow<Resource<DetailTvShow>>(Resource.Init())
     val detailTv: StateFlow<Resource<DetailTvShow>> get() = _detailTv
 
     fun getDetailTvShow(id: String) {

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class DetailMovieViewModel @ViewModelInject constructor(val movieCatalogueUseCase: MovieCatalogueUseCase) :
     ViewModel() {
 
-    private val _detailMovie = MutableStateFlow<Resource<DetailMovie>>(Resource.Loading())
+    private val _detailMovie = MutableStateFlow<Resource<DetailMovie>>(Resource.Init())
     val detailMovie: StateFlow<Resource<DetailMovie>> get() = _detailMovie
 
     fun getDetailMovie(id: String) {
