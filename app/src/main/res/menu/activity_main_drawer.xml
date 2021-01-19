@@ -5,12 +5,12 @@
         <menu>
             <item
                 android:id="@+id/navigation_favorite_movie"
-                android:icon="@drawable/ic_favorite"
+                android:icon="@drawable/ic_not_favorite"
                 android:title="@string/favorite_movies" />
 
             <item
                 android:id="@+id/navigation_favorite_tv"
-                android:icon="@drawable/ic_favorite"
+                android:icon="@drawable/ic_not_favorite"
                 android:title="@string/favorite_tv" />
         </menu>
     </item>
