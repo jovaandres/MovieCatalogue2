@@ -1,7 +1,6 @@
 package com.example.moviecatalogue.ui
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -10,8 +9,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.example.moviecatalogue.R
-import com.example.moviecatalogue.core.utils.Constant
-import com.example.moviecatalogue.core.utils.SvgLoader
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityMainBinding
@@ -43,10 +40,6 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(binding.navigationView, navController)
-
-        val attrImage: ImageView =
-            binding.navigationView.getHeaderView(0).findViewById(R.id.attr_image)
-        SvgLoader.fetchSvg(this, Constant.ATTR_IMAGE, attrImage)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (intArrayOf(
