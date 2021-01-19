@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moviecatalogue.core.domain.model.DetailMovie
-import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
 import com.example.moviecatalogue.favorite.R
 import com.example.moviecatalogue.favorite.databinding.ItemMoviesBinding
-import com.squareup.picasso.Picasso
 
 class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteMovieViewHolder>() {
 
@@ -28,8 +28,8 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
                 titleMovie.text = moviesData.title
                 descMovie.text = moviesData.overview
                 rating.rating = moviesData.voteAverage?.toFloat()?.div(2) ?: 0f
-                Picasso.get()
-                    .load(Constant.IMAGE_URL + moviesData.posterPath)
+                Glide.with(itemView)
+                    .load(IMAGE_URL + moviesData.posterPath)
                     .into(imgMovie)
             }
         }

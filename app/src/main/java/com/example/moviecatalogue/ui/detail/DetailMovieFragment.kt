@@ -11,16 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
-import com.example.moviecatalogue.core.utils.Constant
+import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.underline
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentDetailMovieBinding
 import com.shashank.sony.fancytoastlib.FancyToast
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -113,11 +113,11 @@ class DetailMovieFragment : Fragment() {
                         view?.findNavController()?.navigate(action)
                     }
                 }
-                Picasso.get()
-                    .load(Constant.IMAGE_URL + data.backdropPath)
+                Glide.with(this@DetailMovieFragment)
+                    .load(IMAGE_URL + data.backdropPath)
                     .into(background)
-                Picasso.get()
-                    .load(Constant.IMAGE_URL + data.posterPath)
+                Glide.with(this@DetailMovieFragment)
+                    .load(IMAGE_URL + data.posterPath)
                     .into(poster)
             }
         }

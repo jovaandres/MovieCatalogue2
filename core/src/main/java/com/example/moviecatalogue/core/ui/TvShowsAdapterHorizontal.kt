@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moviecatalogue.core.R
 import com.example.moviecatalogue.core.databinding.ItemTvHorizontalBinding
 import com.example.moviecatalogue.core.domain.model.TvShow
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
-import com.squareup.picasso.Picasso
 
 class TvShowsAdapterHorizontal :
     RecyclerView.Adapter<TvShowsAdapterHorizontal.TvShowsViewHolder>() {
@@ -33,7 +33,7 @@ class TvShowsAdapterHorizontal :
             binding.run {
                 titleTvH.text = tvShowsData.title
                 ratingTvH.text = tvShowsData.voteAverage?.toString()
-                Picasso.get()
+                Glide.with(itemView)
                     .load(IMAGE_URL + tvShowsData.posterPath)
                     .into(imgTvH)
             }
