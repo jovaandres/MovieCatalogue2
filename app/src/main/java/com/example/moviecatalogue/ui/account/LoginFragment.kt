@@ -2,19 +2,19 @@ package com.example.moviecatalogue.ui.account
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.moviecatalogue.databinding.FragmentLoginBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
@@ -27,13 +27,6 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: AccountViewModel by viewModels()
-
-    private lateinit var auth: FirebaseAuth
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        auth = Firebase.auth
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,11 +84,8 @@ class LoginFragment : Fragment() {
         }
         additionalAction()
         binding.btnTest.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "username: ${auth.currentUser?.email}--password: ${auth.currentUser?.isEmailVerified}",
-                Toast.LENGTH_SHORT
-            ).show()
+//            viewModel.requestSession()
+            Toast.makeText(it.context, viewModel.session.value, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -105,12 +95,32 @@ class LoginFragment : Fragment() {
             view?.findNavController()?.navigate(action)
         }
         binding.forgotPassword.setOnClickListener {
-
+            val alertDialog = AlertDialog.Builder(requireContext())
+                .setTitle("Reset Password")
+            val input = TextInputEditText(requireContext())
+            input.hint = "Enter Email"
+            input.setPaddingRelative(24, 16, 24, 16)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            alertDialog.setView(input)
+            alertDialog.setPositiveButton("Send") { _, _ ->
+                viewModel.forgotPassword(input.text.toString())
+                Toast.makeText(
+                    requireContext(),
+                    "The password reset email has been sent",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            alertDialog.setNegativeButton("Cancel") { dialog, _ ->
+                dialog?.cancel()
+            }
+            alertDialog.show()
         }
         binding.btnSignIn.setOnClickListener {
             val editableUsername = binding.username
             val editablePassword = binding.password
             viewModel.login(editableUsername.text.toString(), editablePassword.text.toString())
+            val action = LoginFragmentDirections.actionNavigationLoginToNavigationMovie()
+            view?.findNavController()?.navigate(action)
         }
     }
 

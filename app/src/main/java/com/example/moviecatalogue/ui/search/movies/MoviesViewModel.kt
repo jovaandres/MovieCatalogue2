@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.search.movies
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +23,6 @@ class MoviesViewModel @ViewModelInject constructor(val movieCatalogueUseCase: Mo
     val searchTvShow: StateFlow<Resource<List<TvShow>>> get() = _searchTvShow
 
     fun getMovieAndTv(title: String) {
-        Log.d("TAG", title + "---" + query.value)
         if (query.value != title) {
             viewModelScope.launch {
                 movieCatalogueUseCase.getSearchedMovie(title)

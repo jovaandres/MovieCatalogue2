@@ -19,15 +19,15 @@ import com.example.moviecatalogue.databinding.FragmentWebViewBinding
 @SuppressLint("SetJavaScriptEnabled")
 class WebViewFragment : Fragment() {
     private var _binding: FragmentWebViewBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.onBackPressedDispatcher
             ?.addCallback(this, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (binding.webview.canGoBack()) {
-                        binding.webview.goBack()
+                    if (binding?.webview?.canGoBack() == true) {
+                        binding?.webview?.goBack()
                     } else {
                         super.remove()
                         view?.findNavController()?.popBackStack()
@@ -39,9 +39,9 @@ class WebViewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentWebViewBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,12 +49,12 @@ class WebViewFragment : Fragment() {
 
         val url = WebViewFragmentArgs.fromBundle(arguments as Bundle).url
 
-        binding.webview.settings.javaScriptEnabled = true
-        binding.webview.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        binding?.webview?.settings?.javaScriptEnabled = true
+        binding?.webview?.settings?.cacheMode = WebSettings.LOAD_NO_CACHE
 
-        binding.webview.webViewClient = object : WebViewClient() {
+        binding?.webview?.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                binding.progress.visible()
+                binding?.progress?.visible()
             }
 
             override fun onReceivedSslError(
@@ -79,17 +79,17 @@ class WebViewFragment : Fragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                binding.progress.gone()
+                binding?.progress?.gone()
             }
         }
 
-        binding.webview.loadUrl(url)
-        binding.progress.progress = 1
-        binding.progress.max = 100
+        binding?.webview?.loadUrl(url)
+        binding?.progress?.progress = 1
+        binding?.progress?.max = 100
 
-        binding.webview.webChromeClient = object : WebChromeClient() {
+        binding?.webview?.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                binding.progress.progress = newProgress
+                binding?.progress?.progress = newProgress
             }
         }
     }

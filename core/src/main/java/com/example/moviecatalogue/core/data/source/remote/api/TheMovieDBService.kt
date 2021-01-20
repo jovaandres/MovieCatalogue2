@@ -1,9 +1,7 @@
 package com.example.moviecatalogue.core.data.source.remote.api
 
-import com.example.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
-import com.example.moviecatalogue.core.data.source.remote.response.MovieSearchDataResponse
-import com.example.moviecatalogue.core.data.source.remote.response.TvShowDetailResponse
-import com.example.moviecatalogue.core.data.source.remote.response.TvShowSearchDataResponse
+import com.example.moviecatalogue.core.data.source.remote.response.*
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -53,5 +51,8 @@ interface TheMovieDBService {
         @Path("id") id: Int,
         @Query("api_key") key: String
     ): TvShowDetailResponse
+
+    @GET("authentication/guest_session/new")
+    fun getSession(@Query("api_key") key: String): Call<SessionResponse>
 
 }

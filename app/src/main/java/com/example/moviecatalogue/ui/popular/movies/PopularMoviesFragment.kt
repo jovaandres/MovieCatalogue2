@@ -132,10 +132,19 @@ class PopularMoviesFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as SetState).setState()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvNowMovies.adapter = null
         binding.rvPopMovies.adapter = null
         _binding = null
     }
+}
+
+interface SetState {
+    fun setState()
 }

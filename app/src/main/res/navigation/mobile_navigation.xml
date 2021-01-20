@@ -130,6 +130,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.moviecatalogue.ui.account.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_navigation_login"
+            app:destination="@id/navigation_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_movie"
+            app:destination="@id/navigation_movie" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_login"
         android:name="com.example.moviecatalogue.ui.account.LoginFragment"
         android:label="Login Fragment"
@@ -141,12 +158,24 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_movie"
+            app:destination="@id/navigation_movie" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_register"
         android:name="com.example.moviecatalogue.ui.account.RegisterFragment"
         android:label="Register Fragment"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_navigation_register_to_navigation_login"
+            app:destination="@id/navigation_login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
 
 </navigation>

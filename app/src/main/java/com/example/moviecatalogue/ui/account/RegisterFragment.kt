@@ -89,6 +89,8 @@ class RegisterFragment : Fragment() {
             val editableUsername = binding.username
             val editablePassword = binding.password
             viewModel.register(editableUsername.text.toString(), editablePassword.text.toString())
+            val action = RegisterFragmentDirections.actionNavigationRegisterToNavigationLogin()
+            view?.findNavController()?.navigate(action)
         }
     }
 

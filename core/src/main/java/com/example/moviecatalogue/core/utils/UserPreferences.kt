@@ -39,7 +39,7 @@ class UserPreferences(context: Context) {
     private var editor: SharedPreferences.Editor = prefs.edit()
 
     var username: String?
-        get() = prefs.getString(EMAIL, null)
+        get() = prefs.getString(EMAIL, "Guest")
         set(value) {
             editor.putString(EMAIL, value)
             editor.apply()

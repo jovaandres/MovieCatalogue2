@@ -43,4 +43,10 @@
     <string name="don_t_have_account_yet">Don\'t have account yet?</string>
     <string name="already_have_account">Already have account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="guest">Guest</string>
+    <string name="session">Session</string>
+    <string name="create_session_first">Create Session First</string>
+    <string name="preferences">Preferences</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="exit_app">Exit</string>
 </resources>

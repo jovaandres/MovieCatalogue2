@@ -8,15 +8,41 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
-    <ImageView
-        android:id="@+id/attr_image"
-        android:layout_width="186dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="@string/logos"
-        android:layout_marginStart="75dp"
-        android:src="@drawable/attribute"
-        android:scaleType="fitXY" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/profile"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="top"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_person"
+            android:contentDescription="@string/profile"
+            android:src="@drawable/ic_person_pin" />
+
+        <ImageView
+            android:id="@+id/attr_image"
+            android:layout_width="162dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/logos"
+            android:scaleType="fitXY"
+            android:src="@drawable/attribute" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:text="@string/guest"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"

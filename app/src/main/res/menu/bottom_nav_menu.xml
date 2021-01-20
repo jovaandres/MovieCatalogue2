@@ -17,7 +17,7 @@
         android:title="@string/search" />
 
     <item
-        android:id="@+id/navigation_login"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person_pin"
         android:title="@string/profile" />
 
