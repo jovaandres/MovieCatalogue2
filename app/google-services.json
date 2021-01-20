@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750779127756",
+    "project_id": "moviecatalogue-1fafd",
+    "storage_bucket": "moviecatalogue-1fafd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750779127756:android:2132d74bde01b38da6af69",
+        "android_client_info": {
+          "package_name": "com.example.moviecatalogue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750779127756-i0n4o62idcq2plib231f6l1mlvc4qefb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDhjjOn6a0NRLC52S5QmKgBuNkyGhYKHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750779127756-i0n4o62idcq2plib231f6l1mlvc4qefb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

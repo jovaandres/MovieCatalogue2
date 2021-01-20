@@ -1,5 +1,7 @@
 package com.example.moviecatalogue.core.di
 
+import com.example.moviecatalogue.core.domain.usecase.AuthenticationInteractor
+import com.example.moviecatalogue.core.domain.usecase.AuthenticationUseCase
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueInteractor
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun providesMovieCatalogueUseCase(movieCatalogueInteractor: MovieCatalogueInteractor): MovieCatalogueUseCase
+
+    @Binds
+    abstract fun provideAuthenticationUseCase(authenticationInteractor: AuthenticationInteractor): AuthenticationUseCase
 }

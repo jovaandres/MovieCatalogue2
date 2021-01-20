@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
 
+    <item
+        android:id="@+id/navigation_login"
+        android:icon="@drawable/ic_person_pin"
+        android:title="@string/profile" />
+
 </menu>

@@ -7,14 +7,12 @@ import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-class SortPreferences(context: Context) {
+class UserPreferences(context: Context) {
 
     companion object {
-        private const val PREFS_NAME = "sort_pref"
-        private const val MENU_FAVORITE_MOVIE = "menu_favorite_movie"
-        private const val SORT_FAVORITE_MOVIE = "sort_favorite_movie"
-        private const val MENU_FAVORITE_TV = "menu_favorite_tv"
-        private const val SORT_FAVORITE_TV = "sort_favorite_tv"
+        private const val PREFS_NAME = "user_pref"
+        private const val EMAIL = "email"
+        private const val PASSWORD = "password"
     }
 
     private val spec = KeyGenParameterSpec.Builder(
@@ -40,22 +38,17 @@ class SortPreferences(context: Context) {
 
     private var editor: SharedPreferences.Editor = prefs.edit()
 
-    fun setPrefFavoriteMovie(menuId: Int, sort: String) {
-        editor.putInt(MENU_FAVORITE_MOVIE, menuId)
-            .putString(SORT_FAVORITE_MOVIE, sort)
-            .apply()
-    }
+    var username: String?
+        get() = prefs.getString(EMAIL, null)
+        set(value) {
+            editor.putString(EMAIL, value)
+            editor.apply()
+        }
 
-    fun setPrefFavoriteTv(menuId: Int, sort: String) {
-        editor.putInt(MENU_FAVORITE_TV, menuId)
-            .putString(SORT_FAVORITE_TV, sort)
-            .apply()
-    }
-
-    fun getMenuFavoriteMovie(): Int = prefs.getInt(MENU_FAVORITE_MOVIE, 0)
-    fun getSortFavoriteMovie(): String? =
-        prefs.getString(SORT_FAVORITE_MOVIE, SortUtils.ALPHABET_ASC)
-
-    fun getMenuFavoriteTv(): Int = prefs.getInt(MENU_FAVORITE_TV, 0)
-    fun getSortFavoriteTv(): String? = prefs.getString(SORT_FAVORITE_TV, SortUtils.ALPHABET_ASC)
+    var password: String?
+        get() = prefs.getString(PASSWORD, null)
+        set(value) {
+            editor.putString(PASSWORD, value)
+            editor.apply()
+        }
 }

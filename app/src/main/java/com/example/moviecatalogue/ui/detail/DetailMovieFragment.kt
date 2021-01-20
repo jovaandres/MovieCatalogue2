@@ -168,4 +168,9 @@ class DetailMovieFragment : Fragment() {
         val dialog = alertDialog.create()
         dialog.show()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

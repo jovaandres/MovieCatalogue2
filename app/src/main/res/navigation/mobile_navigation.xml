@@ -129,4 +129,24 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.example.moviecatalogue.ui.account.LoginFragment"
+        android:label="Login Fragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_register"
+            app:destination="@id/navigation_register"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.example.moviecatalogue.ui.account.RegisterFragment"
+        android:label="Register Fragment"
+        tools:layout="@layout/fragment_register" />
+
 </navigation>
