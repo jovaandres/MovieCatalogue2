@@ -12,12 +12,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.example.moviecatalogue.core.data.AuthState
+import com.example.moviecatalogue.core.utils.invisible
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentLoginBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
+import kotlinx.coroutines.flow.collect
 
 @SuppressLint("CheckResult")
 @AndroidEntryPoint
@@ -51,7 +56,7 @@ class LoginFragment : Fragment() {
         val passwordStream = RxTextView.textChanges(binding.password)
             .skipInitialValue()
             .map { password ->
-                password.length > 6
+                password.length >= 6
             }
         passwordStream.subscribe {
             passwordAlert(it)
@@ -85,7 +90,7 @@ class LoginFragment : Fragment() {
         additionalAction()
         binding.btnTest.setOnClickListener {
 //            viewModel.requestSession()
-            Toast.makeText(it.context, viewModel.session.value, Toast.LENGTH_SHORT).show()
+            Toast.makeText(it.context, viewModel.requestSession(), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -104,11 +109,6 @@ class LoginFragment : Fragment() {
             alertDialog.setView(input)
             alertDialog.setPositiveButton("Send") { _, _ ->
                 viewModel.forgotPassword(input.text.toString())
-                Toast.makeText(
-                    requireContext(),
-                    "The password reset email has been sent",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
             alertDialog.setNegativeButton("Cancel") { dialog, _ ->
                 dialog?.cancel()
@@ -119,8 +119,59 @@ class LoginFragment : Fragment() {
             val editableUsername = binding.username
             val editablePassword = binding.password
             viewModel.login(editableUsername.text.toString(), editablePassword.text.toString())
-            val action = LoginFragmentDirections.actionNavigationLoginToNavigationMovie()
-            view?.findNavController()?.navigate(action)
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.loginSuccess.collect {
+                loginObserver(it)
+            }
+            viewModel.forgotPassword.collect {
+                forgotPasswordObserver(it)
+            }
+        }
+    }
+
+    private fun loginObserver(state: AuthState<Unit>) {
+        when (state) {
+            is AuthState.Init -> {
+            }
+            is AuthState.Loading -> binding.loading.visible()
+            is AuthState.Success -> {
+                binding.loading.invisible()
+                val action =
+                    LoginFragmentDirections.actionNavigationLoginToNavigationMovie()
+                view?.findNavController()?.navigate(action)
+            }
+            is AuthState.Error -> {
+                binding.loading.invisible()
+                val alertDialog = AlertDialog.Builder(requireContext())
+                    .setMessage(state.message)
+                    .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
+                alertDialog.show()
+            }
+        }
+    }
+
+    private fun forgotPasswordObserver(state: AuthState<Unit>) {
+        when (state) {
+            is AuthState.Init -> {
+            }
+            is AuthState.Loading -> binding.loading.visible()
+            is AuthState.Success -> {
+                binding.loading.invisible()
+                Toast.makeText(
+                    requireContext(),
+                    "The password reset email has been sent",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is AuthState.Error -> {
+                binding.loading.invisible()
+                val alertDialog = AlertDialog.Builder(requireContext())
+                    .setMessage(state.message)
+                    .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
+                alertDialog.show()
+            }
         }
     }
 

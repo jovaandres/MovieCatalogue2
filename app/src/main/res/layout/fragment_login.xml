@@ -6,12 +6,20 @@
     android:background="#4A9586"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:visibility="invisible" />
+
     <TextView
         android:id="@+id/login_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/loading"
         android:layout_marginTop="26dp"
         android:gravity="center_horizontal"
         android:text="@string/login"

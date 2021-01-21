@@ -28,8 +28,8 @@ class AuthenticationInteractor @Inject constructor(val authenticationRepository:
         authenticationRepository.logout()
     }
 
-    override fun forgotPassword(username: String) {
-        authenticationRepository.forgotPassword(username)
+    override fun forgotPassword(username: String, listener: AuthenticationRepositoryCallback) {
+        authenticationRepository.forgotPassword(username, listener)
     }
 
     override fun getSession(): Session {

@@ -6,14 +6,20 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.example.moviecatalogue.core.data.AuthState
+import com.example.moviecatalogue.core.utils.invisible
+import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentRegisterBinding
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
+import kotlinx.coroutines.flow.collect
 
 @SuppressLint("CheckResult")
 @AndroidEntryPoint
@@ -47,7 +53,7 @@ class RegisterFragment : Fragment() {
         val passwordStream = RxTextView.textChanges(binding.password)
             .skipInitialValue()
             .map { password ->
-                password.length > 6
+                password.length >= 6
             }
         passwordStream.subscribe {
             passwordAlert(it)
@@ -89,8 +95,31 @@ class RegisterFragment : Fragment() {
             val editableUsername = binding.username
             val editablePassword = binding.password
             viewModel.register(editableUsername.text.toString(), editablePassword.text.toString())
-            val action = RegisterFragmentDirections.actionNavigationRegisterToNavigationLogin()
-            view?.findNavController()?.navigate(action)
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.registrationSuccess.collect {
+                registerObserver(it)
+            }
+        }
+    }
+
+    private fun registerObserver(state: AuthState<Unit>) {
+        when (state) {
+            is AuthState.Init -> {
+            }
+            is AuthState.Loading -> binding.loading.visible()
+            is AuthState.Success -> {
+                binding.loading.invisible()
+                val action = RegisterFragmentDirections.actionNavigationRegisterToNavigationMovie()
+                view?.findNavController()?.navigate(action)
+            }
+            is AuthState.Error -> {
+                binding.loading.invisible()
+                val alertDialog = AlertDialog.Builder(requireContext())
+                    .setMessage(state.message)
+                    .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
+                alertDialog.show()
+            }
         }
     }
 

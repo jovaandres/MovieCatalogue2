@@ -11,7 +11,7 @@ interface AuthenticationUseCase {
 
     fun logout()
 
-    fun forgotPassword(username: String)
+    fun forgotPassword(username: String, listener: AuthenticationRepositoryCallback)
 
     fun getSession(): Session
 

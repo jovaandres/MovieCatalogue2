@@ -30,7 +30,7 @@ class AuthenticationRepository @Inject constructor(
         auth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    listener.onSuccess(username)
+                    listener.onSuccess()
                     prefs.username = username
                     prefs.password = password
                 } else {
@@ -47,7 +47,7 @@ class AuthenticationRepository @Inject constructor(
         auth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    listener.onSuccess(username)
+                    listener.onSuccess()
                     prefs.username = username
                     prefs.password = password
                 } else {
@@ -61,13 +61,13 @@ class AuthenticationRepository @Inject constructor(
         prefs.username = "Guest"
     }
 
-    override fun forgotPassword(username: String) {
+    override fun forgotPassword(username: String, listener: AuthenticationRepositoryCallback) {
         auth.sendPasswordResetEmail(username)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-
+                    listener.onSuccess()
                 } else {
-
+                    listener.onError(it.exception?.message.toString())
                 }
             }
     }
