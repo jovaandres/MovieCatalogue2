@@ -44,7 +44,7 @@ class ProfileFragment : Fragment() {
         binding.btnLogin.text = if (auth.currentUser?.email != null) "LOGOUT" else "LOGIN"
 
         binding.btnLogin.setOnClickListener {
-            if (auth.currentUser?.email != null) {
+            if (auth.currentUser != null) {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
                     .setMessage("Are you sure to logout?")
                     .setPositiveButton("Yes") { _, _ ->

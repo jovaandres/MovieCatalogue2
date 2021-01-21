@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
@@ -21,6 +20,7 @@ import com.example.moviecatalogue.core.utils.underline
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentDetailTvBinding
 import com.shashank.sony.fancytoastlib.FancyToast
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -114,10 +114,10 @@ class DetailTvFragment : Fragment() {
                         view?.findNavController()?.navigate(action)
                     }
                 }
-                Glide.with(this@DetailTvFragment)
+                Picasso.get()
                     .load(IMAGE_URL + data.backdropPath)
                     .into(background)
-                Glide.with(this@DetailTvFragment)
+                Picasso.get()
                     .load(IMAGE_URL + data.posterPath)
                     .into(poster)
             }

@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.moviecatalogue.core.R
 import com.example.moviecatalogue.core.databinding.ItemMoviesBinding
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.squareup.picasso.Picasso
 
 class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
@@ -28,7 +28,7 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
                 titleMovie.text = moviesData.title
                 descMovie.text = moviesData.overview
                 rating.rating = moviesData.voteAverage?.toFloat()?.div(2) ?: 0f
-                Glide.with(itemView)
+                Picasso.get()
                     .load(IMAGE_URL + moviesData.posterPath)
                     .into(imgMovie)
             }

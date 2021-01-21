@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
 import com.example.moviecatalogue.favorite.R
 import com.example.moviecatalogue.favorite.databinding.ItemTvShowBinding
+import com.squareup.picasso.Picasso
 
 class FavoriteTvShowAdapter :
     RecyclerView.Adapter<FavoriteTvShowAdapter.FavoriteTvShowViewHolder>() {
@@ -28,7 +28,7 @@ class FavoriteTvShowAdapter :
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview
                 rating.rating = tvShowsData.voteAverage?.toFloat()?.div(2) ?: 0f
-                Glide.with(itemView)
+                Picasso.get()
                     .load(Constant.IMAGE_URL + tvShowsData.posterPath)
                     .into(imgTvShow)
             }
