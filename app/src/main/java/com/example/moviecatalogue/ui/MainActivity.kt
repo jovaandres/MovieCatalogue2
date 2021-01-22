@@ -3,6 +3,7 @@ package com.example.moviecatalogue.ui
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +15,7 @@ import com.example.moviecatalogue.core.utils.UserPreferences
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.ActivityMainBinding
-import com.example.moviecatalogue.ui.popular.movies.SetState
+import com.example.moviecatalogue.ui.account.SetState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,6 +36,11 @@ class MainActivity : AppCompatActivity(), SetState {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        AppCompatDelegate.setDefaultNightMode(
+            if (userPreferences.darkMode) AppCompatDelegate.MODE_NIGHT_YES
+            else AppCompatDelegate.MODE_NIGHT_NO
+        )
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

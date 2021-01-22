@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.AuthState
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
@@ -71,7 +72,7 @@ class LoginFragment : Fragment() {
         fieldStream.subscribe { isValid ->
             if (isValid) {
                 binding.btnSignIn.isEnabled = true
-                binding.btnSignIn.setBackgroundColor(
+                binding.btnSignIn.background.setTint(
                     ContextCompat.getColor(
                         requireContext(),
                         android.R.color.holo_blue_light
@@ -79,7 +80,7 @@ class LoginFragment : Fragment() {
                 )
             } else {
                 binding.btnSignIn.isEnabled = false
-                binding.btnSignIn.setBackgroundColor(
+                binding.btnSignIn.background.setTint(
                     ContextCompat.getColor(
                         requireContext(),
                         android.R.color.darker_gray
@@ -100,7 +101,7 @@ class LoginFragment : Fragment() {
             view?.findNavController()?.navigate(action)
         }
         binding.forgotPassword.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(requireContext())
+            val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Reset Password")
             val input = TextInputEditText(requireContext())
             input.hint = "Enter Email"
@@ -144,7 +145,7 @@ class LoginFragment : Fragment() {
             }
             is AuthState.Error -> {
                 binding.loading.invisible()
-                val alertDialog = AlertDialog.Builder(requireContext())
+                val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                     .setMessage(state.message)
                     .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
                 alertDialog.show()

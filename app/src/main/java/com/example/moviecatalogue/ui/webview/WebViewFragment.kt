@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentWebViewBinding
@@ -62,7 +63,7 @@ class WebViewFragment : Fragment() {
                 handler: SslErrorHandler?,
                 error: SslError?
             ) {
-                val builder = AlertDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                 builder.setMessage("SSL Certificate Error")
                 builder.setPositiveButton("continue") { _, _ -> handler?.proceed() }
                 builder.setNegativeButton("cancel") { _, _ -> handler?.cancel() }

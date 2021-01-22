@@ -13,6 +13,7 @@ class UserPreferences(context: Context) {
         private const val PREFS_NAME = "user_pref"
         private const val EMAIL = "email"
         private const val PASSWORD = "password"
+        private const val DARK_MODE = "dark_mode"
     }
 
     private val spec = KeyGenParameterSpec.Builder(
@@ -49,6 +50,13 @@ class UserPreferences(context: Context) {
         get() = prefs.getString(PASSWORD, null)
         set(value) {
             editor.putString(PASSWORD, value)
+            editor.apply()
+        }
+
+    var darkMode: Boolean
+        get() = prefs.getBoolean(DARK_MODE, false)
+        set(value) {
+            editor.putBoolean(DARK_MODE, value)
             editor.apply()
         }
 }

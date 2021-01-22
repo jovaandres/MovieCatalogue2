@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#23406A</color>
+    <color name="colorPrimaryDark">#1C243A</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="action_bar_color">#20395E</color>
+    <color name="card">#23406A</color>
+    <color name="bottom_menu">#222222</color>
+    <color name="text_color">#FAFAFA</color>
+    <color name="text_placeholder">#6161A6</color>
+    <color name="text_card_one">#FF0000</color>
+    <color name="text_card_two">#03A4D6</color>
+    <color name="image_placeholder">#99AFCF</color>
+    <color name="card_placeholder">#B4C6FD</color>
+</resources>

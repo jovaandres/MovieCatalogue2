@@ -18,29 +18,28 @@
         <androidx.cardview.widget.CardView
             android:layout_width="140dp"
             android:layout_height="180dp"
-            app:cardBackgroundColor="#99AFCF" />
+            app:cardBackgroundColor="@color/image_placeholder" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#6161A6"
+            android:background="@color/text_placeholder"
             android:ellipsize="end"
             android:lines="1"
             android:padding="2dp"
             android:text="@string/dummy_title"
-            android:textColor="#6161A6"
+            android:textColor="@color/text_placeholder"
             android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_favorite_border"
-            android:drawableTint="#6161A6"
             android:gravity="end"
             android:paddingHorizontal="4dp"
-            android:text="0"
-            android:textColor="#6161A6" />
+            android:textColor="@color/text_placeholder"
+            app:drawableStartCompat="@drawable/ic_favorite_border"
+            app:drawableTint="@color/text_placeholder" />
 
     </LinearLayout>
 

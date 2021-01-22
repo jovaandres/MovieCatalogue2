@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#23406A</color>
-    <color name="colorPrimaryDark">#1C243A</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="action_bar_color">#20395E</color>
-    <color name="card">#23406A</color>
-    <color name="bottom_menu">#315180</color>
+    <color name="colorPrimary">#EFEFEF</color>
+    <color name="colorPrimaryDark">#AFAFAF</color>
+    <color name="colorAccent">#EFBD0A</color>
+    <color name="action_bar_color">#D6D6D6</color>
+    <color name="card">#F6F6F6</color>
+    <color name="bottom_menu">#0090FF</color>
+    <color name="text_color">#121212</color>
+    <color name="text_placeholder">#F78C8B8B</color>
     <color name="text_card_one">#FF0000</color>
-    <color name="text_card_two">#0038AE</color>
+    <color name="text_card_two">#03A4D6</color>
+    <color name="image_placeholder">#BDCCE1</color>
+    <color name="card_placeholder">#BEC1CC</color>
 </resources>

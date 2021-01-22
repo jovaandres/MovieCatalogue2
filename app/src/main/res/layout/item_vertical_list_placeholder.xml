@@ -12,20 +12,18 @@
     <androidx.cardview.widget.CardView
         android:layout_width="140dp"
         android:layout_height="180dp"
-        app:cardBackgroundColor="#99AFCF">
-    </androidx.cardview.widget.CardView>
+        app:cardBackgroundColor="@color/image_placeholder" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="18dp"
-        app:cardBackgroundColor="#95B9F1">
+        android:layout_marginTop="18dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#B4C6FD">
+            android:background="@color/card_placeholder">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -33,9 +31,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="#6161A6"
+                android:background="@color/text_placeholder"
                 android:text="@string/dummy_title"
-                android:textColor="#6161A6"
+                android:textColor="@color/text_placeholder"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -55,10 +53,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="4dp"
                 android:ellipsize="end"
-                android:background="#6161A6"
+                android:background="@color/text_placeholder"
                 android:maxLines="2"
                 android:text="@string/dummy_desc1"
-                android:textColor="#6161A6"
+                android:textColor="@color/text_placeholder"
                 android:textSize="14sp" />
 
             <TextView
@@ -68,10 +66,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="4dp"
                 android:ellipsize="end"
-                android:background="#6161A6"
+                android:background="@color/text_placeholder"
                 android:maxLines="2"
                 android:text="@string/dummy_desc2"
-                android:textColor="#6161A6"
+                android:textColor="@color/text_placeholder"
                 android:textSize="14sp" />
 
         </LinearLayout>

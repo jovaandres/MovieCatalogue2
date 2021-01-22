@@ -148,7 +148,7 @@ class DetailTvFragment : Fragment() {
     private fun showDialog(tvShowData: DetailTvShow) {
         val dialogTitle = getString(R.string.dialog_title)
         val dialogMessage = getString(R.string.dialog_message)
-        val alertDialog = AlertDialog.Builder(requireContext())
+        val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
             .setTitle(dialogTitle)
             .setMessage(dialogMessage)
             .setCancelable(true)

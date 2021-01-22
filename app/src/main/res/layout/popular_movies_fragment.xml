@@ -17,7 +17,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:text="@string/now_playing"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_color"
             android:textSize="18sp"
             android:visibility="invisible" />
 
@@ -59,10 +59,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/now_movie_progress"
-            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
             android:text="@string/popular"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_color"
             android:textSize="18sp"
             android:visibility="invisible" />
 

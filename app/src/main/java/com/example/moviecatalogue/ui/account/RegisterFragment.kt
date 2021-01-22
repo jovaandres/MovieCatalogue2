@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.AuthState
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
@@ -68,7 +69,7 @@ class RegisterFragment : Fragment() {
         fieldStream.subscribe { isValid ->
             if (isValid) {
                 binding.btnSignUp.isEnabled = true
-                binding.btnSignUp.setBackgroundColor(
+                binding.btnSignUp.background.setTint(
                     ContextCompat.getColor(
                         requireContext(),
                         android.R.color.holo_blue_light
@@ -76,7 +77,7 @@ class RegisterFragment : Fragment() {
                 )
             } else {
                 binding.btnSignUp.isEnabled = false
-                binding.btnSignUp.setBackgroundColor(
+                binding.btnSignUp.background.setTint(
                     ContextCompat.getColor(
                         requireContext(),
                         android.R.color.darker_gray
@@ -89,7 +90,7 @@ class RegisterFragment : Fragment() {
 
     private fun additionalAction() {
         binding.toLogin.setOnClickListener {
-            view?.findNavController()?.popBackStack()
+            view?.findNavController()?.popBackStack(R.id.navigation_login, true)
         }
         binding.btnSignUp.setOnClickListener {
             val editableUsername = binding.username
@@ -115,7 +116,7 @@ class RegisterFragment : Fragment() {
             }
             is AuthState.Error -> {
                 binding.loading.invisible()
-                val alertDialog = AlertDialog.Builder(requireContext())
+                val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                     .setMessage(state.message)
                     .setNeutralButton("OK") { dialog, _ -> dialog.cancel() }
                 alertDialog.show()

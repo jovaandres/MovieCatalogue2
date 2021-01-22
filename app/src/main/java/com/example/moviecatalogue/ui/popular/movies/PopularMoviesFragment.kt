@@ -18,6 +18,7 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
+import com.example.moviecatalogue.ui.account.SetState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -143,8 +144,4 @@ class PopularMoviesFragment : Fragment() {
         binding.rvPopMovies.adapter = null
         _binding = null
     }
-}
-
-interface SetState {
-    fun setState()
 }

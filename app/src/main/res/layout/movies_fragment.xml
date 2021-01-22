@@ -19,6 +19,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            app:boxBackgroundColor="#CFCECE"
             android:hint="@string/search_by_title"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="4dp"
@@ -26,15 +27,16 @@
             app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeColor="@android:color/holo_blue_light"
             app:endIconMode="clear_text"
-            app:endIconTint="@android:color/holo_blue_light">
+            app:endIconTint="#121212">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search"
                 android:layout_width="match_parent"
-                android:drawableStart="@drawable/ic_search"
-                android:drawableTint="@color/colorPrimary"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary" />
+                android:drawableStart="@drawable/ic_search"
+                android:drawableTint="#121212"
+                android:lines="1"
+                android:textColor="#121212" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,7 +47,7 @@
             android:layout_below="@id/search_movie"
             android:layout_centerHorizontal="true"
             android:text="@string/movie"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_color"
             android:textSize="18sp"
             android:visibility="invisible" />
 
@@ -92,7 +94,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:text="@string/tv"
-            android:textColor="@android:color/white"
+            android:textColor="@color/text_color"
             android:textSize="18sp"
             android:visibility="invisible" />
 
