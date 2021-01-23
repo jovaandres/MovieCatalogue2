@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -31,6 +32,17 @@ class RegisterFragment : Fragment() {
 
     private val viewModel: AccountViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher
+            ?.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    toLogin()
+                }
+
+            })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,6 +56,7 @@ class RegisterFragment : Fragment() {
 
         val emailStream = RxTextView.textChanges(binding.username)
             .skipInitialValue()
+            .filter { it.isNotEmpty() }
             .map { email ->
                 Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
@@ -53,8 +66,9 @@ class RegisterFragment : Fragment() {
 
         val passwordStream = RxTextView.textChanges(binding.password)
             .skipInitialValue()
+            .filter { it.isNotEmpty() }
             .map { password ->
-                password.length >= 6
+                password.length >= 8
             }
         passwordStream.subscribe {
             passwordAlert(it)
@@ -90,7 +104,7 @@ class RegisterFragment : Fragment() {
 
     private fun additionalAction() {
         binding.toLogin.setOnClickListener {
-            view?.findNavController()?.popBackStack(R.id.navigation_login, true)
+            toLogin()
         }
         binding.btnSignUp.setOnClickListener {
             val editableUsername = binding.username
@@ -112,7 +126,7 @@ class RegisterFragment : Fragment() {
             is AuthState.Success -> {
                 binding.loading.invisible()
                 val action = RegisterFragmentDirections.actionNavigationRegisterToNavigationMovie()
-                view?.findNavController()?.navigate(action)
+                requireView().findNavController().navigate(action)
             }
             is AuthState.Error -> {
                 binding.loading.invisible()
@@ -124,12 +138,17 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private fun toLogin() {
+        val action = RegisterFragmentDirections.actionNavigationRegisterToNavigationLogin()
+        requireView().findNavController().navigate(action)
+    }
+
     private fun emailAlert(isValid: Boolean) {
-        binding.username.error = if (!isValid) "Enter Valid Email" else null
+        binding.username.error = if (!isValid) getString(R.string.valid_email) else null
     }
 
     private fun passwordAlert(isValid: Boolean) {
-        binding.password.error = if (!isValid) "Enter Valid Password" else null
+        binding.password.error = if (!isValid) getString(R.string.valid_password) else null
     }
 
     override fun onDestroyView() {

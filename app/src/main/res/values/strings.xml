@@ -49,4 +49,6 @@
     <string name="preferences">Preferences</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="exit_app">Exit</string>
+    <string name="valid_email">Enter valid email</string>
+    <string name="valid_password">Enter at least 8 character</string>
 </resources>

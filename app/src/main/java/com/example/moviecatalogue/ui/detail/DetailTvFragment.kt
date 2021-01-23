@@ -111,7 +111,7 @@ class DetailTvFragment : Fragment() {
                         val action =
                             DetailTvFragmentDirections.actionDetailTvFragmentToWebViewFragment()
                         action.url = data.homepage ?: "https://www.google.com"
-                        view?.findNavController()?.navigate(action)
+                        requireView().findNavController().navigate(action)
                     }
                 }
                 Picasso.get()

@@ -31,7 +31,7 @@ class WebViewFragment : Fragment() {
                         binding?.webview?.goBack()
                     } else {
                         super.remove()
-                        view?.findNavController()?.popBackStack()
+                        requireView().findNavController().popBackStack()
                     }
                 }
             })

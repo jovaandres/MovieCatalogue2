@@ -1,6 +1,5 @@
 package com.example.moviecatalogue.ui.account
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.example.moviecatalogue.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@SuppressLint("SetTextI18n")
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 

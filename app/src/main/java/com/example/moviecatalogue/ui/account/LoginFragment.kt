@@ -3,6 +3,7 @@ package com.example.moviecatalogue.ui.account
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,7 @@ class LoginFragment : Fragment() {
 
         val emailStream = RxTextView.textChanges(binding.username)
             .skipInitialValue()
+            .filter { it.isNotEmpty() }
             .map { email ->
                 Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
@@ -56,6 +58,7 @@ class LoginFragment : Fragment() {
 
         val passwordStream = RxTextView.textChanges(binding.password)
             .skipInitialValue()
+            .filter { it.isNotEmpty() }
             .map { password ->
                 password.length >= 6
             }
@@ -98,7 +101,7 @@ class LoginFragment : Fragment() {
     private fun additionalAction() {
         binding.toRegister.setOnClickListener {
             val action = LoginFragmentDirections.actionNavigationLoginToNavigationRegister()
-            view?.findNavController()?.navigate(action)
+            requireView().findNavController().navigate(action)
         }
         binding.forgotPassword.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
@@ -141,7 +144,7 @@ class LoginFragment : Fragment() {
                 binding.loading.invisible()
                 val action =
                     LoginFragmentDirections.actionNavigationLoginToNavigationMovie()
-                view?.findNavController()?.navigate(action)
+                requireView().findNavController().navigate(action)
             }
             is AuthState.Error -> {
                 binding.loading.invisible()
@@ -177,11 +180,16 @@ class LoginFragment : Fragment() {
     }
 
     private fun emailAlert(isValid: Boolean) {
-        binding.username.error = if (!isValid) "Enter Valid Email" else null
+        binding.username.error = if (!isValid) getString(R.string.valid_email) else null
     }
 
     private fun passwordAlert(isValid: Boolean) {
-        binding.password.error = if (!isValid) "Enter Valid Password" else null
+        binding.password.error = if (!isValid) getString(R.string.valid_password) else null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("TAG", requireView().findNavController().currentDestination.toString())
     }
 
     override fun onDestroyView() {

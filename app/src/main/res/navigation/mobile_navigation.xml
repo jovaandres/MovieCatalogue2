@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_movie">
 
     <fragment
         android:id="@+id/navigation_movie"
         android:name="com.example.moviecatalogue.ui.popular.movies.PopularMoviesFragment"
-        android:label="@string/movie"
-        tools:layout="@layout/popular_movies_fragment">
+        android:label="@string/movie">
         <action
             android:id="@+id/action_navigation_movie_to_detailMovieFragment"
             app:destination="@id/detailMovieFragment"
@@ -22,8 +20,7 @@
     <fragment
         android:id="@+id/navigation_tv"
         android:name="com.example.moviecatalogue.ui.popular.tvshows.PopularTvShowFragment"
-        android:label="@string/tv"
-        tools:layout="@layout/popular_tv_show_fragment">
+        android:label="@string/tv">
         <action
             android:id="@+id/action_navigation_tv_to_detailTvFragment"
             app:destination="@id/detailTvFragment"
@@ -36,8 +33,7 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.moviecatalogue.ui.search.movies.MoviesFragment"
-        android:label="@string/search"
-        tools:layout="@layout/movies_fragment">
+        android:label="@string/search">
         <action
             android:id="@+id/action_navigation_search_to_detailMovieFragment"
             app:destination="@id/detailMovieFragment"
@@ -85,8 +81,7 @@
     <fragment
         android:id="@+id/detailMovieFragment"
         android:name="com.example.moviecatalogue.ui.detail.DetailMovieFragment"
-        android:label="DetailMovieFragment"
-        tools:layout="@layout/fragment_detail_movie">
+        android:label="DetailMovieFragment">
         <argument
             android:name="movieId"
             android:defaultValue="0"
@@ -103,8 +98,7 @@
     <fragment
         android:id="@+id/detailTvFragment"
         android:name="com.example.moviecatalogue.ui.detail.DetailTvFragment"
-        android:label="DetailTvFragment"
-        tools:layout="@layout/fragment_detail_tv">
+        android:label="DetailTvFragment">
         <argument
             android:name="tvId"
             android:defaultValue="0"
@@ -121,8 +115,7 @@
     <fragment
         android:id="@+id/webViewFragment"
         android:name="com.example.moviecatalogue.ui.webview.WebViewFragment"
-        android:label="WebViewFragment"
-        tools:layout="@layout/fragment_web_view">
+        android:label="WebViewFragment">
         <argument
             android:name="url"
             android:defaultValue="https://www.google.com"
@@ -132,8 +125,7 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.moviecatalogue.ui.account.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile">
+        android:label="Profile">
         <action
             android:id="@+id/action_profileFragment_to_navigation_login"
             app:destination="@id/navigation_login"
@@ -149,29 +141,33 @@
     <fragment
         android:id="@+id/navigation_login"
         android:name="com.example.moviecatalogue.ui.account.LoginFragment"
-        android:label="Login Fragment"
-        tools:layout="@layout/fragment_login">
+        android:label="Login Fragment">
         <action
             android:id="@+id/action_navigation_login_to_navigation_register"
-            app:destination="@id/navigation_register"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/navigation_register" />
         <action
             android:id="@+id/action_navigation_login_to_navigation_movie"
-            app:destination="@id/navigation_movie"
-            app:popUpTo="@id/navigation_movie" />
+            app:destination="@id/navigation_movie" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_profile"
+            app:destination="@id/navigation_profile"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_register"
         android:name="com.example.moviecatalogue.ui.account.RegisterFragment"
-        android:label="Register Fragment"
-        tools:layout="@layout/fragment_register">
+        android:label="Register Fragment">
         <action
             android:id="@+id/action_navigation_register_to_navigation_movie"
             app:destination="@id/navigation_movie" />
+        <action
+            android:id="@+id/action_navigation_register_to_navigation_login"
+            app:destination="@id/navigation_login"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/navigation_login"
+            app:popUpToInclusive="true" />
     </fragment>
 
 

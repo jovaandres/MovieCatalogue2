@@ -110,7 +110,7 @@ class DetailMovieFragment : Fragment() {
                         val action =
                             DetailMovieFragmentDirections.actionDetailMovieFragmentToWebViewFragment()
                         action.url = data.homepage ?: "https://www.google.com"
-                        view?.findNavController()?.navigate(action)
+                        requireView().findNavController().navigate(action)
                     }
                 }
                 Picasso.get()
