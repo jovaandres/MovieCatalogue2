@@ -3,7 +3,6 @@ package com.example.moviecatalogue.ui.account
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -107,7 +106,7 @@ class LoginFragment : Fragment() {
             val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Reset Password")
             val input = TextInputEditText(requireContext())
-            input.hint = "Enter Email"
+            input.hint = getString(R.string.enter_email)
             input.setPaddingRelative(24, 16, 24, 16)
             input.inputType = InputType.TYPE_CLASS_TEXT
             alertDialog.setView(input)
@@ -165,7 +164,7 @@ class LoginFragment : Fragment() {
                 binding.loading.invisible()
                 Toast.makeText(
                     requireContext(),
-                    "The password reset email has been sent",
+                    getString(R.string.email_reset_password),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -185,11 +184,6 @@ class LoginFragment : Fragment() {
 
     private fun passwordAlert(isValid: Boolean) {
         binding.password.error = if (!isValid) getString(R.string.valid_password) else null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("TAG", requireView().findNavController().currentDestination.toString())
     }
 
     override fun onDestroyView() {

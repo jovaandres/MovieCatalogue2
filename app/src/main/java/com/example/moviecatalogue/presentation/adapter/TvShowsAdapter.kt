@@ -1,30 +1,30 @@
-package com.example.moviecatalogue.core.ui
+package com.example.moviecatalogue.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.core.R
-import com.example.moviecatalogue.core.databinding.ItemTvShowBinding
-import com.example.moviecatalogue.core.domain.model.TvShow
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.example.moviecatalogue.databinding.ItemTvShowBinding
+import com.example.moviecatalogue.presentation.model.DataTvShow
 import com.squareup.picasso.Picasso
 
 class TvShowsAdapter :
     RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-    var tvShowList = ArrayList<TvShow>()
+    var tvShowList = ArrayList<DataTvShow>()
         set(value) {
             tvShowList.clear()
             tvShowList.addAll(value)
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((TvShow) -> Unit)? = null
+    var onItemClick: ((DataTvShow) -> Unit)? = null
 
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
-        fun bind(tvShowsData: TvShow) {
+        fun bind(tvShowsData: DataTvShow) {
             binding.run {
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview

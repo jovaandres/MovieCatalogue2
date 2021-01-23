@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
+import com.example.moviecatalogue.presentation.model.DataDetailTvShow
+import com.example.moviecatalogue.utils.DataMapper.mapDataDetailTvShowToDetailTvShow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -25,7 +27,8 @@ class FavoriteTvShowViewModel @Inject constructor(val movieCatalogueUseCase: Mov
         }
     }
 
-    fun addToFavoriteTvShow(detailTvShow: DetailTvShow, newState: Boolean) {
-        movieCatalogueUseCase.insertFavoriteTvShow(detailTvShow, newState)
+    fun addToFavoriteTvShow(detailTvShow: DataDetailTvShow, newState: Boolean) {
+        val tvShow = mapDataDetailTvShowToDetailTvShow(detailTvShow)
+        movieCatalogueUseCase.insertFavoriteTvShow(tvShow, newState)
     }
 }

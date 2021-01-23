@@ -15,12 +15,16 @@ import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
 import com.example.moviecatalogue.core.domain.model.TvShow
-import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
-import com.example.moviecatalogue.core.ui.TvShowsAdapterHorizontal
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.MoviesFragmentBinding
+import com.example.moviecatalogue.presentation.adapter.MoviesAdapterHorizontal
+import com.example.moviecatalogue.presentation.adapter.TvShowsAdapterHorizontal
+import com.example.moviecatalogue.presentation.model.DataMovie
+import com.example.moviecatalogue.presentation.model.DataTvShow
+import com.example.moviecatalogue.utils.DataMapper.mapMovieToDataMovie
+import com.example.moviecatalogue.utils.DataMapper.mapTvShowToDataTvShow
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -110,9 +114,10 @@ class MoviesFragment : Fragment() {
                 binding.movie.invisible()
             }
             is Resource.Success -> {
+                val movieList = data_movie.data?.map { mapMovieToDataMovie(it) }
                 binding.movieProgress.invisible()
                 binding.movie.visible()
-                moviesAdapter.movieList = data_movie.data as ArrayList<Movie>
+                moviesAdapter.movieList = movieList as ArrayList<DataMovie>
                 binding.rvMovies.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -126,6 +131,7 @@ class MoviesFragment : Fragment() {
             }
             is Resource.Error -> {
                 binding.movieProgress.invisible()
+                binding.movie.invisible()
             }
         }
     }
@@ -140,9 +146,10 @@ class MoviesFragment : Fragment() {
                 binding.tv.invisible()
             }
             is Resource.Success -> {
+                val tvList = data_tv.data?.map { mapTvShowToDataTvShow(it) }
                 binding.tvProgress.gone()
                 binding.tv.visible()
-                tvAdapter.tvShowList = data_tv.data as ArrayList<TvShow>
+                tvAdapter.tvShowList = tvList as ArrayList<DataTvShow>
                 binding.rvTv.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -156,6 +163,7 @@ class MoviesFragment : Fragment() {
             }
             is Resource.Error -> {
                 binding.tvProgress.gone()
+                binding.tv.invisible()
             }
         }
     }

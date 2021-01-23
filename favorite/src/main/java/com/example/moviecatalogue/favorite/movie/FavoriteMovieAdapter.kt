@@ -4,26 +4,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
 import com.example.moviecatalogue.favorite.R
 import com.example.moviecatalogue.favorite.databinding.ItemMoviesBinding
+import com.example.moviecatalogue.presentation.model.DataDetailMovie
 import com.squareup.picasso.Picasso
 
 class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteMovieViewHolder>() {
 
-    var movieList = ArrayList<DetailMovie>()
+    var movieList = ArrayList<DataDetailMovie>()
         set(value) {
             movieList.clear()
             movieList.addAll(value)
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((DetailMovie) -> Unit)? = null
+    var onItemClick: ((DataDetailMovie) -> Unit)? = null
 
     inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMoviesBinding.bind(itemView)
-        fun bind(moviesData: DetailMovie) {
+        fun bind(moviesData: DataDetailMovie) {
             binding.apply {
                 titleMovie.text = moviesData.title
                 descMovie.text = moviesData.overview
@@ -33,6 +33,7 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
                     .into(imgMovie)
             }
         }
+
         init {
             binding.root.setOnClickListener {
                 onItemClick?.invoke(movieList[adapterPosition])
@@ -49,6 +50,6 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
         holder.bind(movieList[position])
     }
 
-    fun getSwipedData(swipedPosition: Int): DetailMovie = movieList[swipedPosition]
+    fun getSwipedData(swipedPosition: Int): DataDetailMovie = movieList[swipedPosition]
     override fun getItemCount(): Int = movieList.size
 }

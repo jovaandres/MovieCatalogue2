@@ -21,6 +21,8 @@ import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteMovieFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
+import com.example.moviecatalogue.presentation.model.DataDetailMovie
+import com.example.moviecatalogue.utils.DataMapper.mapDetailMovieToDataDetailMovie
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.collect
@@ -145,7 +147,8 @@ class FavoriteMovieFragment : Fragment() {
             }
             is Resource.Loading -> binding.favMovieProgress.visible()
             is Resource.Success -> {
-                favoriteMovieAdapter.movieList = data.data as ArrayList<DetailMovie>
+                val movieList = data.data?.map { mapDetailMovieToDataDetailMovie(it) }
+                favoriteMovieAdapter.movieList = movieList as ArrayList<DataDetailMovie>
                 binding.rvFavMovies.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

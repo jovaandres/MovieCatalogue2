@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.DetailMovie
 import com.example.moviecatalogue.core.domain.usecase.MovieCatalogueUseCase
+import com.example.moviecatalogue.presentation.model.DataDetailMovie
+import com.example.moviecatalogue.utils.DataMapper.mapDataDetailMovieToDetailMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -24,8 +26,9 @@ class DetailMovieViewModel @ViewModelInject constructor(val movieCatalogueUseCas
         }
     }
 
-    fun addToFavoriteMovie(detailMovie: DetailMovie) {
+    fun addToFavoriteMovie(detailMovie: DataDetailMovie) {
+        val movie = mapDataDetailMovieToDetailMovie(detailMovie)
         val newState = detailMovie.isFavorite ?: false
-        movieCatalogueUseCase.insertFavoriteMovie(detailMovie, !newState)
+        movieCatalogueUseCase.insertFavoriteMovie(movie, !newState)
     }
 }

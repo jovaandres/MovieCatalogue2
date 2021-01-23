@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             if (username != "Guest") {
                 val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
-                    .setMessage("Are you sure to logout?")
+                    .setMessage(getString(R.string.logout_dialog))
                     .setPositiveButton("Yes") { _, _ ->
                         viewModel.logout()
                         val action =

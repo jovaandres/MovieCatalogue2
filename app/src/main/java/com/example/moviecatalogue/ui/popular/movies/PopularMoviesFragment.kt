@@ -11,14 +11,16 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.Movie
-import com.example.moviecatalogue.core.ui.MoviesAdapter
-import com.example.moviecatalogue.core.ui.MoviesAdapterHorizontal
 import com.example.moviecatalogue.core.utils.SortPreferences
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
+import com.example.moviecatalogue.presentation.adapter.MoviesAdapter
+import com.example.moviecatalogue.presentation.adapter.MoviesAdapterHorizontal
+import com.example.moviecatalogue.presentation.model.DataMovie
 import com.example.moviecatalogue.ui.account.SetState
+import com.example.moviecatalogue.utils.DataMapper.mapMovieToDataMovie
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -93,9 +95,10 @@ class PopularMoviesFragment : Fragment() {
                 binding.movieNow.invisible()
             }
             is Resource.Success -> {
+                val movieList = data.data?.map { mapMovieToDataMovie(it) }
                 binding.nowMovieProgress.invisible()
                 binding.movieNow.visible()
-                nowPlayingMoviesAdapter.movieList = data.data as ArrayList<Movie>
+                nowPlayingMoviesAdapter.movieList = movieList as ArrayList<DataMovie>
                 binding.rvNowMovies.apply {
                     setHasFixedSize(true)
                     layoutManager =
@@ -105,6 +108,7 @@ class PopularMoviesFragment : Fragment() {
             }
             is Resource.Error -> {
                 binding.nowMovieProgress.invisible()
+                binding.movieNow.invisible()
             }
         }
     }
@@ -118,9 +122,10 @@ class PopularMoviesFragment : Fragment() {
                 binding.moviePop.invisible()
             }
             is Resource.Success -> {
+                val movieList = data.data?.map { mapMovieToDataMovie(it) }
                 binding.popMovieProgress.gone()
                 binding.moviePop.visible()
-                popularMoviesAdapter.movieList = data.data as ArrayList<Movie>
+                popularMoviesAdapter.movieList = movieList as ArrayList<DataMovie>
                 binding.rvPopMovies.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
@@ -129,6 +134,7 @@ class PopularMoviesFragment : Fragment() {
             }
             is Resource.Error -> {
                 binding.popMovieProgress.gone()
+                binding.moviePop.invisible()
             }
         }
     }

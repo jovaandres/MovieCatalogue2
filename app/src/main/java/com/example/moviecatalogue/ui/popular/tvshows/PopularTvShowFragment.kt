@@ -11,10 +11,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviecatalogue.core.data.Resource
 import com.example.moviecatalogue.core.domain.model.TvShow
-import com.example.moviecatalogue.core.ui.TvShowsAdapter
 import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularTvShowFragmentBinding
+import com.example.moviecatalogue.presentation.adapter.TvShowsAdapter
+import com.example.moviecatalogue.presentation.model.DataTvShow
+import com.example.moviecatalogue.utils.DataMapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -68,8 +70,9 @@ class PopularTvShowFragment : Fragment() {
                 binding.popTvProgress.visible()
             }
             is Resource.Success -> {
+                val tvList = data.data?.map { DataMapper.mapTvShowToDataTvShow(it) }
                 binding.popTvProgress.gone()
-                popularTvShowAdapter.tvShowList = data.data as ArrayList<TvShow>
+                popularTvShowAdapter.tvShowList = tvList as ArrayList<DataTvShow>
                 binding.rvPopTvShows.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

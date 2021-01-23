@@ -21,6 +21,8 @@ import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.favorite.databinding.FavoriteTvShowFragmentBinding
 import com.example.moviecatalogue.favorite.di.DaggerFavoriteComponent
 import com.example.moviecatalogue.favorite.factory.FavoriteViewModelFactory
+import com.example.moviecatalogue.presentation.model.DataDetailTvShow
+import com.example.moviecatalogue.utils.DataMapper.mapDetailTvShowToDataDetailTvShow
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.collect
@@ -145,7 +147,8 @@ class FavoriteTvShowFragment : Fragment() {
             }
             is Resource.Loading -> binding.favTvProgress.visible()
             is Resource.Success -> {
-                favoriteTvShowAdapter.tvList = data.data as ArrayList<DetailTvShow>
+                val tvList = data.data?.map { mapDetailTvShowToDataDetailTvShow(it) }
+                favoriteTvShowAdapter.tvList = tvList as ArrayList<DataDetailTvShow>
                 binding.rvFavTvShows.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)

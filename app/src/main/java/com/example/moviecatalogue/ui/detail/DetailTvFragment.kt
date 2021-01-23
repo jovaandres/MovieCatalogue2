@@ -19,6 +19,8 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.underline
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentDetailTvBinding
+import com.example.moviecatalogue.presentation.model.DataDetailTvShow
+import com.example.moviecatalogue.utils.DataMapper.mapDetailTvShowToDataDetailTvShow
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +35,7 @@ class DetailTvFragment : Fragment() {
 
     private val viewModel: DetailTvShowViewModel by viewModels()
 
-    private lateinit var tvShowData: DetailTvShow
+    private lateinit var tvShowData: DataDetailTvShow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +129,9 @@ class DetailTvFragment : Fragment() {
             binding.overview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
         }
         try {
-            tvShowData = data as DetailTvShow
+            tvShowData = data?.let {
+                mapDetailTvShowToDataDetailTvShow(it)
+            } as DataDetailTvShow
             if (tvShowData.isFavorite == true) {
                 binding.addFav.setImageResource(R.drawable.ic_favorite)
             } else {
@@ -145,7 +149,7 @@ class DetailTvFragment : Fragment() {
 
     }
 
-    private fun showDialog(tvShowData: DetailTvShow) {
+    private fun showDialog(tvShowData: DataDetailTvShow) {
         val dialogTitle = getString(R.string.dialog_title)
         val dialogMessage = getString(R.string.dialog_message)
         val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)

@@ -49,6 +49,9 @@
     <string name="preferences">Preferences</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="exit_app">Exit</string>
+    <string name="enter_email">Enter email</string>
     <string name="valid_email">Enter valid email</string>
     <string name="valid_password">Enter at least 8 character</string>
+    <string name="logout_dialog">Are you sure want to logout?</string>
+    <string name="email_reset_password">The password reset email has been sent</string>
 </resources>

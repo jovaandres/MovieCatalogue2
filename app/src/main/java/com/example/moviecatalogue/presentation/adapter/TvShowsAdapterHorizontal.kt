@@ -1,26 +1,26 @@
-package com.example.moviecatalogue.core.ui
+package com.example.moviecatalogue.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.core.R
-import com.example.moviecatalogue.core.databinding.ItemTvHorizontalBinding
-import com.example.moviecatalogue.core.domain.model.TvShow
+import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.utils.Constant.IMAGE_URL
+import com.example.moviecatalogue.databinding.ItemTvHorizontalBinding
+import com.example.moviecatalogue.presentation.model.DataTvShow
 import com.squareup.picasso.Picasso
 
 class TvShowsAdapterHorizontal :
     RecyclerView.Adapter<TvShowsAdapterHorizontal.TvShowsViewHolder>() {
 
-    var tvShowList = ArrayList<TvShow>()
+    var tvShowList = ArrayList<DataTvShow>()
         set(value) {
             tvShowList.clear()
             tvShowList.addAll(value)
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((TvShow) -> Unit)? = null
+    var onItemClick: ((DataTvShow) -> Unit)? = null
 
     fun deleteList() {
         tvShowList.clear()
@@ -29,7 +29,7 @@ class TvShowsAdapterHorizontal :
 
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvHorizontalBinding.bind(itemView)
-        fun bind(tvShowsData: TvShow) {
+        fun bind(tvShowsData: DataTvShow) {
             binding.run {
                 titleTvH.text = tvShowsData.title
                 ratingTvH.text = tvShowsData.voteAverage?.toString()
@@ -52,7 +52,7 @@ class TvShowsAdapterHorizontal :
         )
 
     override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
-            holder.bind(tvShowList[position])
+        holder.bind(tvShowList[position])
     }
 
     override fun getItemCount(): Int = tvShowList.size

@@ -19,6 +19,8 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.underline
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.FragmentDetailMovieBinding
+import com.example.moviecatalogue.presentation.model.DataDetailMovie
+import com.example.moviecatalogue.utils.DataMapper.mapDetailMovieToDataDetailMovie
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +35,7 @@ class DetailMovieFragment : Fragment() {
 
     private val viewModel: DetailMovieViewModel by viewModels()
 
-    private lateinit var movieData: DetailMovie
+    private lateinit var movieData: DataDetailMovie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,7 +128,8 @@ class DetailMovieFragment : Fragment() {
             binding.overview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
         }
         try {
-            movieData = data as DetailMovie
+            movieData =
+                data?.let { mapDetailMovieToDataDetailMovie(it) } as DataDetailMovie
             if (movieData.isFavorite == true) {
                 binding.addFav.setImageResource(R.drawable.ic_favorite)
             } else {
@@ -144,7 +147,7 @@ class DetailMovieFragment : Fragment() {
 
     }
 
-    private fun showDialog(movieData: DetailMovie) {
+    private fun showDialog(movieData: DataDetailMovie) {
         val dialogTitle = getString(R.string.dialog_title)
         val dialogMessage = getString(R.string.dialog_message)
         val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)

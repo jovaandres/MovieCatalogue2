@@ -4,26 +4,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviecatalogue.core.domain.model.DetailTvShow
 import com.example.moviecatalogue.core.utils.Constant
 import com.example.moviecatalogue.favorite.R
 import com.example.moviecatalogue.favorite.databinding.ItemTvShowBinding
+import com.example.moviecatalogue.presentation.model.DataDetailTvShow
 import com.squareup.picasso.Picasso
 
 class FavoriteTvShowAdapter :
     RecyclerView.Adapter<FavoriteTvShowAdapter.FavoriteTvShowViewHolder>() {
 
-    var tvList = ArrayList<DetailTvShow>()
+    var tvList = ArrayList<DataDetailTvShow>()
         set(value) {
             tvList.clear()
             tvList.addAll(value)
             notifyDataSetChanged()
         }
-    var onItemClick: ((DetailTvShow) -> Unit)? = null
+    var onItemClick: ((DataDetailTvShow) -> Unit)? = null
 
     inner class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
-        fun bind(tvShowsData: DetailTvShow) {
+        fun bind(tvShowsData: DataDetailTvShow) {
             binding.run {
                 titleTvShow.text = tvShowsData.title
                 descTvShow.text = tvShowsData.overview
@@ -50,6 +50,6 @@ class FavoriteTvShowAdapter :
         holder.bind(tvList[position])
     }
 
-    fun getSwipedData(swipedPosition: Int): DetailTvShow = tvList[swipedPosition]
+    fun getSwipedData(swipedPosition: Int): DataDetailTvShow = tvList[swipedPosition]
     override fun getItemCount(): Int = tvList.size
 }
