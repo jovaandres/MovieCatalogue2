@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviecatalogue.R
 import com.example.moviecatalogue.core.utils.Constant
 import com.example.moviecatalogue.databinding.ItemMoviesBinding
-import com.example.moviecatalogue.databinding.PopularMovieHeaderBinding
 import com.example.moviecatalogue.presentation.model.DataMovie
 import com.example.moviecatalogue.ui.popular.movies.PopularMoviesFragmentDirections
 import com.squareup.picasso.Picasso
@@ -36,8 +35,7 @@ class MainMovieAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClick: ((DataMovie) -> Unit)? = null
 
     inner class NowMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = PopularMovieHeaderBinding.bind(itemView)
-        val recyclerView = binding.rvNowMovies
+        val recyclerView: RecyclerView = itemView.findViewById(R.id.rv_now_movies)
     }
 
     inner class PopularMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
