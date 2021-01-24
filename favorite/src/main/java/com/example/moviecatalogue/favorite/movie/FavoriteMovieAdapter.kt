@@ -19,7 +19,7 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((DataDetailMovie) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMoviesBinding.bind(itemView)
@@ -36,7 +36,7 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.FavoriteM
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(movieList[adapterPosition])
+                onItemClick?.invoke(movieList[adapterPosition].id)
             }
         }
     }

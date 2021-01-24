@@ -39,7 +39,8 @@ class FavoriteTvShowFragment : Fragment() {
     private val viewModel: FavoriteTvShowViewModel by viewModels {
         factory
     }
-    private val favoriteTvShowAdapter = FavoriteTvShowAdapter()
+    private var _favoriteTvShowAdapter: FavoriteTvShowAdapter? = null
+    private val favoriteTvShowAdapter get() = _favoriteTvShowAdapter!!
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -112,16 +113,17 @@ class FavoriteTvShowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _favoriteTvShowAdapter = FavoriteTvShowAdapter()
         if (activity != null) {
+            val bundle = Bundle()
             favoriteTvShowAdapter.onItemClick = {
-                val bundle = Bundle()
-                bundle.putString("tvId", it.id.toString())
+                bundle.putString("tvId", it.toString())
                 view.findNavController()
                     .navigate(R.id.action_navigation_favorite_tv_to_detailTvFragment, bundle)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.favoriteTvShow.collect {
                 tvShowObserver(it)
             }
@@ -174,9 +176,7 @@ class FavoriteTvShowFragment : Fragment() {
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
-        ): Boolean {
-            return true
-        }
+        ): Boolean = true
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (view != null) {
@@ -201,6 +201,7 @@ class FavoriteTvShowFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvFavTvShows.adapter = null
+        _favoriteTvShowAdapter = null
         _binding = null
     }
 }

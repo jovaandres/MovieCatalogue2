@@ -124,7 +124,7 @@ class LoginFragment : Fragment() {
             viewModel.login(editableUsername.text.toString(), editablePassword.text.toString())
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.loginSuccess.collect {
                 loginObserver(it)
             }

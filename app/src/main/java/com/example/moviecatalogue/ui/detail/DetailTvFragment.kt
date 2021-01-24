@@ -77,7 +77,7 @@ class DetailTvFragment : Fragment() {
                 args = idFromFavorite.toString()
             }
             viewModel.getDetailTvShow(args)
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launchWhenResumed {
                 viewModel.detailTv.collect { data ->
                     when (data) {
                         is Resource.Init -> {

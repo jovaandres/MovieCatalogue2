@@ -20,7 +20,7 @@ class TvShowsAdapterHorizontal :
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((DataTvShow) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     fun deleteList() {
         tvShowList.clear()
@@ -41,7 +41,7 @@ class TvShowsAdapterHorizontal :
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(tvShowList[adapterPosition])
+                onItemClick?.invoke(tvShowList[adapterPosition].id)
             }
         }
     }

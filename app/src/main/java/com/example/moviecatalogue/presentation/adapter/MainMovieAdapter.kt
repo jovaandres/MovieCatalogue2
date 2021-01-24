@@ -32,7 +32,7 @@ class MainMovieAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyItemChanged(0)
         }
 
-    var onItemClick: ((DataMovie) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     inner class NowMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recyclerView: RecyclerView = itemView.findViewById(R.id.rv_now_movies)
@@ -53,7 +53,7 @@ class MainMovieAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(popularMovie[adapterPosition])
+                onItemClick?.invoke(popularMovie[adapterPosition].id)
             }
         }
     }
@@ -80,10 +80,10 @@ class MainMovieAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val adapter = MoviesAdapterHorizontal()
                 adapter.movieList = nowPlayingMovie
                 holder.recyclerView.adapter = adapter
+                val action =
+                    PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
                 adapter.onItemClick = {
-                    val action =
-                        PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
-                    action.movieId = it.id.toString()
+                    action.movieId = it.toString()
                     holder.itemView.findNavController().navigate(action)
                 }
             } else {

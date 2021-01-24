@@ -20,7 +20,7 @@ class TvShowsAdapter :
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((DataTvShow) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     inner class TvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
@@ -37,7 +37,7 @@ class TvShowsAdapter :
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(tvShowList[adapterPosition])
+                onItemClick?.invoke(tvShowList[adapterPosition].id)
             }
         }
     }

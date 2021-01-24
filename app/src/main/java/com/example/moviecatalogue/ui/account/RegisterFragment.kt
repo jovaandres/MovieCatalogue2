@@ -111,7 +111,7 @@ class RegisterFragment : Fragment() {
             val editablePassword = binding.password
             viewModel.register(editableUsername.text.toString(), editablePassword.text.toString())
         }
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.registrationSuccess.collect {
                 registerObserver(it)
             }

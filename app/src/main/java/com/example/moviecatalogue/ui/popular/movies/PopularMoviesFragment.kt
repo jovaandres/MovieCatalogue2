@@ -31,7 +31,9 @@ class PopularMoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PopularMoviesViewModel by viewModels()
-    private val mainMovieAdapter = MainMovieAdapter()
+
+    private var _mainMovieAdapter: MainMovieAdapter? = null
+    private val mainMovieAdapter get() = _mainMovieAdapter!!
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -46,20 +48,21 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _mainMovieAdapter = MainMovieAdapter()
         if (activity != null) {
+            val action =
+                PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
             mainMovieAdapter.onItemClick = {
-                val action =
-                    PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
-                action.movieId = it.id.toString()
+                action.movieId = it.toString()
                 view.findNavController().navigate(action)
             }
 
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launchWhenResumed {
                 viewModel.popularMovies.collect {
                     movieObserver(it)
                 }
             }
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launchWhenResumed {
                 viewModel.nowPlayingMovies.collect {
                     nowPlayingObserver(it)
                 }
@@ -126,6 +129,8 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvPopMovies.adapter = null
+        _mainMovieAdapter = null
         _binding = null
     }
 }

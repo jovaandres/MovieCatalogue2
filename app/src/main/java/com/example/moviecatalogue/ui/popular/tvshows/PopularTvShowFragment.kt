@@ -27,7 +27,8 @@ class PopularTvShowFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PopularTvShowViewModel by viewModels()
-    private val popularTvShowAdapter = TvShowsAdapter()
+    private var _popularTvShowAdapter: TvShowsAdapter? = null
+    private val popularTvShowAdapter get() = _popularTvShowAdapter!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +40,15 @@ class PopularTvShowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _popularTvShowAdapter = TvShowsAdapter()
         if (activity != null) {
             val action = PopularTvShowFragmentDirections.actionNavigationTvToDetailTvFragment()
             popularTvShowAdapter.onItemClick = {
-                action.tvId = it.id.toString()
+                action.tvId = it.toString()
                 view.findNavController().navigate(action)
             }
 
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launchWhenResumed {
                 viewModel.popularTvShows.collect {
                     tvShowObserver(it)
                 }
@@ -88,6 +90,7 @@ class PopularTvShowFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvPopTvShows.adapter = null
+        _popularTvShowAdapter = null
         _binding = null
     }
 }

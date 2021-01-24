@@ -19,7 +19,7 @@ class FavoriteTvShowAdapter :
             tvList.addAll(value)
             notifyDataSetChanged()
         }
-    var onItemClick: ((DataDetailTvShow) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     inner class FavoriteTvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemTvShowBinding.bind(itemView)
@@ -36,7 +36,7 @@ class FavoriteTvShowAdapter :
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(tvList[adapterPosition])
+                onItemClick?.invoke(tvList[adapterPosition].id)
             }
         }
     }

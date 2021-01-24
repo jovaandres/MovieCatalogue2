@@ -39,8 +39,11 @@ class MoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MoviesViewModel by viewModels()
-    private val moviesAdapter = MoviesAdapterHorizontal()
-    private val tvAdapter = TvShowsAdapterHorizontal()
+
+    private var _moviesAdapter: MoviesAdapterHorizontal? = null
+    private val moviesAdapter get() = _moviesAdapter!!
+    private var _tvAdapter: TvShowsAdapterHorizontal? = null
+    private val tvAdapter get() = _tvAdapter!!
 
     private lateinit var toast: Toast
 
@@ -54,6 +57,8 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _moviesAdapter = MoviesAdapterHorizontal()
+        _tvAdapter = TvShowsAdapterHorizontal()
         if (activity != null) {
             toast = Toast.makeText(
                 activity,
@@ -61,24 +66,25 @@ class MoviesFragment : Fragment() {
                 Toast.LENGTH_SHORT
             )
 
+            val actionMovie = MoviesFragmentDirections.actionNavigationSearchToDetailMovieFragment()
+            val actionTv = MoviesFragmentDirections.actionNavigationSearchToDetailTvFragment()
+
             moviesAdapter.onItemClick = {
-                val action = MoviesFragmentDirections.actionNavigationSearchToDetailMovieFragment()
-                action.movieId = it.id.toString()
-                view.findNavController().navigate(action)
+                actionMovie.movieId = it.toString()
+                view.findNavController().navigate(actionMovie)
             }
 
             tvAdapter.onItemClick = {
-                val action = MoviesFragmentDirections.actionNavigationSearchToDetailTvFragment()
-                action.tvId = it.id.toString()
-                view.findNavController().navigate(action)
+                actionTv.tvId = it.toString()
+                view.findNavController().navigate(actionTv)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.searchMovie.collect { movieObserver(it) }
 
         }
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.searchTvShow.collect { tvObserver(it) }
         }
 
@@ -172,6 +178,8 @@ class MoviesFragment : Fragment() {
         super.onDestroyView()
         binding.rvMovies.adapter = null
         binding.rvTv.adapter = null
+        _moviesAdapter = null
+        _tvAdapter = null
         toast.cancel()
         _binding = null
     }

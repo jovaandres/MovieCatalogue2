@@ -77,7 +77,7 @@ class DetailMovieFragment : Fragment() {
                 args = idFromFavorite.toString()
             }
             viewModel.getDetailMovie(args)
-            lifecycleScope.launchWhenStarted {
+            lifecycleScope.launchWhenResumed {
                 viewModel.detailMovie.collect { data ->
                     when (data) {
                         is Resource.Init -> {

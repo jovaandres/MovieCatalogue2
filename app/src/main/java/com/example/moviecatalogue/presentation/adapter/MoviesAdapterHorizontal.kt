@@ -19,7 +19,7 @@ class MoviesAdapterHorizontal : RecyclerView.Adapter<MoviesAdapterHorizontal.Mov
             notifyDataSetChanged()
         }
 
-    var onItemClick: ((DataMovie) -> Unit)? = null
+    var onItemClick: ((Int?) -> Unit)? = null
 
     fun deleteList() {
         movieList.clear()
@@ -40,7 +40,7 @@ class MoviesAdapterHorizontal : RecyclerView.Adapter<MoviesAdapterHorizontal.Mov
 
         init {
             binding.root.setOnClickListener {
-                onItemClick?.invoke(movieList[adapterPosition])
+                onItemClick?.invoke(movieList[adapterPosition].id)
             }
         }
     }

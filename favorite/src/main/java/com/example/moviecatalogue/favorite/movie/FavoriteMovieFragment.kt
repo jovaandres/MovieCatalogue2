@@ -39,7 +39,8 @@ class FavoriteMovieFragment : Fragment() {
     private val viewModel: FavoriteMovieViewModel by viewModels {
         factory
     }
-    private val favoriteMovieAdapter = FavoriteMovieAdapter()
+    private var _favoriteMovieAdapter: FavoriteMovieAdapter? = null
+    private val favoriteMovieAdapter get() = _favoriteMovieAdapter!!
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -112,16 +113,17 @@ class FavoriteMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _favoriteMovieAdapter = FavoriteMovieAdapter()
         if (activity != null) {
+            val bundle = Bundle()
             favoriteMovieAdapter.onItemClick = {
-                val bundle = Bundle()
-                bundle.putString("movieId", it.id.toString())
+                bundle.putString("movieId", it.toString())
                 view.findNavController()
                     .navigate(R.id.action_navigation_favorite_movie_to_detailMovieFragment, bundle)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             viewModel.favoriteMovies.collect {
                 movieObserver(it)
             }
@@ -174,9 +176,7 @@ class FavoriteMovieFragment : Fragment() {
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
-        ): Boolean {
-            return true
-        }
+        ): Boolean = true
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (view != null) {
@@ -202,6 +202,7 @@ class FavoriteMovieFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.rvFavMovies.adapter = null
+        _favoriteMovieAdapter = null
         _binding = null
     }
 
