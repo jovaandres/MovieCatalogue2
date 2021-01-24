@@ -16,8 +16,7 @@ import com.example.moviecatalogue.core.utils.gone
 import com.example.moviecatalogue.core.utils.invisible
 import com.example.moviecatalogue.core.utils.visible
 import com.example.moviecatalogue.databinding.PopularMoviesFragmentBinding
-import com.example.moviecatalogue.presentation.adapter.MoviesAdapter
-import com.example.moviecatalogue.presentation.adapter.MoviesAdapterHorizontal
+import com.example.moviecatalogue.presentation.adapter.MainMovieAdapter
 import com.example.moviecatalogue.presentation.model.DataMovie
 import com.example.moviecatalogue.ui.account.SetState
 import com.example.moviecatalogue.utils.DataMapper.mapMovieToDataMovie
@@ -32,8 +31,7 @@ class PopularMoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PopularMoviesViewModel by viewModels()
-    private val popularMoviesAdapter = MoviesAdapter()
-    private val nowPlayingMoviesAdapter = MoviesAdapterHorizontal()
+    private val mainMovieAdapter = MainMovieAdapter()
 
     @Inject
     lateinit var sortPreferences: SortPreferences
@@ -49,15 +47,9 @@ class PopularMoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val action =
-                PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
-
-            popularMoviesAdapter.onItemClick = {
-                action.movieId = it.id.toString()
-                view.findNavController().navigate(action)
-            }
-
-            nowPlayingMoviesAdapter.onItemClick = {
+            mainMovieAdapter.onItemClick = {
+                val action =
+                    PopularMoviesFragmentDirections.actionNavigationMovieToDetailMovieFragment()
                 action.movieId = it.id.toString()
                 view.findNavController().navigate(action)
             }
@@ -71,6 +63,11 @@ class PopularMoviesFragment : Fragment() {
                 viewModel.nowPlayingMovies.collect {
                     nowPlayingObserver(it)
                 }
+            }
+            binding.rvPopMovies.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(context)
+                adapter = mainMovieAdapter
             }
 
             showPopularMovie()
@@ -92,23 +89,14 @@ class PopularMoviesFragment : Fragment() {
             }
             is Resource.Loading -> {
                 binding.nowMovieProgress.visible()
-                binding.movieNow.invisible()
             }
             is Resource.Success -> {
                 val movieList = data.data?.map { mapMovieToDataMovie(it) }
                 binding.nowMovieProgress.invisible()
-                binding.movieNow.visible()
-                nowPlayingMoviesAdapter.movieList = movieList as ArrayList<DataMovie>
-                binding.rvNowMovies.apply {
-                    setHasFixedSize(true)
-                    layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = nowPlayingMoviesAdapter
-                }
+                mainMovieAdapter.nowPlayingMovie = movieList as ArrayList<DataMovie>
             }
             is Resource.Error -> {
                 binding.nowMovieProgress.invisible()
-                binding.movieNow.invisible()
             }
         }
     }
@@ -119,22 +107,14 @@ class PopularMoviesFragment : Fragment() {
             }
             is Resource.Loading -> {
                 binding.popMovieProgress.visible()
-                binding.moviePop.invisible()
             }
             is Resource.Success -> {
                 val movieList = data.data?.map { mapMovieToDataMovie(it) }
                 binding.popMovieProgress.gone()
-                binding.moviePop.visible()
-                popularMoviesAdapter.movieList = movieList as ArrayList<DataMovie>
-                binding.rvPopMovies.apply {
-                    setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = popularMoviesAdapter
-                }
+                mainMovieAdapter.popularMovie = movieList as ArrayList<DataMovie>
             }
             is Resource.Error -> {
                 binding.popMovieProgress.gone()
-                binding.moviePop.invisible()
             }
         }
     }
@@ -146,7 +126,6 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.rvNowMovies.adapter = null
         binding.rvPopMovies.adapter = null
         _binding = null
     }
